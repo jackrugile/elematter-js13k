@@ -1,0 +1,18 @@
+body {
+	background: #000;
+	overflow: hidden;
+}
+
+#g {
+	background: #111;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+canvas {
+	display: block;
+}

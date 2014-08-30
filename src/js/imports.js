@@ -1,0 +1,16 @@
+//import('vendor/jsfxr.js');
+//import('g/g.js');
+//import('g/group.js');
+//import('g/pool.js');
+//import('g/util.js');
+//import('g/entities.js');
+//import('g/entity.js');
+//import('g/states.js');
+//import('g/state.js');
+//import('g/time.js');
+//import('g/storage.js');
+//import('states/splash.js');
+//import('states/menu.js');
+//import('states/play.js');
+//import('states/gameover.js');
+//import('game.js');
