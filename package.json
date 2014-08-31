@@ -16,6 +16,8 @@
     "gulp-imports": "0.0.2",
     "gulp-size": "~1.0.0",
     "gulp-rimraf": "~0.1.0",
-    "gulp-micro": "~1.0.0"
+    "gulp-micro": "~1.0.0",
+    "gulp-jshint": "~1.8.4",
+    "jshint-stylish": "~0.4.0"
   }
 }

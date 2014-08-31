@@ -13,7 +13,13 @@ gulp.task( 'css', function() {
 		.pipe( gulp.dest( temp ) );
 });
 
-gulp.task( 'js', function() {
+gulp.task( 'jshint', function() {
+	return gulp.src( [ src + 'js/**/*.js', '!' + src + 'js/vendor/*.js' ] )
+		.pipe( p.jshint() )
+		.pipe( p.jshint.reporter( 'jshint-stylish' ) );
+});
+
+gulp.task( 'js', [ 'jshint' ], function() {
 	return gulp.src( src + 'js/imports.js' )
 		.pipe( p.imports() )
 		.pipe( p.uglify() )

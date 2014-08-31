@@ -4,30 +4,40 @@ Utilities
 
 ==============================================================================*/
 
-g.util = {};
-
 /*==============================================================================
 
 Math
 
 ==============================================================================*/
 
-g.util.roundToNearest = function( value, nearest ) {
+g.roundToNearest = function( value, nearest ) {
 	return Math.round( value / nearest ) * nearest;
+};
+
+g.rand = function( min, max ) {
+	return Math.random() * ( max - min ) + min;
+};
+
+g.randInt = function( min, max ) {
+	return Math.floor( Math.random() * ( max - min + 1) ) + min;
 };
 
 /*==============================================================================
 
-Random
+DOM
 
 ==============================================================================*/
 
-g.util.rand = function( min, max ) {
-	return g.m.random() * ( max - min ) + min;
+g.getPrefix = function() {
+	// credit: David Walsh - http://davidwalsh.name/vendor-prefix
+	var styles = window.getComputedStyle( document.documentElement, '' ),
+		pre = ( Array.prototype.slice.call( styles ).join( '' ).match( /-(moz|webkit|ms)-/ ) || ( styles.OLink === '' && [ '', 'o' ] ) )[ 1 ];
+	return '-' + pre + '-';
 };
 
-g.util.randInt = function( min, max ) {
-	return g.m.floor( g.m.random() * ( max - min + 1) ) + min;
+g.css = function( elem, prop, val, prefixed ) {
+	prop = prefixed ? g.prefix + prop : prop;
+	elem.style[ prop ] = val;
 };
 
 /*==============================================================================
@@ -36,11 +46,11 @@ Collision
 
 ==============================================================================*/
 
-g.util.rangeIntersect = function( min0, max0, min1, max1 ) {
+g.rangeIntersect = function( min0, max0, min1, max1 ) {
 	return Math.max( min0, max0 ) > Math.min( min1, max1 ) && Math.min( min0, max0 ) < Math.max( min1, max1 );
 };
 
-g.util.rectIntersect = function( r0, r1 ) {
+g.rectIntersect = function( r0, r1 ) {
 	return g.util.rangeIntersect( r0.x, r0.x + r0.width, r1.x, r1.x + r1.width ) && g.util.rangeIntersect( r0.y, r0.y + r0.height, r1.y, r1.y + r1.height );
 };
 
@@ -50,9 +60,7 @@ Formatting
 
 ==============================================================================*/
 
-g.util.format = {};
-
-g.util.format.pad = function( amount, digits ){
+g.formatPad = function( amount, digits ){
 	amount += '';
 	if( amount.length < digits ) {
 		amount = '0' + amount;
@@ -62,13 +70,13 @@ g.util.format.pad = function( amount, digits ){
 	}
 };
 
-g.util.format.time = function( seconds ) {
-	var minutes = g.m.floor( seconds / 60 );
-	seconds = g.m.floor( seconds % 60 );
+g.formatTime = function( seconds ) {
+	var minutes = Math.floor( seconds / 60 );
+	seconds = Math.floor( seconds % 60 );
 	return g.util.format.pad( minutes, 2 ) + ':' + g.util.format.pad( seconds, 2 );
 };
 
-g.util.format.numCommas = function( nStr ) {
+g.formatCommas = function( nStr ) {
 	nStr += '';
 	var x = nStr.split( '.' ),
 		x1 = x[ 0 ],
@@ -86,11 +94,11 @@ Miscellaneous
 
 ==============================================================================*/
 
-g.util.isset = function( prop ) {
+g.isset = function( prop ) {
 	return typeof prop != 'undefined';
 };
 
-g.util.objIsEmpty = function( obj ) {
+g.objIsEmpty = function( obj ) {
 	for( var prop in obj ) {
 		if( obj.hasOwnProperty( prop ) ) {
 			return false;
@@ -99,7 +107,7 @@ g.util.objIsEmpty = function( obj ) {
 	return true;
 };
 
-g.util.merge = function( obj1, obj2 ) {
+g.merge = function( obj1, obj2 ) {
 	for( var prop in obj2 ) {
 		obj1[ prop ] = obj2[ prop ];
 	}

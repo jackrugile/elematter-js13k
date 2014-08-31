@@ -5,14 +5,18 @@ body {
 
 #g {
 	background: #111;
-	bottom: 0;
-	left: 0;
-	margin: auto;
+	left: 50%;
 	position: absolute;
-	right: 0;
-	top: 0;
+	top: 50%;
 }
 
-canvas {
-	display: block;
+/*==============================================================================
+
+Base Tiles
+
+==============================================================================*/
+
+.tile {
+	background: red;
+	position: absolute;
 }

@@ -5,11 +5,11 @@ State
 ==============================================================================*/
 
 g.State = function( state ) {
-	g.util.merge( this, state );
-	this.init = g.util.isset( this.init ) ? this.init : function(){};
-	this.step = g.util.isset( this.step ) ? this.step : function(){};
-	this.draw = g.util.isset( this.draw ) ? this.draw : function(){};
-	this.exit = g.util.isset( this.exit ) ? this.exit : function(){};
+	g.merge( this, state );
+	this.init = g.isset( this.init ) ? this.init : function(){};
+	this.step = g.isset( this.step ) ? this.step : function(){};
+	this.draw = g.isset( this.draw ) ? this.draw : function(){};
+	this.exit = g.isset( this.exit ) ? this.exit : function(){};
 };
 
 g.State.prototype._init = function() {
