@@ -17,11 +17,11 @@ g.Tile = function( opt ) {
 
 g.Tile.prototype.init = function() {
 	this.elem = document.createElement( 'div' );
-	this.elem.className = 'tile ' + this.classes.join( ' ' );
 	g.css( this.elem, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )' );
 	g.css( this.elem, 'width', g.size + 'px' );
 	g.css( this.elem, 'height', g.size + 'px' );
 	g.css( this.elem, 'z-index', g.rows - this.row );
+	this.setClasses();
 	g.dom.appendChild( this.elem );
 
 	// bind events
@@ -41,4 +41,14 @@ g.Tile.prototype.onclick = function() {
 	//this.elem.className += ' path';
 	//map.push( [ this.col, this.row ] );
 	//console.log( JSON.stringify(map) );
+};
+
+g.Tile.prototype.setClasses = function() {
+	this.elem.className = 'tile ' + this.classes.join( ' ' );
+};
+
+g.Tile.prototype.setDir = function( dir ) {
+	this.dir = dir;
+	this.classes.push( 'dir-' + dir );
+	this.setClasses();
 };

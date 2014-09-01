@@ -27,13 +27,14 @@ g.Group.prototype.empty = function() {
 };
 
 g.Group.prototype.each = function( action, asc ) {
-	var i;
+	var length = this.length,
+		i;
 	if( asc ) {
-		for( i = 0; i < this.length; i++ ) {
+		for( i = 0; i < length; i++ ) {
 			this.collection[ i ][ action ]( i );
 		}
 	} else {
-		i = this.length;
+		i = length;
 		while( i-- ) {
 			this.collection[ i ][ action ]( i );
 		}
