@@ -71,12 +71,12 @@ g.onresize = function() {
 	g.winHeight = window.innerHeight;
 	g.winRatio = g.winHeight / g.winWidth;
 
-	/*if( g.winRatio > g.ratio ) {
+	if( g.winRatio > g.ratio ) {
 		g.scale = ( g.winWidth / g.width ) * 0.8;
 	} else {
 		g.scale = ( g.winHeight / g.height ) * 0.8;
 	}
-	g.scale = Math.max( g.scale, 1 );*/
+	//g.scale = Math.max( g.scale, 1 );
 	g.css( g.dom, 'transform', 'scale(' + g.scale + ')', 1 );
 
 	// center game

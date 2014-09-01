@@ -4,16 +4,19 @@ General
 
 ==============================================================================*/
 
-* {
+*,
+*:before,
+*:after {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	transition-duration: 300ms;
+	transition-duration: 500ms;
 	transition-property: none;
 }
 
 body {
-	background: #000;
+	background: #111;
+	background: -webkit-radial-gradient(#222, #000);
 	overflow: hidden;
 }
 
@@ -24,7 +27,6 @@ Game
 ==============================================================================*/
 
 #g {
-	/*background: url(http://i.imgur.com/x6haKf5.png);*/
 	left: 50%;
 	position: absolute;
 	top: 50%;
@@ -37,19 +39,35 @@ Base Tiles
 ==============================================================================*/
 
 .tile {
-	background: #111;
-	border: 1px solid #000;
-	left: 0;
+	background: hsla(0, 0%, 100%, 0.05);
 	position: absolute;
-	top: 0;
 	transition-property: background;
 }
 
-.tile.path {
-	background: #f00;
-}
+/*.tile:before {
+	border: 1px solid hsla(0, 0%, 100%, 0.05);
+	bottom: 1px;
+	content: '';
+	left: 1px;
+	position: absolute;
+	right: 1px;
+	top: 1px;
+}*/
 
 .tile:hover {
 	background: #666;
+	background: hsla(0, 0%, 100%, 0.2);
+	cursor: crosshair;
 	transition-duration: 0;
+}
+
+.tile.path {
+	background: hsla(0, 0%, 0%, 0.3);
+	background: #111;
+	box-shadow: 0 -6px 0 #000;
+}
+
+.tile.path:hover {
+	background: #311;
+	cursor: not-allowed; 
 }

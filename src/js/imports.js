@@ -15,7 +15,6 @@
 //import('entities/tower.js');
 //import('entities/bullet.js');
 //import('entities/button.js');
-//import('states/splash.js');
 //import('states/menu.js');
 //import('states/play.js');
 //import('states/gameover.js');

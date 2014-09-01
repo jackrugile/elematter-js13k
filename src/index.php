@@ -33,7 +33,6 @@
 	<script src="js/entities/tower.js"></script>
 	<script src="js/entities/bullet.js"></script>
 	<script src="js/entities/button.js"></script>
-	<script src="js/states/splash.js"></script>
 	<script src="js/states/menu.js"></script>
 	<script src="js/states/play.js"></script>
 	<script src="js/states/gameover.js"></script>

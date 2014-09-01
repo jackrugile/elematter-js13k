@@ -11,19 +11,6 @@ StatePlay.prototype.init = function() {
 	// create base tiles
 	for( var x = 0; x < g.cols; x++ ) {
 		for( var y = 0; y < g.rows; y++ ) {
-			//var path = Math.random() > 0.5 ? 'path' : '';
-			//var path = '';
-			//console.log( g.data.map.indexOf( [0,3] ) );
-
-			/*var mapLength = g.data.map.length,
-				classy = '';
-			for( var i = 0; i < mapLength; i++ ) {
-				var p = g.data.map[ i ];
-				if( p[ 0 ] == x && p[ 1 ] == y ) {
-					classy = 'path';
-					break;
-				}
-			}*/
 
 			var classy = this.isPath( x, y ) ? 'path' : '';
 

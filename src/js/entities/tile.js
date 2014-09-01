@@ -21,6 +21,7 @@ g.Tile.prototype.init = function() {
 	g.css( this.elem, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )' );
 	g.css( this.elem, 'width', g.size + 'px' );
 	g.css( this.elem, 'height', g.size + 'px' );
+	g.css( this.elem, 'z-index', g.rows - this.row );
 	g.dom.appendChild( this.elem );
 
 	// bind events
