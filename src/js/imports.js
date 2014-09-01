@@ -8,6 +8,7 @@
 //import('g/time.js');
 //import('g/storage.js');
 //import('data/attacks.js');
+//import('data/map.js');
 //import('data/towers.js');
 //import('data/waves.js');
 //import('entities/tile.js');

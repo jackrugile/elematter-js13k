@@ -26,6 +26,7 @@
 	<script src="js/g/time.js"></script>
 	<script src="js/g/storage.js"></script>
 	<script src="js/data/attacks.js"></script>
+	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
 	<script src="js/data/waves.js"></script>
 	<script src="js/entities/tile.js"></script>

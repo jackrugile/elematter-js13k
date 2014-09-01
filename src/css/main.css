@@ -1,10 +1,30 @@
+/*==============================================================================
+
+General
+
+==============================================================================*/
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	transition-duration: 300ms;
+	transition-property: none;
+}
+
 body {
 	background: #000;
 	overflow: hidden;
 }
 
+/*==============================================================================
+
+Game
+
+==============================================================================*/
+
 #g {
-	background: #111;
+	/*background: url(http://i.imgur.com/x6haKf5.png);*/
 	left: 50%;
 	position: absolute;
 	top: 50%;
@@ -17,6 +37,19 @@ Base Tiles
 ==============================================================================*/
 
 .tile {
-	background: red;
+	background: #111;
+	border: 1px solid #000;
+	left: 0;
 	position: absolute;
+	top: 0;
+	transition-property: background;
+}
+
+.tile.path {
+	background: #f00;
+}
+
+.tile:hover {
+	background: #666;
+	transition-duration: 0;
 }
