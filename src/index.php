@@ -11,7 +11,42 @@
 	<link href=css/main.css rel=stylesheet>
 <?php } ?>
 
-<div id="g"></div>
+<div id="g" class="paused">
+	<div id="s-play" class="s">
+		<div class="row">
+			<a id="b-play" class="s3">
+				<i>&rtrif;</i>
+				<span id="play">Play</span>
+				<span id="pause">Pause</span>
+			</a>
+			<a id="b-x1" class="s1 selected">x1</a>
+			<a id="b-x2" class="s1">x2</a>
+			<a id="b-x3" class="s1">x3</a>
+			<a id="b-e" class="s2">E</a>
+			<a id="b-w" class="s2">W</a>
+			<a id="b-a" class="s2">A</a>
+			<a id="b-f" class="s2">F</a>
+			<a id="b-mute" class="s3">
+				<i>&sung;</i>
+				<span id="mute">Mute</span>
+				<span id="unmute">Unmute</span>
+			</a>
+			<a id="b-menu" class="s3">&equiv; Menu</a>
+		</div>
+		<div class="row">
+			<div class="d-lives">
+				<i>&hearts;</i>
+				<span class="lives">20</span>
+				Lives
+			</div>
+			<div class="d-elematter">
+				<span class="elematter">100</span>
+				Elematter
+			</div>
+		</div>
+		
+	</div>
+</div>
 
 <?php if($is_prod){ ?>
 	<script><?php include('temp/_.js'); ?></script>

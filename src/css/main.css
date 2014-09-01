@@ -17,6 +17,7 @@ General
 body {
 	background: #111;
 	background: -webkit-radial-gradient(#222, #000);
+	font-family: sans-serif;
 	overflow: hidden;
 }
 
@@ -32,27 +33,27 @@ Game
 	top: 50%;
 }
 
+.s {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
 /*==============================================================================
 
-Base Tiles
+Play State - Tiles - Base
 
 ==============================================================================*/
 
 .tile {
 	background: hsla(0, 0%, 100%, 0.05);
+	left: 0;
 	position: absolute;
+	top: 0;
 	transition-property: background;
 }
-
-/*.tile:before {
-	border: 1px solid hsla(0, 0%, 100%, 0.05);
-	bottom: 1px;
-	content: '';
-	left: 1px;
-	position: absolute;
-	right: 1px;
-	top: 1px;
-}*/
 
 .tile:hover {
 	background: #666;
@@ -60,6 +61,12 @@ Base Tiles
 	cursor: crosshair;
 	transition-duration: 0;
 }
+
+/*==============================================================================
+
+Play State - Tiles - Path
+
+==============================================================================*/
 
 .tile.path {
 	background: hsla(0, 0%, 0%, 0.3);
@@ -72,99 +79,112 @@ Base Tiles
 	cursor: not-allowed; 
 }
 
-.tile.path:before {
-	content: '';
-	height: 0;
-	position: absolute;
-	width: 0;
+/*==============================================================================
+
+Play State - Buttons - General
+
+==============================================================================*/
+
+#s-play .row {
+	background: #000;
+	height: 40px;
+	position: relative;
+	z-index: 100;
 }
 
-.tile.dir-n:before,
-.tile.dir-s:before {
-	left: 0;
-	right: 0;
-	margin: 0 auto;
+#s-play a {
+	background: #222;
+	color: hsla(0, 0%, 100%, 0.5);
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 12px;
+	font-weight: bold;
+	height: 39px;
+	line-height: 39px;
+	margin: 0 1px 0 0;
+	text-align: center;
+	text-shadow: 0 1px 1px #000;
 }
 
-.tile.dir-w:before,
-.tile.dir-e:before {
-	bottom: 0;
-	top: 0;
-	margin: auto 0;
+#s-play .s1 { width: 39px; }
+#s-play .s2 { width: 79px; }
+#s-play .s3 { width: 119px; }
+
+#s-play a i {
+	font-size: 16px;
+	font-style: normal;
+	font-weight: normal;
+	margin-right: 3px;
 }
 
-.tile.dir-n:before {
-	-webkit-animation: loop-n 1000ms infinite, phase 1000ms infinite;
-	border-bottom: 4px solid rgba(255, 255, 255, 0.05);
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
+/*==============================================================================
+
+Play State - Buttons - Play/Pause
+
+==============================================================================*/
+
+#play {
+	display: none;
 }
 
-.tile.dir-s:before {
-	-webkit-animation: loop-s 1000ms infinite, phase 1000ms infinite;
-	border-top: 4px solid rgba(255, 255, 255, 0.05);
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
+#pause {
+	display: inline;
 }
 
-.tile.dir-w:before {
-	-webkit-animation: loop-w 1000ms infinite, phase 1000ms infinite;
-	border-right: 4px solid rgba(255, 255, 255, 0.05);
-	border-top: 4px solid transparent;
-	border-bottom: 4px solid transparent;
+.paused #play {
+	display: inline;
 }
 
-.tile.dir-e:before {
-	-webkit-animation: loop-e 1000ms infinite, phase 1000ms infinite;
-	border-left: 4px solid rgba(255, 255, 255, 0.05);
-	border-top: 4px solid transparent;
-	border-bottom: 4px solid transparent;
+.paused #pause {
+	display: none;
 }
 
-@-webkit-keyframes phase {
-  0% {
-    opacity: 0;
-  }
-  50% {
-  	opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+/*==============================================================================
+
+Play State - Buttons - Speed
+
+==============================================================================*/
+
+#s-play a.selected {
+	box-shadow: inset 0 0 20px hsla(0, 0%, 0%, 0.5);
+	color: #fff;
 }
 
-@-webkit-keyframes loop-n {
-  0% {
-    bottom: 0;
-  }
-  100% {
-    bottom: 100%;
-  }
+/*==============================================================================
+
+Play State - Buttons - Attacks
+
+==============================================================================*/
+
+#s-play .b-e {
+
 }
 
-@-webkit-keyframes loop-s {
-  0% {
-    top: 0;
-  }
-  100% {
-    top: 100%;
-  }
+/*==============================================================================
+
+Play State - Buttons - Mute/Unmute
+
+==============================================================================*/
+
+#mute {
+	display: inline;
 }
 
-@-webkit-keyframes loop-w {
-  0% {
-    right: 0;
-  }
-  100% {
-    right: 100%;
-  }
+#unmute {
+	display: none;
 }
 
-@-webkit-keyframes loop-e {
-  0% {
-    left: 0;
-  }
-  100% {
-    left: 100%;
-  }
+.muted #mute {
+	display: none;
 }
+
+.muted #play {
+	display: inline;
+}
+
+/*==============================================================================
+
+Play State - Buttons - Play/Pause
+
+==============================================================================*/
