@@ -13,6 +13,11 @@ g.config = {
 };
 
 g.init = function() {
+	// prevent text select
+	document.onselectstart = function() {
+		return false;
+	};
+
 	// setup overall game time
 	g.time = new g.Time();
 
@@ -29,7 +34,7 @@ g.init = function() {
 	g.scale = 1;
 
 	// setup game element
-	g.dom = document.getElementById( 'g' );
+	g.dom = document.querySelector( '.g' );
 	g.dom.style.width = g.width + 'px';
 	g.dom.style.height = g.height + 'px';
 
@@ -72,12 +77,12 @@ g.onresize = function() {
 	g.winRatio = g.winHeight / g.winWidth;
 
 	/*if( g.winRatio > g.ratio ) {
-		g.scale = ( g.winWidth / g.width ) * 0.8;
+		g.scale = ( g.winWidth / g.width ) * 0.9;
 	} else {
-		g.scale = ( g.winHeight / g.height ) * 0.8;
+		g.scale = ( g.winHeight / g.height ) * 0.9;
 	}
-	g.scale = Math.max( g.scale, 1 );
-	g.css( g.dom, 'transform', 'scale(' + g.scale + ')', 1 );*/
+	g.scale = Math.max( g.scale, 1 );*/
+	g.css( g.dom, 'transform', 'scale(' + g.scale + ')', 1 );
 
 	// center game
 	g.css( g.dom, 'margin-left', -g.width / 2 + 'px' );

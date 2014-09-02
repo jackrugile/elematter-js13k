@@ -1,6 +1,6 @@
 <?php $is_prod = isset($_GET['prod']) && $_GET['prod'] == 1; ?>
 
-<title>js13k</title>
+<title>Elematter</title>
 <meta name=viewport content=width=device-width,initial-scale=1,user-scalable=0,minimal-ui>
 <meta name=apple-mobile-web-app-capable content=yes>
 <meta name=apple-mobile-web-app-status-bar-style content=black>
@@ -11,38 +11,35 @@
 	<link href=css/main.css rel=stylesheet>
 <?php } ?>
 
-<div id="g" class="paused">
-	<div id="s-play" class="s">
-		<div class="row">
-			<a id="b-play" class="s3">
-				<i>&rtrif;</i>
-				<span id="play">Play</span>
-				<span id="pause">Pause</span>
-			</a>
-			<a id="b-x1" class="s1 selected">x1</a>
-			<a id="b-x2" class="s1">x2</a>
-			<a id="b-x3" class="s1">x3</a>
-			<a id="b-e" class="s2">E</a>
-			<a id="b-w" class="s2">W</a>
-			<a id="b-a" class="s2">A</a>
-			<a id="b-f" class="s2">F</a>
-			<a id="b-mute" class="s3">
-				<i>&sung;</i>
-				<span id="mute">Mute</span>
-				<span id="unmute">Unmute</span>
-			</a>
-			<a id="b-menu" class="s3">&equiv; Menu</a>
+<div class="g x1">
+	<div class="s s-play">
+		<div class="row top-row">
+			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
+			<a class="b b-x1 s1 selected">&times;1</a>
+			<a class="b b-x2 s1">&times;2</a>
+			<a class="b b-x3 s1">&times;3</a>
+			<a class="b b-e s2 atk" title="Destroy all Earth enemies"><i>&otimes;</i>Earth</a>
+			<a class="b b-w s2 atk" title="Destroy all Water enemies"><i>&otimes;</i>Water</a>
+			<a class="b b-a s2 atk" title="Destroy all Air enemies"><i>&otimes;</i>Air</a>
+			<a class="b b-f s2 atk" title="Destroy all Fire enemies"><i>&otimes;</i>Fire</a>
+			<a class="b b-mute s3"><i>&sung;</i>Mute</a>
+			<a class="b b-menu s3"><i>&equiv;</i>Menu</a>
 		</div>
-		<div class="row">
-			<div class="d-lives">
-				<i>&hearts;</i>
-				<span class="lives">20</span>
-				Lives
+		<div class="row bot-row">
+			<div class="l s1"><i>&hearts;</i></div>
+			<div class="d d-lives s2">13 / 13</div>
+			<div class="l s1"><i>$</i></div>
+			<div class="d d-elematter s2">1,000</div>
+			<div class="l s2">Wave</div>
+			<div class="d d-wave s2">1 / 20</div>
+			<div class="l s2">Next</div>
+			<div class="d d-next s4">
+				<span class="w w-e">&times;10</span>
+				<span class="w w-w">&times;10</span>
+				<span class="w w-a">&times;10</span>
+				<span class="w w-f">&times;10</span>
 			</div>
-			<div class="d-elematter">
-				<span class="elematter">100</span>
-				Elematter
-			</div>
+			<a class="b b-send s4"><i>&raquo;</i>Send Next +$300</a>
 		</div>
 		
 	</div>

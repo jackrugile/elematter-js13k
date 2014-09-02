@@ -27,12 +27,15 @@ Game
 
 ==============================================================================*/
 
-#g {
+/* game */
+.g {
+	box-shadow: 0 0 0 6px #000;
 	left: 50%;
 	position: absolute;
 	top: 50%;
 }
 
+/* state */
 .s {
 	bottom: 0;
 	left: 0;
@@ -76,7 +79,7 @@ Play State - Tiles - Path
 
 .tile.path:hover {
 	background: #311;
-	cursor: not-allowed; 
+	cursor: not-allowed;
 }
 
 /*==============================================================================
@@ -85,36 +88,71 @@ Play State - Buttons - General
 
 ==============================================================================*/
 
-#s-play .row {
+.row {
 	background: #000;
 	height: 40px;
-	position: relative;
+	left: 0;
+	position: absolute;
+	width: 100%;
 	z-index: 100;
 }
 
-#s-play a {
-	background: #222;
+.top-row {
+	top: 0;
+}
+
+.bot-row {
+	bottom: 0;
+	padding-top: 1px;
+}
+
+.b {
+	background: #333;
 	color: hsla(0, 0%, 100%, 0.5);
 	cursor: pointer;
 	display: block;
 	float: left;
-	font-size: 12px;
-	font-weight: bold;
+	font-size: 13px;
 	height: 39px;
-	line-height: 39px;
+	line-height: 36px;
 	margin: 0 1px 0 0;
+	position: relative;
 	text-align: center;
 	text-shadow: 0 1px 1px #000;
+	transition-property:
+		background,
+		box-shadow,
+		color
+	;
 }
 
-#s-play .s1 { width: 39px; }
-#s-play .s2 { width: 79px; }
-#s-play .s3 { width: 119px; }
+.b:before {
+	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.1));
+	content: '';
+	height: 50%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
 
-#s-play a i {
+.b:hover {
+	background: #444;
+	color: #fff;
+	transition-duration: 0;
+}
+
+.s1 { width: 39px; }
+.s2 { width: 79px; }
+.s3 { width: 119px; }
+.s3:last-child { width: 120px; margin-right: 0; }
+.s4 { width: 159px; }
+.s4:last-child { width: 160px; margin-right: 0; }
+
+.b i {
+	display: inline-block;
 	font-size: 16px;
 	font-style: normal;
-	font-weight: normal;
 	margin-right: 3px;
 }
 
@@ -124,20 +162,17 @@ Play State - Buttons - Play/Pause
 
 ==============================================================================*/
 
-#play {
-	display: none;
+.playing .b-play {
+	background: #222;
+	box-shadow:
+		inset 0 0 0 1px #333,
+		inset 0 0 10px hsla(0, 0%, 0%, 0.75)
+	;
+	color: #fff;
 }
 
-#pause {
-	display: inline;
-}
-
-.paused #play {
-	display: inline;
-}
-
-.paused #pause {
-	display: none;
+.playing .b-play:hover {
+	background: #333;
 }
 
 /*==============================================================================
@@ -146,9 +181,19 @@ Play State - Buttons - Speed
 
 ==============================================================================*/
 
-#s-play a.selected {
-	box-shadow: inset 0 0 20px hsla(0, 0%, 0%, 0.5);
+.x1 .b-x1,
+.x1 .b-x1:hover,
+.x2 .b-x2,
+.x2 .b-x2:hover,
+.x3 .b-x3,
+.x3 .b-x3:hover {
+	background: #222;
+	box-shadow:
+		inset 0 0 0 1px #333,
+		inset 0 0 10px hsla(0, 0%, 0%, 0.75)
+	;
 	color: #fff;
+	cursor: default;
 }
 
 /*==============================================================================
@@ -157,8 +202,66 @@ Play State - Buttons - Attacks
 
 ==============================================================================*/
 
-#s-play .b-e {
+.b-e {
+	background: hsl(120, 30%, 20%);
+	box-shadow: inset 0 -3px 0 hsl(120, 70%, 60%);
+	color: hsl(120, 70%, 60%);
+}
 
+.b-e:hover {
+	background: hsl(120, 40%, 30%);
+	box-shadow: inset 0 -3px 0 hsl(120, 80%, 70%);
+	color: hsl(120, 90%, 80%);
+}
+
+.b-w {
+	background: hsl(200, 30%, 20%);
+	box-shadow: inset 0 -3px 0 hsl(200, 70%, 60%);
+	color: hsl(200, 70%, 60%);
+}
+
+.b-w:hover {
+	background: hsl(200, 40%, 30%);
+	box-shadow: inset 0 -3px 0 hsl(200, 80%, 70%);
+	color: hsl(200, 90%, 80%);
+}
+/*
+.b-a {
+	background: hsl(0, 0%, 30%);
+	box-shadow: inset 0 -3px 0 hsl(0, 0%, 70%);
+	color: hsl(0, 0%, 70%);
+}
+
+.b-a:hover {
+	background: hsl(0, 0%, 40%);
+	box-shadow: inset 0 -3px 0 hsl(0, 0%, 80%);
+	color: hsl(0, 0%, 90%);
+}
+*/
+
+.b-a {
+	background: hsl(60, 30%, 20%);
+	box-shadow: inset 0 -3px 0 hsl(60, 70%, 60%);
+	color: hsl(60, 70%, 60%);
+}
+
+.b-a:hover {
+	background: hsl(60, 40%, 30%);
+	box-shadow: inset 0 -3px 0 hsl(60, 80%, 70%);
+	color: hsl(60, 90%, 80%);
+}
+
+
+.b-f {
+	background: hsl(0, 30%, 20%);
+	box-shadow: inset 0 -3px 0 hsl(0, 70%, 60%);
+	color: hsl(0, 70%, 60%);
+}
+
+.b-f:hover {
+	background: hsl(0, 40%, 30%);
+	box-shadow: inset 0 -3px 0 hsl(0, 80%, 70%);
+	color: hsl(0, 90%, 80%);
 }
 
 /*==============================================================================
@@ -167,24 +270,85 @@ Play State - Buttons - Mute/Unmute
 
 ==============================================================================*/
 
-#mute {
-	display: inline;
+.muted .b-mute {
+	background: #222;
+	box-shadow:
+		inset 0 0 0 1px #333,
+		inset 0 0 10px hsla(0, 0%, 0%, 0.75)
+	;
+	color: #fff;
 }
 
-#unmute {
-	display: none;
-}
-
-.muted #mute {
-	display: none;
-}
-
-.muted #play {
-	display: inline;
+.muted .b-mute:hover {
+	background: #333;
 }
 
 /*==============================================================================
 
-Play State - Buttons - Play/Pause
+Play State - Labels and Displays
 
 ==============================================================================*/
+
+.l,
+.d {
+	background: #090909;
+	color: hsla(0, 0%, 100%, 0.5);
+	display: block;
+	float: left;
+	font-size: 13px;
+	height: 39px;
+	line-height: 36px;
+	margin: 0 1px 0 0;
+	position: relative;
+	text-align: center;
+	text-shadow: 0 1px 1px #000;
+	transition-property:
+		background,
+		box-shadow,
+		color
+	;
+}
+
+.l:before,
+.d:before {
+	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.1));
+	content: '';
+	height: 50%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.l i,
+.d i {
+	font-size: 16px;
+	font-style: normal;
+}
+
+.l {
+	background: #111;
+}
+
+.d {
+}
+
+.w {
+	margin: 0 2px;
+}
+
+.w-e {
+	color: hsl(120, 90%, 60%);
+}
+
+.w-w {
+	color: hsl(200, 90%, 60%);
+}
+
+.w-a {
+	color: hsl(60, 90%, 60%);
+}
+
+.w-f {
+	color: hsl(0, 90%, 60%);
+}

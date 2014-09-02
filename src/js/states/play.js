@@ -8,7 +8,7 @@ var StatePlay = function(){};
 
 StatePlay.prototype.init = function() {
 	// get dom
-	this.dom = document.getElementById( 's-play' );
+	this.dom = document.querySelector( '.s-play' );
 
 	// create tiles
 	this.createTiles();
