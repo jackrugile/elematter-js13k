@@ -28,8 +28,8 @@ DOM
 
 ==============================================================================*/
 
+// credit: David Walsh - http://davidwalsh.name/vendor-prefix
 g.getPrefix = function() {
-	// credit: David Walsh - http://davidwalsh.name/vendor-prefix
 	var styles = window.getComputedStyle( document.documentElement, '' ),
 		pre = ( Array.prototype.slice.call( styles ).join( '' ).match( /-(moz|webkit|ms)-/ ) || ( styles.OLink === '' && [ '', 'o' ] ) )[ 1 ];
 	return '-' + pre + '-';
@@ -38,6 +38,23 @@ g.getPrefix = function() {
 g.css = function( elem, prop, val, prefixed ) {
 	prop = prefixed ? g.prefix + prop : prop;
 	elem.style[ prop ] = val;
+};
+
+// credit: Todd Motto - https://github.com/toddmotto/apollo
+g.hasClass = function ( elem, className ) {
+	return elem.classList.contains( className) ;
+};
+
+g.addClass = function ( elem, className ) {
+	elem.classList.add( className );
+};
+
+g.removeClass = function ( elem, className ) {
+	elem.classList.remove( className );
+};
+
+g.toggleClass = function ( elem, className ) {
+	elem.classList.toggle( className );
 };
 
 /*==============================================================================

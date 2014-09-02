@@ -31,6 +31,7 @@ gulp.task( 'html', [ 'css', 'js' ], function() {
 	return gulp.src( src + 'index.php' )
 		.pipe( p.php2html( { getData:{ prod: 1 } } ) )
 		.pipe( p.htmlmin( {
+			removeComments: true,
 			collapseWhitespace: true,
 			conservativeCollapse: false,
 			removeAttributeQuotes: true

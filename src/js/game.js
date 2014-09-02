@@ -14,9 +14,9 @@ g.config = {
 
 g.init = function() {
 	// prevent text select
-	document.onselectstart = function() {
+	/*document.onselectstart = function() {
 		return false;
-	};
+	};*/
 
 	// setup overall game time
 	g.time = new g.Time();
@@ -77,11 +77,11 @@ g.onresize = function() {
 	g.winRatio = g.winHeight / g.winWidth;
 
 	/*if( g.winRatio > g.ratio ) {
-		g.scale = ( g.winWidth / g.width ) * 0.9;
+		g.scale = ( g.winWidth / g.width ) * 0.8;
 	} else {
-		g.scale = ( g.winHeight / g.height ) * 0.9;
-	}
-	g.scale = Math.max( g.scale, 1 );*/
+		g.scale = ( g.winHeight / g.height ) * 0.8;
+	}*/
+	//g.scale = Math.max( g.scale, 1 );
 	g.css( g.dom, 'transform', 'scale(' + g.scale + ')', 1 );
 
 	// center game

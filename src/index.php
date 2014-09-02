@@ -11,8 +11,17 @@
 	<link href=css/main.css rel=stylesheet>
 <?php } ?>
 
+<!--==============================================================================
+Game Element
+===============================================================================-->
 <div class="g x1">
+	<!--==============================================================================
+	Play State
+	===============================================================================-->
 	<div class="s s-play">
+		<!--==============================================================================
+		UI Top Row
+		===============================================================================-->
 		<div class="row top-row">
 			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
 			<a class="b b-x1 s1 selected">&times;1</a>
@@ -25,11 +34,14 @@
 			<a class="b b-mute s3"><i>&sung;</i>Mute</a>
 			<a class="b b-menu s3"><i>&equiv;</i>Menu</a>
 		</div>
+		<!--==============================================================================
+		UI Bottom Row
+		===============================================================================-->
 		<div class="row bot-row">
 			<div class="l s1"><i>&hearts;</i></div>
 			<div class="d d-lives s2">13 / 13</div>
-			<div class="l s1"><i>$</i></div>
-			<div class="d d-elematter s2">1,000</div>
+			<div class="l s1"><i>&there4;</i></div>
+			<div class="d d-resources s2">1,000</div>
 			<div class="l s2">Wave</div>
 			<div class="d d-wave s2">1 / 20</div>
 			<div class="l s2">Next</div>
@@ -41,7 +53,33 @@
 			</div>
 			<a class="b b-send s4"><i>&raquo;</i>Send Next +$300</a>
 		</div>
-		
+		<!--==============================================================================
+		Tower Select/Build Menu
+		===============================================================================-->
+		<div class="tower-menu ctx-left">
+			<a class="tower-select tower-default"></a>
+			<a class="tower-select tower-earth"></a>
+			<a class="tower-select tower-water"></a>
+			<a class="tower-select tower-air"></a>
+			<a class="tower-select tower-fire"></a>
+			<div class="tower-info">
+				<div class="tower-title">
+					<span class="tower-type">Earth</span>
+					<span class="tower-divider">|</span>
+					<span class="tower-cost">&there4; 200</span>
+				</div>
+				<div class="tower-desc">Well Rounded Tower</div>
+				<div class="tower-stat">
+					<strong>Damage:</strong> <span class="tower-damage">Medium +50% vs Air</span>
+				</div>
+				<div class="tower-stat">
+					<strong>Range:</strong> <span class="tower-range">Medium</span>
+				</div>
+				<div class="tower-stat">
+					<strong>Rate:</strong> <span class="tower-rate">Medium</span>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

@@ -19,6 +19,12 @@ body {
 	background: -webkit-radial-gradient(#222, #000);
 	font-family: sans-serif;
 	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 /*==============================================================================
@@ -29,7 +35,7 @@ Game
 
 /* game */
 .g {
-	box-shadow: 0 0 0 6px #000;
+	box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.5);
 	left: 50%;
 	position: absolute;
 	top: 50%;
@@ -108,13 +114,14 @@ Play State - Buttons - General
 
 .b {
 	background: #333;
-	color: hsla(0, 0%, 100%, 0.5);
+	box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.15);
+	color: hsla(0, 0%, 100%, 0.6);
 	cursor: pointer;
 	display: block;
 	float: left;
 	font-size: 13px;
 	height: 39px;
-	line-height: 36px;
+	line-height: 37px;
 	margin: 0 1px 0 0;
 	position: relative;
 	text-align: center;
@@ -127,7 +134,7 @@ Play State - Buttons - General
 }
 
 .b:before {
-	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.1));
+	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.075));
 	content: '';
 	height: 50%;
 	left: 0;
@@ -204,25 +211,25 @@ Play State - Buttons - Attacks
 
 .b-e {
 	background: hsl(120, 30%, 20%);
-	box-shadow: inset 0 -3px 0 hsl(120, 70%, 60%);
+	/*box-shadow: inset 0 -3px 0 hsl(120, 70%, 60%);*/
 	color: hsl(120, 70%, 60%);
 }
 
 .b-e:hover {
 	background: hsl(120, 40%, 30%);
-	box-shadow: inset 0 -3px 0 hsl(120, 80%, 70%);
+	/*box-shadow: inset 0 -3px 0 hsl(120, 80%, 70%);*/
 	color: hsl(120, 90%, 80%);
 }
 
 .b-w {
 	background: hsl(200, 30%, 20%);
-	box-shadow: inset 0 -3px 0 hsl(200, 70%, 60%);
+	/*box-shadow: inset 0 -3px 0 hsl(200, 70%, 60%);*/
 	color: hsl(200, 70%, 60%);
 }
 
 .b-w:hover {
 	background: hsl(200, 40%, 30%);
-	box-shadow: inset 0 -3px 0 hsl(200, 80%, 70%);
+	/*box-shadow: inset 0 -3px 0 hsl(200, 80%, 70%);*/
 	color: hsl(200, 90%, 80%);
 }
 /*
@@ -241,26 +248,26 @@ Play State - Buttons - Attacks
 
 .b-a {
 	background: hsl(60, 30%, 20%);
-	box-shadow: inset 0 -3px 0 hsl(60, 70%, 60%);
+	/*box-shadow: inset 0 -3px 0 hsl(60, 70%, 60%);*/
 	color: hsl(60, 70%, 60%);
 }
 
 .b-a:hover {
 	background: hsl(60, 40%, 30%);
-	box-shadow: inset 0 -3px 0 hsl(60, 80%, 70%);
+	/*box-shadow: inset 0 -3px 0 hsl(60, 80%, 70%);*/
 	color: hsl(60, 90%, 80%);
 }
 
 
 .b-f {
 	background: hsl(0, 30%, 20%);
-	box-shadow: inset 0 -3px 0 hsl(0, 70%, 60%);
+	/*box-shadow: inset 0 -3px 0 hsl(0, 70%, 60%);*/
 	color: hsl(0, 70%, 60%);
 }
 
 .b-f:hover {
 	background: hsl(0, 40%, 30%);
-	box-shadow: inset 0 -3px 0 hsl(0, 80%, 70%);
+	/*box-shadow: inset 0 -3px 0 hsl(0, 80%, 70%);*/
 	color: hsl(0, 90%, 80%);
 }
 
@@ -292,12 +299,13 @@ Play State - Labels and Displays
 .l,
 .d {
 	background: #090909;
-	color: hsla(0, 0%, 100%, 0.5);
+	box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.05);
+	color: hsla(0, 0%, 100%, 0.6);
 	display: block;
 	float: left;
 	font-size: 13px;
 	height: 39px;
-	line-height: 36px;
+	line-height: 37px;
 	margin: 0 1px 0 0;
 	position: relative;
 	text-align: center;
@@ -311,7 +319,7 @@ Play State - Labels and Displays
 
 .l:before,
 .d:before {
-	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.1));
+	background: -webkit-linear-gradient(transparent, hsla(0, 0%, 100%, 0.075));
 	content: '';
 	height: 50%;
 	left: 0;
@@ -351,4 +359,82 @@ Play State - Labels and Displays
 
 .w-f {
 	color: hsl(0, 90%, 60%);
+}
+
+/*==============================================================================
+
+Play State - Tower Select/Build
+
+==============================================================================*/
+
+.tower-menu {
+	background: hsla(0, 0%, 0%, 0.75);
+	height: 300px;
+	left: 220px;
+	position: absolute;
+	top: 220px;
+	width: 280px;
+	z-index: 200;
+}
+
+.tower-select {
+	background: #fff;
+	height: 40px;
+	position: absolute;
+	top: 20px;
+	width: 40px;
+}
+
+.tower-default { background: #fff; }
+.tower-earth   { background: hsl(120, 90%, 60%); }
+.tower-water   { background: hsl(200, 90%, 60%); }
+.tower-air     { background: hsl(60, 90%, 60%); }
+.tower-fire    { background: hsl(0, 90%, 60%); }
+
+.ctx-left .tower-default { left: 20px; }
+.ctx-left .tower-earth   { left: 70px; }
+.ctx-left .tower-water   { left: 120px; }
+.ctx-left .tower-air     { left: 170px; }
+.ctx-left .tower-fire    { left: 220px; }
+
+.ctx-right .tower-default { left: 220px; }
+.ctx-right .tower-earth   { left: 20px; }
+.ctx-right .tower-water   { left: 70px; }
+.ctx-right .tower-air     { left: 120px; }
+.ctx-right .tower-fire    { left: 170px; }
+
+.tower-info {
+	font-size: 13px;
+	left: 20px;
+	line-height: 1.7;
+	position: absolute;
+	top: 80px;
+}
+
+.tower-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.tower-type {
+	color: hsl(120, 90%, 60%);
+}
+
+.tower-divider {
+	color: #666;
+	font-weight: normal;
+	margin: 0 8px;
+}
+
+.tower-cost {
+	color: #fff;
+}
+
+.tower-desc {
+	color: #fff;
+	font-style: italic;
+}
+
+.tower-stat {
+	color: #aaa;
 }
