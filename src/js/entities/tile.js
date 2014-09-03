@@ -4,14 +4,8 @@ Tile
 
 ==============================================================================*/
 
-// used for map gen
-//var map = [];
-
 g.Tile = function( opt ) {
 	g.merge( this, opt );
-	// col
-	// row
-	// classes ( path, etc. )
 	this.init();
 };
 
@@ -22,7 +16,7 @@ g.Tile.prototype.init = function() {
 	g.css( this.elem, 'width', g.size + 'px' );
 	g.css( this.elem, 'height', g.size + 'px' );
 	g.css( this.elem, 'z-index', g.rows - this.row );
-	this.state.dom.appendChild( this.elem );
+	this.state.dom.state.appendChild( this.elem );
 
 	// bind events
 	this.elem.addEventListener( 'click', this.onclick.bind( this ) );
@@ -36,9 +30,8 @@ g.Tile.prototype.draw = function() {
 
 };
 
-g.Tile.prototype.onclick = function() {
-	// used for map gen
-	//this.elem.className += ' path';
-	//map.push( [ this.col, this.row ] );
-	//console.log( JSON.stringify(map) );
+g.Tile.prototype.onclick = function( e ) {
+	if( !this.state.isBuildMenuOpen ) {
+		if( !this.isPath ) this.state.showBuildMenu( this );
+	}
 };

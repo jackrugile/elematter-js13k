@@ -16,7 +16,7 @@ General
 
 body {
 	background: #111;
-	background: -webkit-radial-gradient(#222, #000);
+	background: -webkit-radial-gradient(#282828, #060606);
 	font-family: sans-serif;
 	overflow: hidden;
 	-webkit-touch-callout: none;
@@ -367,17 +367,44 @@ Play State - Tower Select/Build
 
 ==============================================================================*/
 
-.tower-menu {
-	background: hsla(0, 0%, 0%, 0.75);
-	height: 300px;
-	left: 220px;
+.build-menu-wrap {
+	background: hsla(0, 0%, 0%, 0.5);
+	bottom: 0;
+	cursor: not-allowed;
+	left: 0;
+	opacity: 0;
 	position: absolute;
-	top: 220px;
-	width: 280px;
+	right: 0;
+	top: 0;
+	transition:
+		visibility 300ms 300ms,
+		opacity 300ms
+	;
+	visibility: hidden;
 	z-index: 200;
 }
 
-.tower-select {
+.build-menu-open .build-menu-wrap {
+	opacity: 1;
+	transition-delay: 0;
+	visibility: visible;
+}
+
+.build-menu {
+	cursor: default;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 280px;
+}
+
+.build-selects {
+	background: hsla(0, 0%, 0%, 0.5);
+	height: 80px;
+	width: 100%;
+}
+
+.build-select {
 	background: #fff;
 	height: 40px;
 	position: absolute;
@@ -385,56 +412,67 @@ Play State - Tower Select/Build
 	width: 40px;
 }
 
-.tower-default { background: #fff; }
-.tower-earth   { background: hsl(120, 90%, 60%); }
-.tower-water   { background: hsl(200, 90%, 60%); }
-.tower-air     { background: hsl(60, 90%, 60%); }
-.tower-fire    { background: hsl(0, 90%, 60%); }
+.build-d { background: #fff; }
+.build-e { background: hsl(120, 90%, 60%); }
+.build-w { background: hsl(200, 90%, 60%); }
+.build-a { background: hsl(60, 90%, 60%); }
+.build-f { background: hsl(0, 90%, 60%); }
 
-.ctx-left .tower-default { left: 20px; }
-.ctx-left .tower-earth   { left: 70px; }
-.ctx-left .tower-water   { left: 120px; }
-.ctx-left .tower-air     { left: 170px; }
-.ctx-left .tower-fire    { left: 220px; }
+.pos-w .build-d { left: 20px; }
+.pos-w .build-e { left: 70px; }
+.pos-w .build-w { left: 120px; }
+.pos-w .build-a { left: 170px; }
+.pos-w .build-f { left: 220px; }
 
-.ctx-right .tower-default { left: 220px; }
-.ctx-right .tower-earth   { left: 20px; }
-.ctx-right .tower-water   { left: 70px; }
-.ctx-right .tower-air     { left: 120px; }
-.ctx-right .tower-fire    { left: 170px; }
+.pos-e .build-d { left: 220px; }
+.pos-e .build-e { left: 20px; }
+.pos-e .build-w { left: 70px; }
+.pos-e .build-a { left: 120px; }
+.pos-e .build-f { left: 170px; }
 
-.tower-info {
+.build-info {
+	background: hsla(0, 0%, 20%, 0.5);
+	border: 1px solid hsla(0, 0%, 100%, 0.2);
 	font-size: 13px;
-	left: 20px;
+	left: 0;
 	line-height: 1.7;
+	padding: 15px 20px;
 	position: absolute;
+	width: 100%;
+}
+
+.pos-n .build-info {
 	top: 80px;
 }
 
-.tower-title {
+.pos-s .build-info {
+	bottom: 80px;
+}
+
+.build-title {
 	font-size: 16px;
 	font-weight: bold;
 }
 
-.tower-type {
+.build-type {
 	color: hsl(120, 90%, 60%);
 }
 
-.tower-divider {
+.build-divider {
 	color: #666;
 	font-weight: normal;
 	margin: 0 8px;
 }
 
-.tower-cost {
+.build-cost {
 	color: #fff;
 }
 
-.tower-desc {
+.build-desc {
 	color: #fff;
 	font-style: italic;
 }
 
-.tower-stat {
+.build-stat {
 	color: #aaa;
 }

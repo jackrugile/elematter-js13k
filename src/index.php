@@ -56,27 +56,55 @@ Game Element
 		<!--==============================================================================
 		Tower Select/Build Menu
 		===============================================================================-->
-		<div class="tower-menu ctx-left">
-			<a class="tower-select tower-default"></a>
-			<a class="tower-select tower-earth"></a>
-			<a class="tower-select tower-water"></a>
-			<a class="tower-select tower-air"></a>
-			<a class="tower-select tower-fire"></a>
-			<div class="tower-info">
-				<div class="tower-title">
-					<span class="tower-type">Earth</span>
-					<span class="tower-divider">|</span>
-					<span class="tower-cost">&there4; 200</span>
+		<!--<div class="build-menu ctx-left">
+			<a class="build-select build-default"></a>
+			<a class="build-select build-earth"></a>
+			<a class="build-select build-water"></a>
+			<a class="build-select build-air"></a>
+			<a class="build-select build-fire"></a>
+			<div class="build-info">
+				<div class="build-title">
+					<span class="build-type">Earth</span>
+					<span class="build-divider">|</span>
+					<span class="build-cost">&there4; 200</span>
 				</div>
-				<div class="tower-desc">Well Rounded Tower</div>
-				<div class="tower-stat">
-					<strong>Damage:</strong> <span class="tower-damage">Medium +50% vs Air</span>
+				<div class="build-desc">Well Rounded Tower</div>
+				<div class="build-stat">
+					<strong>Damage:</strong> <span class="build-damage">Medium +50% vs Air</span>
 				</div>
-				<div class="tower-stat">
-					<strong>Range:</strong> <span class="tower-range">Medium</span>
+				<div class="build-stat">
+					<strong>Range:</strong> <span class="build-range">Medium</span>
 				</div>
-				<div class="tower-stat">
-					<strong>Rate:</strong> <span class="tower-rate">Medium</span>
+				<div class="build-stat">
+					<strong>Rate:</strong> <span class="build-rate">Medium</span>
+				</div>
+			</div>
+		</div>-->
+		<div class="build-menu-wrap">
+			<div class="build-menu">
+				<div class="build-selects">
+					<a class="build-select build-d"></a>
+					<a class="build-select build-e"></a>
+					<a class="build-select build-w"></a>
+					<a class="build-select build-a"></a>
+					<a class="build-select build-f"></a>
+				</div>
+				<div class="build-info">
+					<div class="build-title">
+						<span class="build-type"></span>
+						<span class="build-divider">|</span>
+						<span class="build-cost"></span>
+					</div>
+					<div class="build-desc"></div>
+					<div class="build-stat">
+						<strong>Damage:</strong> <span class="build-damage"></span>
+					</div>
+					<div class="build-stat">
+						<strong>Range:</strong> <span class="build-range"></span>
+					</div>
+					<div class="build-stat">
+						<strong>Rate:</strong> <span class="build-rate"></span>
+					</div>
 				</div>
 			</div>
 		</div>

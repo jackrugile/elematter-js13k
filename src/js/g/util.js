@@ -28,6 +28,14 @@ DOM
 
 ==============================================================================*/
 
+g.qS = function( q ) {
+	return document.querySelector( q );
+};
+
+g.html = function( elem, content ) {
+	elem.innerHTML = content;
+};
+
 // credit: David Walsh - http://davidwalsh.name/vendor-prefix
 g.getPrefix = function() {
 	var styles = window.getComputedStyle( document.documentElement, '' ),
@@ -46,11 +54,25 @@ g.hasClass = function ( elem, className ) {
 };
 
 g.addClass = function ( elem, className ) {
-	elem.classList.add( className );
+	if( className.indexOf( ' ' ) != -1 ) {
+		classes = className.split( ' ' );
+		classes.forEach( function( className ) {
+			g.addClass( elem, className );
+		});
+	} else {
+		elem.classList.add( className );
+	}
 };
 
 g.removeClass = function ( elem, className ) {
-	elem.classList.remove( className );
+	if( className.indexOf( ' ' ) != -1 ) {
+		classes = className.split( ' ' );
+		classes.forEach( function( className ) {
+			g.removeClass( elem, className );
+		});
+	} else {
+		elem.classList.remove( className );
+	}
 };
 
 g.toggleClass = function ( elem, className ) {
