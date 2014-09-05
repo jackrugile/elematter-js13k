@@ -25,6 +25,7 @@ StatePlay.prototype.init = function() {
 	// get build menu dom
 	this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );
 	this.dom.buildMenu     = g.qS( '.build-menu' );
+	this.dom.buildSelect   = g.qS( '.build-select' );
 	this.dom.buildDefault  = g.qS( '.build-d' );
 	this.dom.buildEarth    = g.qS( '.build-e' );
 	this.dom.buildWater    = g.qS( '.build-w' );
@@ -33,14 +34,22 @@ StatePlay.prototype.init = function() {
 	this.dom.buildTitle    = g.qS( '.build-title' );
 	this.dom.buildType     = g.qS( '.build-type' );
 	this.dom.buildCost     = g.qS( '.build-cost' );
+	this.dom.buildDesc     = g.qS( '.build-desc' );
 	this.dom.buildDamage   = g.qS( '.build-damage' );
 	this.dom.buildRange    = g.qS( '.build-range' );
 	this.dom.buildRate     = g.qS( '.build-rate' );
 
-
 	// set build menu events
 	this.dom.buildMenuWrap.addEventListener( 'click', this.onBuildMenuWrapClick.bind( this ) );
 	this.dom.buildMenu.addEventListener( 'click', this.onBuildMenuClick.bind( this ) );
+	var length = this.dom.buildSelect.length;
+	for( var i = 0; i < length; i++ ) {
+		this.dom.buildSelect[ i ].addEventListener( 'mouseenter', this.onBuildSelectMouseenter.bind( this ) );
+		this.dom.buildSelect[ i ].addEventListener( 'mouseleave', this.onBuildSelectMouseleave.bind( this ) );
+	}
+
+	// set general events
+	window.addEventListener( 'click', this.onWinClick.bind( this ) );
 
 	// create tiles
 	this.createTiles();
@@ -53,6 +62,18 @@ StatePlay.prototype.draw = function() {
 };
 
 StatePlay.prototype.exit = function() {
+};
+
+/*==============================================================================
+
+General Events
+
+==============================================================================*/
+
+StatePlay.prototype.onWinClick = function() {
+	if( this.isBuildMenuOpen ) {
+		this.hideBuildMenu();
+	}
 };
 
 /*==============================================================================
@@ -109,7 +130,7 @@ Build Menu
 ==============================================================================*/
 
 StatePlay.prototype.showBuildMenu = function( tile ) {
-	console.log( tile );
+	//console.log( tile );
 	this.isBuildMenuOpen = 1;
 	g.addClass( g.dom, 'build-menu-open' );
 
@@ -125,17 +146,54 @@ StatePlay.prototype.showBuildMenu = function( tile ) {
 		x -= 200;
 	}
 
-	if( tile.vertical == 's' ) {
-		//y -= 300;
-	}
-
 	// set position based on tile
 	g.css( this.dom.buildMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)', 1 );
+
+	// reset anim on pulsing default box
+	g.resetAnim( this.dom.buildDefault );
 };
 
 StatePlay.prototype.hideBuildMenu = function() {
 	this.isBuildMenuOpen = 0;
 	g.removeClass( g.dom, 'build-menu-open' );
+};
+
+StatePlay.prototype.updateBuildMenuText = function( type ) {
+	var data = g.data.towers[ type ];
+	g.text( this.dom.buildType, data.title );
+	g.text( this.dom.buildCost, data.stats[ 0 ].cost );
+	g.text( this.dom.buildDesc, data.desc );
+	g.text( this.dom.buildDamage, data.damage + ' ' + data.bonus );
+	g.text( this.dom.buildRange, data.range );
+	g.text( this.dom.buildRate, data.rate );
+	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
+	g.addClass( g.dom, 'hover-build-select hover-' + type );
+	g.removeClass( g.dom, 'dmg1 dmg2 dmg3 rng1 rng2 rng3 rte1 rte2 rte3' );
+
+	var meterDmg = 1,
+		meterRng = 1,
+		meterRte = 1;
+
+	if( data.damage == 'Medium' ) {
+		meterDmg = 2;
+	} else if( data.damage == 'High' ) {
+		meterDmg = 3;
+	}
+	g.addClass( g.dom, 'dmg' + meterDmg );
+
+	if( data.range == 'Medium' ) {
+		meterRng = 2;
+	} else if( data.range == 'High' ) {
+		meterRng = 3;
+	}
+	g.addClass( g.dom, 'rng' + meterRng );
+
+	if( data.rate == 'Medium' ) {
+		meterRte = 2;
+	} else if( data.rate == 'High' ) {
+		meterRte = 3;
+	}
+	g.addClass( g.dom, 'rte' + meterRte );
 };
 
 StatePlay.prototype.onBuildMenuWrapClick = function( e ) {
@@ -146,6 +204,27 @@ StatePlay.prototype.onBuildMenuClick = function( e ) {
 	e.stopPropagation();
 };
 
+StatePlay.prototype.onBuildSelectMouseenter = function( e ) {
+	if( g.hasClass( e.target, 'build-e' ) ) {
+		this.updateBuildMenuText( 'e' );
+	}
+
+	if( g.hasClass( e.target, 'build-w' ) ) {
+		this.updateBuildMenuText( 'w' );
+	}
+
+	if( g.hasClass( e.target, 'build-a' ) ) {
+		this.updateBuildMenuText( 'a' );
+	}
+
+	if( g.hasClass( e.target, 'build-f' ) ) {
+		this.updateBuildMenuText( 'f' );
+	}
+};
+
+StatePlay.prototype.onBuildSelectMouseleave = function( e ) {
+	g.removeClass( g.dom, 'hover-build-select' );
+};
 
 /*==============================================================================
 

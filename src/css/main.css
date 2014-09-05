@@ -399,17 +399,33 @@ Play State - Tower Select/Build
 }
 
 .build-selects {
-	background: hsla(0, 0%, 0%, 0.5);
+	background: hsla(0, 0%, 0%, 0.75);
 	height: 80px;
 	width: 100%;
 }
 
 .build-select {
 	background: #fff;
+	cursor: pointer;
 	height: 40px;
 	position: absolute;
 	top: 20px;
+	transition: background 300ms;
 	width: 40px;
+}
+
+.build-d.anim {
+	background: hsla(0, 0%, 100%, 0.15);
+	border: 2px dashed #fff;
+	cursor: default;
+	-webkit-animation: build-d 500ms ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes build-d {
+	to {
+		box-shadow: inset 0 0 0 0 transparent;
+		opacity: 0;
+	}
 }
 
 .build-d { background: #fff; }
@@ -417,6 +433,11 @@ Play State - Tower Select/Build
 .build-w { background: hsl(200, 90%, 60%); }
 .build-a { background: hsl(60, 90%, 60%); }
 .build-f { background: hsl(0, 90%, 60%); }
+
+.build-e:hover { background: hsl(120, 100%, 80%); }
+.build-w:hover { background: hsl(200, 100%, 80%); }
+.build-a:hover { background: hsl(60, 100%, 80%); }
+.build-f:hover { background: hsl(0, 100%, 80%); }
 
 .pos-w .build-d { left: 20px; }
 .pos-w .build-e { left: 70px; }
@@ -432,21 +453,30 @@ Play State - Tower Select/Build
 
 .build-info {
 	background: hsla(0, 0%, 0%, 0.5);
-	/*border: 1px solid hsla(0, 0%, 100%, 0.2);*/
 	font-size: 13px;
+	height: 135px;
 	left: 0;
 	line-height: 1.7;
-	padding: 15px 20px;
+	opacity: 0;
+	padding: 0 20px;
 	position: absolute;
+	transition: opacity 300ms 300ms;
 	width: 100%;
 }
 
+.hover-build-select .build-info {
+	opacity: 1;
+	transition-delay: 0;
+}
+
 .pos-n .build-info {
+	padding-bottom: 15px;
 	top: 80px;
 }
 
 .pos-s .build-info {
 	bottom: 80px;
+	padding-top: 15px;
 }
 
 .build-title {
@@ -455,8 +485,13 @@ Play State - Tower Select/Build
 }
 
 .build-type {
-	color: hsl(120, 90%, 60%);
+	color: #fff
 }
+
+.hover-e .build-type { color: hsl(120, 90%, 60%); }
+.hover-w .build-type { color: hsl(200, 90%, 60%); }
+.hover-a .build-type { color: hsl(60, 90%, 60%); }
+.hover-f .build-type { color: hsl(0, 90%, 60%); }
 
 .build-divider {
 	color: #666;
@@ -476,3 +511,42 @@ Play State - Tower Select/Build
 .build-stat {
 	color: #aaa;
 }
+
+.build-stat strong {
+	display: inline-block;
+	margin-right: 3px;
+	text-align: right;
+	width: 58px;
+}
+
+.build-meter {
+	display: inline-block;
+	margin-right: 3px;
+	vertical-align: top;
+}
+
+.build-meter span {
+	background: #444;
+	display: inline-block;
+	height: 12px;
+	margin-right: 1px;
+	position: relative;
+	top: 6px;
+	vertical-align: top;
+	width: 8px;
+}
+
+.hover-e .build-meter span { background: hsl(120, 90%, 60%); }
+.hover-w .build-meter span { background: hsl(200, 90%, 60%); }
+.hover-a .build-meter span { background: hsl(60, 90%, 60%); }
+.hover-f .build-meter span { background: hsl(0, 90%, 60%); }
+
+.dmg1 .build-dmg-wrap .build-meter span:nth-child(2),
+.dmg1 .build-dmg-wrap .build-meter span:nth-child(3),
+.rng1 .build-rng-wrap .build-meter span:nth-child(2),
+.rng1 .build-rng-wrap .build-meter span:nth-child(3),
+.rte1 .build-rte-wrap .build-meter span:nth-child(2),
+.rte1 .build-rte-wrap .build-meter span:nth-child(3),
+.dmg2 .build-dmg-wrap .build-meter span:nth-child(3),
+.rng2 .build-rng-wrap .build-meter span:nth-child(3),
+.rte2 .build-rte-wrap .build-meter span:nth-child(3) { background: #444; }

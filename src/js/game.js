@@ -46,9 +46,10 @@ g.init = function() {
 	g.setState( g.config.state );
 	g.step();
 
-	// resize
-	window.addEventListener( 'resize', g.onresize );
-	g.onresize();
+	// general events
+	g.dom.addEventListener( 'click', g.onClick );
+	window.addEventListener( 'resize', g.onResize );
+	g.onResize();
 };
 
 g.step = function() {
@@ -65,7 +66,11 @@ g.step = function() {
 	g.states[ g.state ]._draw();
 };
 
-g.onresize = function() {
+g.onClick = function( e ) {
+	e.stopPropagation();
+};
+
+g.onResize = function() {
 	// get window size
 	g.winWidth = window.innerWidth;
 	g.winHeight = window.innerHeight;
@@ -82,6 +87,9 @@ g.onresize = function() {
 	// center game
 	g.css( g.dom, 'margin-left', -g.width / 2 + 'px' );
 	g.css( g.dom, 'margin-top', -g.height / 2 + 'px' );
+	//g.dom.style['marginLeft'] = -g.width / 2 + 'px';
+	//g.dom.style['marginTop'] = -g.height / 2 + 'px';
 };
+
 
 g.init();

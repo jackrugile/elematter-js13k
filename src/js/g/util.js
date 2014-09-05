@@ -29,11 +29,26 @@ DOM
 ==============================================================================*/
 
 g.qS = function( q ) {
-	return document.querySelector( q );
+	var query = document.querySelectorAll( q );
+	if( query.length > 1 ) {
+		return query;
+	} else {
+		return query[ 0 ];
+	}
+	//return document.querySelector( q );
 };
 
-g.html = function( elem, content ) {
-	elem.innerHTML = content;
+g.text = function( elem, content ) {
+	//elem.innerHTML = content;
+	elem.firstChild.nodeValue = content;
+};
+
+g.resetAnim = function( elem ) {
+	//var clone = elem.cloneNode( true );
+	//elem.parentNode.replaceChild( clone, elem );
+	g.removeClass( elem, 'anim' );
+	elem.offsetWidth = elem.offsetWidth;
+	g.addClass( elem, 'anim' );
 };
 
 // credit: David Walsh - http://davidwalsh.name/vendor-prefix
@@ -46,6 +61,7 @@ g.getPrefix = function() {
 g.css = function( elem, prop, val, prefixed ) {
 	prop = prefixed ? g.prefix + prop : prop;
 	elem.style[ prop ] = val;
+	//console.log( prefixed );
 };
 
 // credit: Todd Motto - https://github.com/toddmotto/apollo

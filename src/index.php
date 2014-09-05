@@ -56,30 +56,34 @@ Game Element
 		<!--==============================================================================
 		Tower Select/Build Menu
 		===============================================================================-->
-		<!--<div class="build-menu ctx-left">
-			<a class="build-select build-default"></a>
-			<a class="build-select build-earth"></a>
-			<a class="build-select build-water"></a>
-			<a class="build-select build-air"></a>
-			<a class="build-select build-fire"></a>
-			<div class="build-info">
-				<div class="build-title">
-					<span class="build-type">Earth</span>
-					<span class="build-divider">|</span>
-					<span class="build-cost">&there4; 200</span>
+		<!-- <div class="build-menu-wrap">
+			<div class="build-menu">
+				<div class="build-selects">
+					<a class="build-select build-d"></a>
+					<a class="build-select build-e"></a>
+					<a class="build-select build-w"></a>
+					<a class="build-select build-a"></a>
+					<a class="build-select build-f"></a>
 				</div>
-				<div class="build-desc">Well Rounded Tower</div>
-				<div class="build-stat">
-					<strong>Damage:</strong> <span class="build-damage">Medium +50% vs Air</span>
-				</div>
-				<div class="build-stat">
-					<strong>Range:</strong> <span class="build-range">Medium</span>
-				</div>
-				<div class="build-stat">
-					<strong>Rate:</strong> <span class="build-rate">Medium</span>
+				<div class="build-info">
+					<div class="build-title">
+						<span class="build-type">Earth</span>
+						<span class="build-divider">|</span>
+						<span class="build-cost">&there4; 200</span>
+					</div>
+					<div class="build-desc">Well Rounded Tower</div>
+					<div class="build-stat">
+						<strong>Damage:</strong> <span class="build-damage">Medium +50% vs Air</span>
+					</div>
+					<div class="build-stat">
+						<strong>Range:</strong> <span class="build-range">Medium</span>
+					</div>
+					<div class="build-stat">
+						<strong>Rate:</strong> <span class="build-rate">Medium</span>
+					</div>
 				</div>
 			</div>
-		</div>-->
+		</div> -->
 		<div class="build-menu-wrap">
 			<div class="build-menu">
 				<div class="build-selects">
@@ -91,19 +95,19 @@ Game Element
 				</div>
 				<div class="build-info">
 					<div class="build-title">
-						<span class="build-type"></span>
+						<span class="build-type"> </span>
 						<span class="build-divider">|</span>
-						<span class="build-cost"></span>
+						<span class="build-cost"> </span>
 					</div>
-					<div class="build-desc"></div>
-					<div class="build-stat">
-						<strong>Damage:</strong> <span class="build-damage"></span>
+					<div class="build-desc"> </div>
+					<div class="build-stat build-dmg-wrap">
+						<strong>Damage:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-damage"> </span>
 					</div>
-					<div class="build-stat">
-						<strong>Range:</strong> <span class="build-range"></span>
+					<div class="build-stat build-rng-wrap">
+						<strong>Range:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-range"> </span>
 					</div>
-					<div class="build-stat">
-						<strong>Rate:</strong> <span class="build-rate"></span>
+					<div class="build-stat build-rte-wrap">
+						<strong>Rate:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-rate"> </span>
 					</div>
 				</div>
 			</div>

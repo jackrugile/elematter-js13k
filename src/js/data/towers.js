@@ -9,12 +9,11 @@ g.data.towers = {
 		type: 'e',
 		counters: 'a',
 		title: 'Earth',
-		description: {
-			main: 'Well Rounded',
-			damage: 'Medium +50% vs Air',
-			range: 'Medium',
-			rate: 'Medium'
-		},
+		desc: 'Well Rounded',
+		damage: 'Medium',
+		bonus: '+50% vs Air',
+		range: 'Medium',
+		rate: 'Medium',
 		hue: 120,
 		stats: [
 			{ // level 1
@@ -41,12 +40,11 @@ g.data.towers = {
 		type: 'w',
 		counters: 'f',
 		title: 'Water',
-		description: {
-			main: 'Slows Enemies',
-			damage: 'Medium +50% vs Fire',
-			range: 'Low',
-			rate: 'High'
-		},
+		desc: 'Slows Enemies',
+		damage: 'Medium',
+		bonus: '+50% vs Fire',
+		range: 'Low',
+		rate: 'High',
 		hue: 200,
 		stats: [
 			{ // level 1
@@ -73,12 +71,11 @@ g.data.towers = {
 		type: 'a',
 		counters: 'w',
 		title: 'Air',
-		description: {
-			main: '',
-			damage: 'Low +50% vs Water',
-			range: 'High',
-			rate: 'Medium'
-		},
+		desc: 'Pierced Enemies',
+		damage: 'Low',
+		bonus: '+50% vs Water',
+		range: 'High',
+		rate: 'Medium',
 		hue: 60,
 		stats: [
 			{ // level 1
@@ -105,12 +102,11 @@ g.data.towers = {
 		type: 'f',
 		counters: 'e',
 		title: 'Fire',
-		description: {
-			main: 'Splash Damage',
-			damage: 'High +50% vs Earth',
-			range: 'Low',
-			rate: 'Medium'
-		},
+		desc: 'Splash Damage',
+		damage: 'High',
+		bonus: '+50% vs Earth',
+		range: 'Low',
+		rate: 'Medium',
 		hue: 0,
 		stats: [
 			{ // level 1
