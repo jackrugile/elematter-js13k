@@ -33,7 +33,7 @@ gulp.task( 'html', [ 'css', 'js' ], function() {
 		.pipe( p.htmlmin( {
 			removeComments: true,
 			collapseWhitespace: true,
-			conservativeCollapse: false,
+			conservativeCollapse: true,
 			removeAttributeQuotes: true
 		}))
 		.pipe( gulp.dest( dest ) );
