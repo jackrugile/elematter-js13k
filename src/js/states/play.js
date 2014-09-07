@@ -18,9 +18,11 @@ StatePlay.prototype.init = function() {
 	this.fragmentsDisplay = this.fragments;
 	this.fragmentsDisplayLast = 0;
 	this.fragmentsChangeFlag = 0;
+	this.lastClickedTile = null;
 
 	// general booleans
 	this.isBuildMenuOpen = 0;
+	this.isBuildable = 0;
 
 	// setup dom
 	this.dom = {};
@@ -53,6 +55,7 @@ StatePlay.prototype.init = function() {
 	for( var i = 0, length =  this.dom.buildSelect.length; i < length; i++ ) {
 		this.dom.buildSelect[ i ].addEventListener( 'mouseenter', this.onBuildSelectMouseenter.bind( this ) );
 		this.dom.buildSelect[ i ].addEventListener( 'mouseleave', this.onBuildSelectMouseleave.bind( this ) );
+		this.dom.buildSelect[ i ].addEventListener( 'click', this.onBuildSelectClick.bind( this ) );
 	}
 
 	// set general events
@@ -146,7 +149,7 @@ StatePlay.prototype.setFragments = function( amt ) {
 };
 
 StatePlay.prototype.updateFragments = function() {
-	this.fragmentsDisplay += ( this.fragments - this.fragmentsDisplay ) * 0.1;
+	this.fragmentsDisplay += ( this.fragments - this.fragmentsDisplay ) * 0.2;
 	if( Math.round( this.fragmentsDisplay ) != Math.round( this.fragmentsDisplayLast ) ) {
 		g.text( this.dom.fragments, g.formatCommas( this.fragmentsDisplay ) );
 	}
@@ -162,6 +165,7 @@ Build Menu
 StatePlay.prototype.showBuildMenu = function( tile ) {
 	//console.log( tile );
 	this.isBuildMenuOpen = 1;
+	this.isBuildable = 1;
 	g.addClass( g.dom, 'build-menu-open' );
 
 	// set the proper positioning to prevent overflow of main game wrap
@@ -258,8 +262,21 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 	// set the build menu text based on the element that is hovered
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
-		var cost = data.towers[ type ].cost
-		this.updateBuildMenuText( type );
+		var cost = g.data.towers[ type ].stats[ 0 ].cost;
+		if( cost <= this.fragments && this.isBuildable ) {
+			this.setFragments( -cost );
+			var tile = this.lastClickedTile;
+			//console.log( this.lastClickedTile );
+			var tower = new g.Tower({
+				state: this,
+				col: tile.col,
+				row: tile.row,
+				type: type
+			});
+			this.isBuildable = 0;
+			this.hideBuildMenu();
+			//console.log( 1 );
+		}
 	}
 };
 

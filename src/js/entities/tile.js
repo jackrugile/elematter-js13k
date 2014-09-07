@@ -19,7 +19,7 @@ g.Tile.prototype.init = function() {
 	this.state.dom.state.appendChild( this.elem );
 
 	// bind events
-	this.elem.addEventListener( 'click', this.onclick.bind( this ) );
+	this.elem.addEventListener( 'click', this.onClick.bind( this ) );
 };
 
 g.Tile.prototype.step = function() {
@@ -30,8 +30,11 @@ g.Tile.prototype.draw = function() {
 
 };
 
-g.Tile.prototype.onclick = function( e ) {
+g.Tile.prototype.onClick = function( e ) {
 	if( !this.state.isBuildMenuOpen ) {
-		if( !this.isPath ) this.state.showBuildMenu( this );
+		if( !this.isPath ) {
+			this.state.showBuildMenu( this );
+			this.state.lastClickedTile = this;
+		}
 	}
 };

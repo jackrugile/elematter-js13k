@@ -592,3 +592,148 @@ Play State - Tower Select/Build
 .dmg2 .build-dmg-wrap .build-meter span:nth-child(3),
 .rng2 .build-rng-wrap .build-meter span:nth-child(3),
 .rte2 .build-rte-wrap .build-meter span:nth-child(3) { background: #444; }
+
+/*==============================================================================
+
+Towers
+
+==============================================================================*/
+
+.t-wrap,
+.t-wrap div {
+	position: absolute;
+}
+
+.t-tower,
+.t-slab,
+.t-base,
+.t-core
+{
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+
+.t-wrap {
+	height: 40px;
+	transition: background 300ms;
+	width: 40px;
+	z-index: 100;
+}
+
+.t-wrap:hover {
+	background: rgba(150, 255, 150, 0.2);
+	transition-duration: 100ms;
+	z-index: 101;
+}
+
+.t-tower {
+	cursor: pointer;
+	height: 28px;
+	margin: auto;
+	width: 28px;
+}
+
+.t-range {
+  background: rgba(220, 255, 220, 0.08);
+  border: 2px solid rgba(180, 255, 180, 0.3);
+  border-radius: 100%;
+  content: '';
+  height: 200px;
+  left: 50%;
+  margin: -100px 0 0 -100px;
+  opacity: 0;
+  pointer-events: none;
+  top: 50%;
+  transform: scale(0.75);
+  transition: all 300ms ease-in-out;
+  width: 200px;
+  z-index: 1;
+}
+
+.t-wrap:hover .t-range {
+  opacity: 1;
+  transition-duration: 100ms;
+  transform: scale(1);
+}
+
+.t-slab {
+	-webkit-animation: slab 6000ms linear infinite;
+	animation: slab 6000ms linear infinite;
+	background: #121;
+	border: 1px solid #252;
+}
+
+.t-base {
+	background: #252;
+	border: 4px solid #111;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px #252;
+}
+
+.t-turret {
+	-webkit-animation: rotate 3000ms linear infinite;
+	animation: rotate 3000ms linear infinite;
+	background: #6c6;
+	height: 50%;
+	left: 0;
+	top: 0;
+	transform-origin: 100% 100%;
+	width: 50%;
+}
+
+.t-core {
+	-webkit-animation: pulse 1500ms infinite alternate;
+	animation: pulse 1500ms infinite alternate;
+	background: #3f3;
+	border-radius: 50%;
+	box-shadow: 0 0 20px #9f9;
+	margin: auto;
+}
+
+@-webkit-keyframes pulse {
+	0% {
+		background: #484;
+		transform: scale(0.15);
+	}
+	100% {
+		background: #6f6;
+		transform: scale(0.4);
+	}
+}
+
+@keyframes pulse {
+	0% {
+		background: #484;
+		transform: scale(0.15);
+	}
+	100% {
+		background: #6f6;
+		transform: scale(0.4);
+	}
+}
+
+@-webkit-keyframes rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes slab {
+	100% {
+		transform: rotate(-360deg);
+	}
+}
+
+@keyframes slab {
+	100% {
+		transform: rotate(-360deg);
+	}
+}

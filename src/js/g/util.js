@@ -37,6 +37,18 @@ g.qS = function( q ) {
 	}
 };
 
+g.cE = function( appendParent, classes ) {
+	elem = document.createElement( 'div' );
+	if( appendParent ) {
+		appendParent.appendChild( elem );
+	}
+	if( classes ) {
+		g.addClass( elem, classes );
+	}
+	return elem;
+};
+
+
 g.text = function( elem, content ) {
 	elem.firstChild.nodeValue = content;
 };
@@ -52,13 +64,14 @@ g.prefixCheck = function (property) {
 	if (g.prefixMatches[property]) {
 		return [ g.prefixMatches[property], true ];
 	} else {
-		var vendors = [ "", "Webkit", "Moz", "ms", "O" ];
+		var vendors = [ "", "Webkit", "Moz", "ms", "O" ],
+			cb = function(match) { return match.toUpperCase(); }
 		for (var i = 0, vendorsLength = vendors.length; i < vendorsLength; i++) {
 			var propertyPrefixed;
 			if (i === 0) {
 				propertyPrefixed = property;
 			} else {
-				propertyPrefixed = vendors[i] + property.replace(/^\w/, function(match) { return match.toUpperCase(); });
+				propertyPrefixed = vendors[i] + property.replace(/^\w/, cb);
 			}
 			if (g.isString(g.prefixElement.style[propertyPrefixed])) {
 				g.prefixMatches[property] = propertyPrefixed;
