@@ -35,33 +35,45 @@ g.qS = function( q ) {
 	} else {
 		return query[ 0 ];
 	}
-	//return document.querySelector( q );
 };
 
 g.text = function( elem, content ) {
-	//elem.innerHTML = content;
 	elem.firstChild.nodeValue = content;
 };
 
 g.resetAnim = function( elem ) {
-	//var clone = elem.cloneNode( true );
-	//elem.parentNode.replaceChild( clone, elem );
 	g.removeClass( elem, 'anim' );
 	elem.offsetWidth = elem.offsetWidth;
 	g.addClass( elem, 'anim' );
 };
 
-// credit: David Walsh - http://davidwalsh.name/vendor-prefix
-g.getPrefix = function() {
-	var styles = window.getComputedStyle( document.documentElement, '' ),
-		pre = ( Array.prototype.slice.call( styles ).join( '' ).match( /-(moz|webkit|ms)-/ ) || ( styles.OLink === '' && [ '', 'o' ] ) )[ 1 ];
-	return '-' + pre + '-';
+// credit: Julian Shapiro - http://julian.com/research/velocity/
+g.prefixCheck = function (property) {
+	if (g.prefixMatches[property]) {
+		return [ g.prefixMatches[property], true ];
+	} else {
+		var vendors = [ "", "Webkit", "Moz", "ms", "O" ];
+		for (var i = 0, vendorsLength = vendors.length; i < vendorsLength; i++) {
+			var propertyPrefixed;
+			if (i === 0) {
+				propertyPrefixed = property;
+			} else {
+				propertyPrefixed = vendors[i] + property.replace(/^\w/, function(match) { return match.toUpperCase(); });
+			}
+			if (g.isString(g.prefixElement.style[propertyPrefixed])) {
+				g.prefixMatches[property] = propertyPrefixed;
+				return [ propertyPrefixed, true ];
+			}
+		}
+		return [ property, false ];
+	}
 };
 
-g.css = function( elem, prop, val, prefixed ) {
-	prop = prefixed ? g.prefix + prop : prop;
-	elem.style[ prop ] = val;
-	//console.log( prefixed );
+g.css = function( elem, prop, val ) {
+	prop = g.prefixCheck( prop );
+	if( prop[ 1 ] ) {
+		elem.style[ prop[ 0 ] ] = val;
+	}
 };
 
 // credit: Todd Motto - https://github.com/toddmotto/apollo
@@ -93,6 +105,10 @@ g.removeClass = function ( elem, className ) {
 
 g.toggleClass = function ( elem, className ) {
 	elem.classList.toggle( className );
+};
+
+g.attr = function( elem, attr ) {
+	return elem.getAttribute( attr );
 };
 
 /*==============================================================================
@@ -131,8 +147,8 @@ g.formatTime = function( seconds ) {
 	return g.util.format.pad( minutes, 2 ) + ':' + g.util.format.pad( seconds, 2 );
 };
 
-g.formatCommas = function( nStr ) {
-	nStr += '';
+g.formatCommas = function( n ) {
+	/*nStr += '';
 	var x = nStr.split( '.' ),
 		x1 = x[ 0 ],
 		x2 = x.length > 1 ? '.' + x[ 1 ] : '',
@@ -140,7 +156,9 @@ g.formatCommas = function( nStr ) {
 	while( rgx.test( x1 ) ) {
 		x1 = x1.replace( rgx, '$1' + ',' + '$2' );
 	}
-	return x1 + x2;
+	return x1 + x2;*/
+	n = Math.round( n );
+	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 /*==============================================================================
@@ -149,11 +167,15 @@ Miscellaneous
 
 ==============================================================================*/
 
-g.isset = function( prop ) {
+g.isString = function (variable) {
+	return (typeof variable === "string");
+};
+
+g.isSet = function( prop ) {
 	return typeof prop != 'undefined';
 };
 
-g.objIsEmpty = function( obj ) {
+g.isObjEmpty = function( obj ) {
 	for( var prop in obj ) {
 		if( obj.hasOwnProperty( prop ) ) {
 			return false;

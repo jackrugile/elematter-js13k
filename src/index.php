@@ -41,7 +41,7 @@ Game Element
 			<div class="l s1"><i>&hearts;</i></div>
 			<div class="d d-lives s2">13 / 13</div>
 			<div class="l s1"><i>&there4;</i></div>
-			<div class="d d-resources s2">1,000</div>
+			<div class="d d-fragments s2"> </div>
 			<div class="l s2">Wave</div>
 			<div class="d d-wave s2">1 / 20</div>
 			<div class="l s2">Next</div>
@@ -51,53 +51,24 @@ Game Element
 				<span class="w w-a">&times;10</span>
 				<span class="w w-f">&times;10</span>
 			</div>
-			<a class="b b-send s4"><i>&raquo;</i>Send Next +$300</a>
+			<a class="b b-send s4"><i>&raquo;</i>Send Next +300 <i>&there4;</i></a>
 		</div>
 		<!--==============================================================================
 		Tower Select/Build Menu
 		===============================================================================-->
-		<!-- <div class="build-menu-wrap">
-			<div class="build-menu">
-				<div class="build-selects">
-					<a class="build-select build-d"></a>
-					<a class="build-select build-e"></a>
-					<a class="build-select build-w"></a>
-					<a class="build-select build-a"></a>
-					<a class="build-select build-f"></a>
-				</div>
-				<div class="build-info">
-					<div class="build-title">
-						<span class="build-type">Earth</span>
-						<span class="build-divider">|</span>
-						<span class="build-cost">&there4; 200</span>
-					</div>
-					<div class="build-desc">Well Rounded Tower</div>
-					<div class="build-stat">
-						<strong>Damage:</strong> <span class="build-damage">Medium +50% vs Air</span>
-					</div>
-					<div class="build-stat">
-						<strong>Range:</strong> <span class="build-range">Medium</span>
-					</div>
-					<div class="build-stat">
-						<strong>Rate:</strong> <span class="build-rate">Medium</span>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		<div class="build-menu-wrap">
 			<div class="build-menu">
 				<div class="build-selects">
 					<a class="build-select build-d"></a>
-					<a class="build-select build-e"></a>
-					<a class="build-select build-w"></a>
-					<a class="build-select build-a"></a>
-					<a class="build-select build-f"></a>
+					<a class="build-select build-e" data-type="e"></a>
+					<a class="build-select build-w" data-type="w"></a>
+					<a class="build-select build-a" data-type="a"></a>
+					<a class="build-select build-f" data-type="f"></a>
 				</div>
 				<div class="build-info">
 					<div class="build-title">
+						<span class="build-cost"> </span> <i>&there4;</i>
 						<span class="build-type"> </span>
-						<span class="build-divider">|</span>
-						<span class="build-cost"> </span>
 					</div>
 					<div class="build-desc"> </div>
 					<div class="build-stat build-dmg-wrap">

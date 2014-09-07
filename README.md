@@ -1,3 +1,3 @@
 # Elematter
 
-Getting started on my js13kGames entry for 2014.
+A simple tower defense game for js13k 2014.

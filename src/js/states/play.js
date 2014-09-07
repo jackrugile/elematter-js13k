@@ -13,6 +13,12 @@ Base State Functions
 ==============================================================================*/
 
 StatePlay.prototype.init = function() {
+	// state vars
+	this.fragments = 1000;
+	this.fragmentsDisplay = this.fragments;
+	this.fragmentsDisplayLast = 0;
+	this.fragmentsChangeFlag = 0;
+
 	// general booleans
 	this.isBuildMenuOpen = 0;
 
@@ -21,6 +27,9 @@ StatePlay.prototype.init = function() {
 
 	// get state dom
 	this.dom.state = g.qS( '.s-play' );
+
+	// get ui dom
+	this.dom.fragments = g.qS( '.d-fragments' );
 
 	// get build menu dom
 	this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );
@@ -31,9 +40,8 @@ StatePlay.prototype.init = function() {
 	this.dom.buildWater    = g.qS( '.build-w' );
 	this.dom.buildAir      = g.qS( '.build-a' );
 	this.dom.buildFire     = g.qS( '.build-f' );
-	this.dom.buildTitle    = g.qS( '.build-title' );
-	this.dom.buildType     = g.qS( '.build-type' );
 	this.dom.buildCost     = g.qS( '.build-cost' );
+	this.dom.buildType     = g.qS( '.build-type' );
 	this.dom.buildDesc     = g.qS( '.build-desc' );
 	this.dom.buildDamage   = g.qS( '.build-damage' );
 	this.dom.buildRange    = g.qS( '.build-range' );
@@ -42,8 +50,7 @@ StatePlay.prototype.init = function() {
 	// set build menu events
 	this.dom.buildMenuWrap.addEventListener( 'click', this.onBuildMenuWrapClick.bind( this ) );
 	this.dom.buildMenu.addEventListener( 'click', this.onBuildMenuClick.bind( this ) );
-	var length = this.dom.buildSelect.length;
-	for( var i = 0; i < length; i++ ) {
+	for( var i = 0, length =  this.dom.buildSelect.length; i < length; i++ ) {
 		this.dom.buildSelect[ i ].addEventListener( 'mouseenter', this.onBuildSelectMouseenter.bind( this ) );
 		this.dom.buildSelect[ i ].addEventListener( 'mouseleave', this.onBuildSelectMouseleave.bind( this ) );
 	}
@@ -56,6 +63,8 @@ StatePlay.prototype.init = function() {
 };
 
 StatePlay.prototype.step = function() {
+	this.updateFragments();
+	this.fragmentsChangeFlag = 0;
 };
 
 StatePlay.prototype.draw = function() {
@@ -71,6 +80,8 @@ General Events
 ==============================================================================*/
 
 StatePlay.prototype.onWinClick = function() {
+	// if the area outside of the game is clicked
+	// and the build menu is open, hide it
 	if( this.isBuildMenuOpen ) {
 		this.hideBuildMenu();
 	}
@@ -125,6 +136,25 @@ StatePlay.prototype.isPath = function( x, y ) {
 
 /*==============================================================================
 
+Fragments / Cash / Spending / Money / Currency
+
+==============================================================================*/
+
+StatePlay.prototype.setFragments = function( amt ) {
+	this.fragments += amt;
+	this.fragmentsChangeFlag = 1;
+};
+
+StatePlay.prototype.updateFragments = function() {
+	this.fragmentsDisplay += ( this.fragments - this.fragmentsDisplay ) * 0.1;
+	if( Math.round( this.fragmentsDisplay ) != Math.round( this.fragmentsDisplayLast ) ) {
+		g.text( this.dom.fragments, g.formatCommas( this.fragmentsDisplay ) );
+	}
+	this.fragmentsDisplayLast = this.fragmentsDisplay;
+};
+
+/*==============================================================================
+
 Build Menu
 
 ==============================================================================*/
@@ -147,7 +177,7 @@ StatePlay.prototype.showBuildMenu = function( tile ) {
 	}
 
 	// set position based on tile
-	g.css( this.dom.buildMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)', 1 );
+	g.css( this.dom.buildMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)' );
 
 	// reset anim on pulsing default box
 	g.resetAnim( this.dom.buildDefault );
@@ -159,71 +189,85 @@ StatePlay.prototype.hideBuildMenu = function() {
 };
 
 StatePlay.prototype.updateBuildMenuText = function( type ) {
+	// get the tower data based on type
 	var data = g.data.towers[ type ];
-	g.text( this.dom.buildType, data.title );
+	// set all text nodes
 	g.text( this.dom.buildCost, data.stats[ 0 ].cost );
+	g.text( this.dom.buildType, data.title );
 	g.text( this.dom.buildDesc, data.desc );
 	g.text( this.dom.buildDamage, data.damage + ' ' + data.bonus );
 	g.text( this.dom.buildRange, data.range );
 	g.text( this.dom.buildRate, data.rate );
+	// reset classes and add proper type classes based on tower data
 	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
 	g.addClass( g.dom, 'hover-build-select hover-' + type );
 	g.removeClass( g.dom, 'dmg1 dmg2 dmg3 rng1 rng2 rng3 rte1 rte2 rte3' );
 
+	// default to 1, or "low"
 	var meterDmg = 1,
 		meterRng = 1,
 		meterRte = 1;
 
+	// get meter values based on keyword descriptions
 	if( data.damage == 'Medium' ) {
 		meterDmg = 2;
 	} else if( data.damage == 'High' ) {
 		meterDmg = 3;
 	}
-	g.addClass( g.dom, 'dmg' + meterDmg );
-
 	if( data.range == 'Medium' ) {
 		meterRng = 2;
 	} else if( data.range == 'High' ) {
 		meterRng = 3;
 	}
-	g.addClass( g.dom, 'rng' + meterRng );
-
 	if( data.rate == 'Medium' ) {
 		meterRte = 2;
 	} else if( data.rate == 'High' ) {
 		meterRte = 3;
 	}
+
+	// set classes based on meter values
+	g.addClass( g.dom, 'dmg' + meterDmg );
+	g.addClass( g.dom, 'rng' + meterRng );
 	g.addClass( g.dom, 'rte' + meterRte );
 };
 
 StatePlay.prototype.onBuildMenuWrapClick = function( e ) {
+	// if the outer wrap is clicked, close the build menu
 	this.hideBuildMenu();
 };
 
 StatePlay.prototype.onBuildMenuClick = function( e ) {
+	// prevent any clicks from bubbling up to any other tiles or buttons
 	e.stopPropagation();
 };
 
 StatePlay.prototype.onBuildSelectMouseenter = function( e ) {
-	if( g.hasClass( e.target, 'build-e' ) ) {
-		this.updateBuildMenuText( 'e' );
-	}
-
-	if( g.hasClass( e.target, 'build-w' ) ) {
-		this.updateBuildMenuText( 'w' );
-	}
-
-	if( g.hasClass( e.target, 'build-a' ) ) {
-		this.updateBuildMenuText( 'a' );
-	}
-
-	if( g.hasClass( e.target, 'build-f' ) ) {
-		this.updateBuildMenuText( 'f' );
+	// set the build menu text based on the element that is hovered
+	var type = g.attr( e.target, 'data-type' );
+	if( type ) {
+		this.updateBuildMenuText( type );
 	}
 };
 
 StatePlay.prototype.onBuildSelectMouseleave = function( e ) {
+	// remove hover class, which fades out the description
 	g.removeClass( g.dom, 'hover-build-select' );
+};
+
+StatePlay.prototype.onBuildSelectClick = function( e ) {
+	// set the build menu text based on the element that is hovered
+	if( g.hasClass( e.target, 'build-e' ) ) {
+		this.updateBuildMenuText( 'e' );
+	}
+	if( g.hasClass( e.target, 'build-w' ) ) {
+		this.updateBuildMenuText( 'w' );
+	}
+	if( g.hasClass( e.target, 'build-a' ) ) {
+		this.updateBuildMenuText( 'a' );
+	}
+	if( g.hasClass( e.target, 'build-f' ) ) {
+		this.updateBuildMenuText( 'f' );
+	}
 };
 
 /*==============================================================================

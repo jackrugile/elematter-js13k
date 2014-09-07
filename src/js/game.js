@@ -17,7 +17,13 @@ g.init = function() {
 	g.time = new g.Time();
 
 	// get overall css browser prefix
-	g.prefix = g.getPrefix();
+	//g.prefix = g.getPrefix();
+
+	//g.prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
+	//g.prefixesLength = g.prefixes.length;
+
+	g.prefixElement = document.createElement( 'div' );
+	g.prefixMatches = {};
 
 	// game dimensions
 	g.size = g.config.size;
@@ -37,7 +43,7 @@ g.init = function() {
 	g.storage = new g.Storage( g.config.namespace );
 
 	// setup storage defaults if they don't exist
-	if( g.objIsEmpty( g.storage.obj ) ) {
+	if( g.isObjEmpty( g.storage.obj ) ) {
 		// g.storage.set( 'option', 0 );
 	}
 
@@ -47,6 +53,7 @@ g.init = function() {
 	g.step();
 
 	// general events
+	window.addEventListener( 'load', g.onLoad );
 	g.dom.addEventListener( 'click', g.onClick );
 	window.addEventListener( 'resize', g.onResize );
 	g.onResize();
@@ -66,6 +73,10 @@ g.step = function() {
 	g.states[ g.state ]._draw();
 };
 
+g.onLoad = function() {
+	g.addClass( g.dom, 'loaded' );
+};
+
 g.onClick = function( e ) {
 	e.stopPropagation();
 };
@@ -82,13 +93,11 @@ g.onResize = function() {
 		g.scale = ( g.winHeight / g.height ) * 0.8;
 	}
 	g.scale = Math.max( g.scale, 1 );*/
-	g.css( g.dom, 'transform', 'scale(' + g.scale + ')', 1 );
+	g.css( g.dom, 'transform', 'scale(' + g.scale + ')' );
 
 	// center game
-	g.css( g.dom, 'margin-left', -g.width / 2 + 'px' );
-	g.css( g.dom, 'margin-top', -g.height / 2 + 'px' );
-	//g.dom.style['marginLeft'] = -g.width / 2 + 'px';
-	//g.dom.style['marginTop'] = -g.height / 2 + 'px';
+	g.css( g.dom, 'marginLeft', -g.width / 2 + 'px' );
+	g.css( g.dom, 'marginTop', -g.height / 2 + 'px' );
 };
 
 
