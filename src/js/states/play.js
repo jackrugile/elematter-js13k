@@ -256,17 +256,10 @@ StatePlay.prototype.onBuildSelectMouseleave = function( e ) {
 
 StatePlay.prototype.onBuildSelectClick = function( e ) {
 	// set the build menu text based on the element that is hovered
-	if( g.hasClass( e.target, 'build-e' ) ) {
-		this.updateBuildMenuText( 'e' );
-	}
-	if( g.hasClass( e.target, 'build-w' ) ) {
-		this.updateBuildMenuText( 'w' );
-	}
-	if( g.hasClass( e.target, 'build-a' ) ) {
-		this.updateBuildMenuText( 'a' );
-	}
-	if( g.hasClass( e.target, 'build-f' ) ) {
-		this.updateBuildMenuText( 'f' );
+	var type = g.attr( e.target, 'data-type' );
+	if( type ) {
+		var cost = data.towers[ type ].cost
+		this.updateBuildMenuText( type );
 	}
 };
 
