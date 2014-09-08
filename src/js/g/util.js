@@ -48,6 +48,10 @@ g.cE = function( appendParent, classes ) {
 	return elem;
 };
 
+g.on = function( elem, e, cb, ctx ) {
+	ctx = ctx || window;
+	elem.addEventListener( e, cb.bind( ctx ) );
+};
 
 g.text = function( elem, content ) {
 	elem.firstChild.nodeValue = content;
@@ -60,12 +64,14 @@ g.resetAnim = function( elem ) {
 };
 
 // credit: Julian Shapiro - http://julian.com/research/velocity/
+g.prefixElement = g.cE();
+g.prefixMatches = {};
 g.prefixCheck = function (property) {
 	if (g.prefixMatches[property]) {
 		return [ g.prefixMatches[property], true ];
 	} else {
 		var vendors = [ "", "Webkit", "Moz", "ms", "O" ],
-			cb = function(match) { return match.toUpperCase(); }
+			cb = function(match) { return match.toUpperCase(); };
 		for (var i = 0, vendorsLength = vendors.length; i < vendorsLength; i++) {
 			var propertyPrefixed;
 			if (i === 0) {
@@ -83,9 +89,18 @@ g.prefixCheck = function (property) {
 };
 
 g.css = function( elem, prop, val ) {
-	prop = g.prefixCheck( prop );
-	if( prop[ 1 ] ) {
-		elem.style[ prop[ 0 ] ] = val;
+	if( g.isObject( prop ) ) {
+		var cssProps = prop;
+		for( prop in cssProps ) {
+			if( cssProps.hasOwnProperty( prop ) ) {
+				g.css( elem, prop, cssProps[ prop ] );
+			}
+		}
+	} else {
+		prop = g.prefixCheck( prop );
+		if( prop[ 1 ] ) {
+			elem.style[ prop[ 0 ] ] = val;
+		}
 	}
 };
 
@@ -161,15 +176,6 @@ g.formatTime = function( seconds ) {
 };
 
 g.formatCommas = function( n ) {
-	/*nStr += '';
-	var x = nStr.split( '.' ),
-		x1 = x[ 0 ],
-		x2 = x.length > 1 ? '.' + x[ 1 ] : '',
-		rgx = /(\d+)(\d{3})/;
-	while( rgx.test( x1 ) ) {
-		x1 = x1.replace( rgx, '$1' + ',' + '$2' );
-	}
-	return x1 + x2;*/
 	n = Math.round( n );
 	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -180,8 +186,12 @@ Miscellaneous
 
 ==============================================================================*/
 
-g.isString = function (variable) {
-	return (typeof variable === "string");
+g.isString = function( variable ) {
+	return typeof variable === 'string';
+};
+
+g.isObject = function( variable ) {
+	return typeof variable === 'object';
 };
 
 g.isSet = function( prop ) {

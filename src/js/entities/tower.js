@@ -12,14 +12,22 @@ g.Tower = function( opt ) {
 g.Tower.prototype.init = function() {
 	this.setupDom();
 	this.setupEvents();
+
+	this.slabRotation = this.state.globalSlabRotation;
+	this.turretRotation = this.state.globalTurretRotation;
+	this.coreScale = this.state.globalCoreScale;
 };
 
 g.Tower.prototype.step = function() {
-
+	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
+	this.turretRotation += ( this.state.globalTurretRotation - this.turretRotation ) * 0.2;
+	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
 };
 
 g.Tower.prototype.draw = function() {
-
+	g.css( this.dom.slab, 'transform', 'rotate(' + this.slabRotation + 'rad)' );
+	g.css( this.dom.turret, 'transform', 'rotate(' + this.turretRotation + 'rad)' );
+	g.css( this.dom.core, 'transform', 'scale(' + this.coreScale + ')' );
 };
 
 g.Tower.prototype.setupDom = function() {
@@ -31,22 +39,13 @@ g.Tower.prototype.setupDom = function() {
 	this.dom.base   = g.cE( this.dom.tower, 't-base' );
 	this.dom.core   = g.cE( this.dom.tower, 't-core' );
 	this.dom.range  = g.cE( this.dom.tower, 't-range' );
-
 	g.css( this.dom.wrap, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )', 1 );
-
-	/*this.elem = document.createElement( 'div' );
-	g.css( this.elem, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )', 1 );
-	g.css( this.elem, 'width', g.size + 'px' );
-	g.css( this.elem, 'height', g.size + 'px' );
-	g.css( this.elem, 'z-index', 100 );
-	g.css( this.elem, 'position', 'absolute' );
-	g.css( this.elem, 'background', 'blue' );
-	this.state.dom.state.appendChild( this.elem );*/
 };
 
 g.Tower.prototype.setupEvents = function() {
-	this.dom.wrap.addEventListener( 'click', this.onClick.bind( this ) );
+	g.on( this.dom.wrap, 'click', this.onClick, this );
 };
 
-g.Tower.prototype.onClick = function( e ) {
+g.Tower.prototype.onClick = function() {
+	console.log( 'click' );
 };

@@ -16,15 +16,6 @@ g.init = function() {
 	// setup overall game time
 	g.time = new g.Time();
 
-	// get overall css browser prefix
-	//g.prefix = g.getPrefix();
-
-	//g.prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
-	//g.prefixesLength = g.prefixes.length;
-
-	g.prefixElement = document.createElement( 'div' );
-	g.prefixMatches = {};
-
 	// game dimensions
 	g.size = g.config.size;
 	g.width = g.config.width;
@@ -53,9 +44,9 @@ g.init = function() {
 	g.step();
 
 	// general events
-	window.addEventListener( 'load', g.onLoad );
-	g.dom.addEventListener( 'click', g.onClick );
-	window.addEventListener( 'resize', g.onResize );
+	g.on( window, 'load', g.onLoad );
+	g.on( g.dom, 'click', g.onClick );
+	g.on( window, 'resize', g.onResize );
 	g.onResize();
 };
 
@@ -83,21 +74,24 @@ g.onClick = function( e ) {
 
 g.onResize = function() {
 	// get window size
+	/*
 	g.winWidth = window.innerWidth;
 	g.winHeight = window.innerHeight;
 	g.winRatio = g.winHeight / g.winWidth;
 
-	/*if( g.winRatio > g.ratio ) {
+	if( g.winRatio > g.ratio ) {
 		g.scale = ( g.winWidth / g.width ) * 0.8;
 	} else {
 		g.scale = ( g.winHeight / g.height ) * 0.8;
 	}
-	g.scale = Math.max( g.scale, 1 );*/
-	g.css( g.dom, 'transform', 'scale(' + g.scale + ')' );
+	g.scale = Math.max( g.scale, 1 );
+	g.css( g.dom, 'transform', 'scale(' + g.scale + ') translateZ(0)' );*/
 
 	// center game
-	g.css( g.dom, 'marginLeft', -g.width / 2 + 'px' );
-	g.css( g.dom, 'marginTop', -g.height / 2 + 'px' );
+	g.css( g.dom, {
+		'marginLeft': -g.width / 2 + 'px',
+		'marginTop': -g.height / 2 + 'px'
+	});
 };
 
 

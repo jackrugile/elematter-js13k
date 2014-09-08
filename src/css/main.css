@@ -617,16 +617,22 @@ Towers
 
 .t-wrap {
 	height: 40px;
+	-webkit-transition: background 300ms;
 	transition: background 300ms;
 	width: 40px;
 	z-index: 100;
 }
 
 .t-wrap:hover {
-	background: rgba(150, 255, 150, 0.2);
-	transition-duration: 100ms;
+	-webkit-transition-duration: 0ms;
+	transition-duration: 0ms;
 	z-index: 101;
 }
+
+	.t-wrap.t-type-e:hover { background: hsla(120, 50%, 50%, 0.2); }
+	.t-wrap.t-type-w:hover { background: hsla(200, 50%, 50%, 0.2); }
+	.t-wrap.t-type-a:hover { background: hsla(60, 50%, 50%, 0.2); }
+	.t-wrap.t-type-f:hover { background: hsla(0, 50%, 50%, 0.2); }
 
 .t-tower {
 	cursor: pointer;
@@ -636,45 +642,97 @@ Towers
 }
 
 .t-range {
-  background: rgba(220, 255, 220, 0.08);
-  border: 2px solid rgba(180, 255, 180, 0.3);
-  border-radius: 100%;
-  content: '';
-  height: 200px;
-  left: 50%;
-  margin: -100px 0 0 -100px;
-  opacity: 0;
-  pointer-events: none;
-  top: 50%;
-  transform: scale(0.75);
-  transition: all 300ms ease-in-out;
-  width: 200px;
-  z-index: 1;
+	border: 2px solid transparent;
+	border-radius: 100%;
+	content: '';
+	height: 200px;
+	left: 50%;
+	margin: -100px 0 0 -100px;
+	opacity: 0;
+	pointer-events: none;
+	top: 50%;
+	-webkit-transform: scale(0.75);
+	transform: scale(0.75);
+	-webkit-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+	width: 200px;
+	z-index: 1;
 }
 
+	.t-type-e .t-range {
+		background: hsla(120, 100%, 90%, 0.1);
+		border-color: hsla(120, 100%, 70%, 0.3);
+	}
+	.t-type-w .t-range {
+		background: hsla(200, 100%, 90%, 0.1);
+		border-color: hsla(200, 100%, 70%, 0.3);
+	}
+	.t-type-a .t-range {
+		background: hsla(60, 100%, 90%, 0.1);
+		border-color: hsla(60, 100%, 70%, 0.3);
+	}
+	.t-type-f .t-range {
+		background: hsla(0, 100%, 90%, 0.1);
+		border-color: hsla(0, 100%, 70%, 0.3);
+	}
+
 .t-wrap:hover .t-range {
-  opacity: 1;
-  transition-duration: 100ms;
-  transform: scale(1);
+	opacity: 1;
+	-webkit-transition-duration: 0ms;
+	transition-duration: 0ms;
+	-webkit-transform: scale(1);
+	transform: scale(1);
 }
 
 .t-slab {
-	-webkit-animation: slab 6000ms linear infinite;
-	animation: slab 6000ms linear infinite;
+/*	-webkit-animation: slab 6000ms linear infinite;
+	animation: slab 6000ms linear infinite;*/
 	background: #121;
-	border: 1px solid #252;
+	border: 1px solid transparent;
 }
+
+	.t-type-e .t-slab {
+		background: hsl(120, 50%, 10%);
+		border-color: hsl(120, 60%, 30%);
+	}
+	.t-type-w .t-slab {
+		background: hsl(200, 50%, 10%);
+		border-color: hsl(200, 60%, 30%);
+	}
+	.t-type-a .t-slab {
+		background: hsl(60, 50%, 10%);
+		border-color: hsl(60, 60%, 30%);
+	}
+	.t-type-f .t-slab {
+		background: hsl(0, 50%, 10%);
+		border-color: hsl(0, 60%, 30%);
+	}
 
 .t-base {
-	background: #252;
 	border: 4px solid #111;
 	border-radius: 50%;
-	box-shadow: 0 0 0 1px #252;
 }
 
+	.t-type-e .t-base {
+		background: hsl(120, 40%, 30%);
+		box-shadow: 0 0 0 1px hsl(120, 40%, 30%);
+	}
+	.t-type-w .t-base {
+		background: hsl(200, 40%, 30%);
+		box-shadow: 0 0 0 1px hsl(200, 40%, 30%);
+	}
+	.t-type-a .t-base {
+		background: hsl(60, 40%, 30%);
+		box-shadow: 0 0 0 1px hsl(60, 40%, 30%);
+	}
+	.t-type-f .t-base {
+		background: hsl(0, 40%, 30%);
+		box-shadow: 0 0 0 1px hsl(0, 40%, 30%);
+	}
+
 .t-turret {
-	-webkit-animation: rotate 3000ms linear infinite;
-	animation: rotate 3000ms linear infinite;
+	/*-webkit-animation: rotate 3000ms linear infinite;
+	animation: rotate 3000ms linear infinite;*/
 	background: #6c6;
 	height: 50%;
 	left: 0;
@@ -683,15 +741,36 @@ Towers
 	width: 50%;
 }
 
+	.t-type-e .t-turret { background: hsl(120, 70%, 70%); }
+	.t-type-w .t-turret { background: hsl(200, 70%, 70%); }
+	.t-type-a .t-turret { background: hsl(60, 70%, 70%); }
+	.t-type-f .t-turret { background: hsl(0, 70%, 70%); }
+
 .t-core {
-	-webkit-animation: pulse 1500ms infinite alternate;
-	animation: pulse 1500ms infinite alternate;
-	background: #3f3;
+	/*-webkit-animation: pulse 1500ms infinite alternate;
+	animation: pulse 1500ms infinite alternate;*/
 	border-radius: 50%;
-	box-shadow: 0 0 20px #9f9;
 	margin: auto;
 }
 
+	.t-type-e .t-core {
+		background: hsl(120, 100%, 70%);
+		box-shadow: 0 0 20px hsl(120, 100%, 80%);
+	}
+	.t-type-w .t-core {
+		background: hsl(200, 100%, 70%);
+		box-shadow: 0 0 20px hsl(200, 100%, 80%);
+	}
+	.t-type-a .t-core {
+		background: hsl(60, 100%, 70%);
+		box-shadow: 0 0 20px hsl(60, 100%, 80%);
+	}
+	.t-type-f .t-core {
+		background: hsl(0, 100%, 70%);
+		box-shadow: 0 0 20px hsl(0, 100%, 80%);
+	}
+
+/*
 @-webkit-keyframes pulse {
 	0% {
 		background: #484;
@@ -736,4 +815,4 @@ Towers
 	100% {
 		transform: rotate(-360deg);
 	}
-}
+}*/

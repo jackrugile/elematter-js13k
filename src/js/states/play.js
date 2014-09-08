@@ -19,6 +19,10 @@ StatePlay.prototype.init = function() {
 	this.fragmentsDisplayLast = 0;
 	this.fragmentsChangeFlag = 0;
 	this.lastClickedTile = null;
+	this.globalSlabRotation = 0;
+	this.globalTurretRotation = 0;
+	this.globalCoreScale = 1;
+	this.towers = new g.Group();
 
 	// general booleans
 	this.isBuildMenuOpen = 0;
@@ -66,6 +70,14 @@ StatePlay.prototype.init = function() {
 };
 
 StatePlay.prototype.step = function() {
+	// update global properties
+	this.updateGlobals();
+
+	// towers
+	this.towers.each( 'step' );
+	this.towers.each( 'draw' );
+
+	// update fragments
 	this.updateFragments();
 	this.fragmentsChangeFlag = 0;
 };
@@ -99,24 +111,28 @@ Map/Tile Generation
 StatePlay.prototype.createTiles = function() {
 	// create a full grid of tiles, broken up into two separate arrays
 	// they can be base or be path
-	this.baseTiles = [];
-	this.pathTiles = [];
+	this.baseTiles = new g.Group();
+	this.pathTiles = new g.Group();
 	for( var x = 0; x < g.cols; x++ ) {
 		for( var y = 0; y < g.rows; y++ ) {
-			var isPath = this.isPath( x, y );
+			var isPath = this.isPath( x, y ),
+				classes = [ 'tile' ];
+			if( isPath ) {
+				classes += ' path';
+			}
 			var tile = new g.Tile({
 				state: this,
 				col: x,
 				row: y,
 				isPath: isPath || 0,
-				classes: isPath ? [ 'path' ] : [],
+				classes: classes,
 				horizontal: x > g.cols / 2 ? 'e' : 'w',
 				vertical: y > g.rows / 2 ? 's' : 'n'
 			});
 			if( isPath ) {
-				this.pathTiles.push( tile );
+				this.pathTiles.add( tile );
 			} else {
-				this.baseTiles.push( tile );
+				this.baseTiles.add( tile );
 			}
 		}
 	}
@@ -135,6 +151,20 @@ StatePlay.prototype.isPath = function( x, y ) {
 			maxY = Math.max( p1[ 1 ], p2[ 1 ] );
 		if( x >= minX && x <= maxX && y >= minY && y <= maxY ) { return 1; }
 	}
+};
+
+/*==============================================================================
+
+Globals
+
+==============================================================================*/
+
+StatePlay.prototype.updateGlobals = function() {
+	this.globalSlabRotation -= 0.025;
+	this.globalTurretRotation += 0.025;
+	//0.1
+	//0.4
+	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
 };
 
 /*==============================================================================
@@ -266,16 +296,15 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 		if( cost <= this.fragments && this.isBuildable ) {
 			this.setFragments( -cost );
 			var tile = this.lastClickedTile;
-			//console.log( this.lastClickedTile );
 			var tower = new g.Tower({
 				state: this,
 				col: tile.col,
 				row: tile.row,
 				type: type
 			});
+			this.towers.add( tower );
 			this.isBuildable = 0;
 			this.hideBuildMenu();
-			//console.log( 1 );
 		}
 	}
 };
