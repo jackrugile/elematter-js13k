@@ -46,6 +46,7 @@ g.init = function() {
 	// general events
 	g.on( window, 'load', g.onLoad );
 	g.on( g.dom, 'click', g.onClick );
+	g.on( window, 'touchmove', g.onTouchmove );
 	g.on( window, 'resize', g.onResize );
 	g.onResize();
 };
@@ -71,6 +72,10 @@ g.onLoad = function() {
 g.onClick = function( e ) {
 	e.stopPropagation();
 };
+
+g.onTouchmove = function( e ) {
+	e.preventDefault();
+});
 
 g.onResize = function() {
 	// get window size
