@@ -75,7 +75,7 @@ g.onClick = function( e ) {
 
 g.onTouchmove = function( e ) {
 	e.preventDefault();
-});
+};
 
 g.onResize = function() {
 	// get window size
