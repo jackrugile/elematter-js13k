@@ -11,10 +11,10 @@
 //import('data/map.js');
 //import('data/towers.js');
 //import('data/waves.js');
+//import('entities/bullet.js');
+//import('entities/enemy.js');
 //import('entities/tile.js');
 //import('entities/tower.js');
-//import('entities/bullet.js');
-//import('entities/button.js');
 //import('states/menu.js');
 //import('states/play.js');
 //import('states/gameover.js');

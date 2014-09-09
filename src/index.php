@@ -1,9 +1,6 @@
 <?php $is_prod = isset($_GET['prod']) && $_GET['prod'] == 1; ?>
 
 <title>Elematter</title>
-<meta name=viewport content=width=device-width,initial-scale=1,user-scalable=0,minimal-ui>
-<meta name=apple-mobile-web-app-capable content=yes>
-<meta name=apple-mobile-web-app-status-bar-style content=black>
 
 <?php if($is_prod){ ?>
 	<style><?php include('temp/_.css'); ?></style>
@@ -24,7 +21,7 @@ Game Element
 		===============================================================================-->
 		<div class="row top-row">
 			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
-			<a class="b b-x1 s1 selected">&times;1</a>
+			<a class="b b-x1 s1">&times;1</a>
 			<a class="b b-x2 s1">&times;2</a>
 			<a class="b b-x3 s1">&times;3</a>
 			<a class="b b-e s2 atk" title="Destroy all Earth enemies"><i>&otimes;</i>Earth</a>
@@ -46,10 +43,10 @@ Game Element
 			<div class="d d-wave s2">1 / 20</div>
 			<div class="l s2">Next</div>
 			<div class="d d-next s4">
-				<span class="w w-e">&times;10</span>
-				<span class="w w-w">&times;10</span>
-				<span class="w w-a">&times;10</span>
-				<span class="w w-f">&times;10</span>
+				&times;<span class="w w-e">10</span>
+				&times;<span class="w w-w">10</span>
+				&times;<span class="w w-a">10</span>
+				&times;<span class="w w-f">10</span>
 			</div>
 			<a class="b b-send s4"><i>&raquo;</i>Send Next +300 <i>&there4;</i></a>
 		</div>
@@ -102,10 +99,10 @@ Game Element
 	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
 	<script src="js/data/waves.js"></script>
+	<script src="js/entities/bullet.js"></script>
+	<script src="js/entities/enemy.js"></script>
 	<script src="js/entities/tile.js"></script>
 	<script src="js/entities/tower.js"></script>
-	<script src="js/entities/bullet.js"></script>
-	<script src="js/entities/button.js"></script>
 	<script src="js/states/menu.js"></script>
 	<script src="js/states/play.js"></script>
 	<script src="js/states/gameover.js"></script>

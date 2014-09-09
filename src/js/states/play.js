@@ -8,66 +8,116 @@ var StatePlay = function(){};
 
 /*==============================================================================
 
-Base State Functions
+Initialize
 
 ==============================================================================*/
 
 StatePlay.prototype.init = function() {
-	// state vars
-	this.fragments = 1000;
-	this.fragmentsDisplay = this.fragments;
-	this.fragmentsDisplayLast = 0;
-	this.fragmentsChangeFlag = 0;
-	this.lastClickedTile = null;
-	this.globalSlabRotation = 0;
-	this.globalTurretRotation = 0;
-	this.globalCoreScale = 1;
-	this.towers = new g.Group();
-
 	// general booleans
+	this.isPlaying = 0;
 	this.isBuildMenuOpen = 0;
 	this.isBuildable = 0;
 
+	// state vars
+		// general
+		this.speed = 1;
+		// waves
+		this.wave = 0;
+		this.waveNext = this.wave + 1;
+		this.wavePause = 100;
+		this.wavesTotal = g.data.waves.length;
+		// lives
+		this.livesTotal = 13;
+		this.lives = this.livesTotal;
+		// fragments
+		this.fragments = 1000;
+		this.fragmentsDisplay = this.fragments;
+		this.fragmentsDisplayLast = 0;
+		this.fragmentsChangeFlag = 0;
+		// tiles
+		this.lastClickedTile = null;
+		// global draw vars
+		this.globalSlabRotation = 0;
+		this.globalTurretRotation = 0;
+		this.globalCoreScale = 1;
+		// towers
+		this.towers = new g.Group();
+
 	// setup dom
-	this.dom = {};
+		this.dom = {};
+		// get state dom
+		this.dom.state = g.qS( '.s-play' );
+		// get ui button dom
+		this.dom.play = g.qS( '.b-play' );
+		this.dom.x1   = g.qS( '.b-x1' );
+		this.dom.x2   = g.qS( '.b-x2' );
+		this.dom.x3   = g.qS( '.b-x3' );
+		this.dom.eAtk = g.qS( '.b-e' );
+		this.dom.wAtk = g.qS( '.b-w' );
+		this.dom.aAtk = g.qS( '.b-a' );
+		this.dom.fAtk = g.qS( '.b-f' );
+		this.dom.mute = g.qS( '.b-mute' );
+		this.dom.menu = g.qS( '.b-menu' );
+		this.dom.send = g.qS( '.b-send' );
+		// get ui display dom
+		this.dom.lives     = g.qS( '.d-lives' );
+		this.dom.fragments = g.qS( '.d-fragments' );
+		this.dom.wave      = g.qS( '.d-wave' );
+		this.dom.next      = g.qS( '.d-next' );
+		this.dom.eWave     = g.qS( '.w-e' );
+		this.dom.wWave     = g.qS( '.w-w' );
+		this.dom.aWave     = g.qS( '.w-a' );
+		this.dom.fWave     = g.qS( '.w-f' );
+		// get build menu dom
+		this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );
+		this.dom.buildMenu     = g.qS( '.build-menu' );
+		this.dom.buildSelect   = g.qS( '.build-select' );
+		this.dom.buildDefault  = g.qS( '.build-d' );
+		this.dom.buildEarth    = g.qS( '.build-e' );
+		this.dom.buildWater    = g.qS( '.build-w' );
+		this.dom.buildAir      = g.qS( '.build-a' );
+		this.dom.buildFire     = g.qS( '.build-f' );
+		this.dom.buildCost     = g.qS( '.build-cost' );
+		this.dom.buildType     = g.qS( '.build-type' );
+		this.dom.buildDesc     = g.qS( '.build-desc' );
+		this.dom.buildDamage   = g.qS( '.build-damage' );
+		this.dom.buildRange    = g.qS( '.build-range' );
+		this.dom.buildRate     = g.qS( '.build-rate' );
 
-	// get state dom
-	this.dom.state = g.qS( '.s-play' );
-
-	// get ui dom
-	this.dom.fragments = g.qS( '.d-fragments' );
-
-	// get build menu dom
-	this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );
-	this.dom.buildMenu     = g.qS( '.build-menu' );
-	this.dom.buildSelect   = g.qS( '.build-select' );
-	this.dom.buildDefault  = g.qS( '.build-d' );
-	this.dom.buildEarth    = g.qS( '.build-e' );
-	this.dom.buildWater    = g.qS( '.build-w' );
-	this.dom.buildAir      = g.qS( '.build-a' );
-	this.dom.buildFire     = g.qS( '.build-f' );
-	this.dom.buildCost     = g.qS( '.build-cost' );
-	this.dom.buildType     = g.qS( '.build-type' );
-	this.dom.buildDesc     = g.qS( '.build-desc' );
-	this.dom.buildDamage   = g.qS( '.build-damage' );
-	this.dom.buildRange    = g.qS( '.build-range' );
-	this.dom.buildRate     = g.qS( '.build-rate' );
-
-	// set build menu events
-	this.dom.buildMenuWrap.addEventListener( 'click', this.onBuildMenuWrapClick.bind( this ) );
-	this.dom.buildMenu.addEventListener( 'click', this.onBuildMenuClick.bind( this ) );
-	for( var i = 0, length =  this.dom.buildSelect.length; i < length; i++ ) {
-		this.dom.buildSelect[ i ].addEventListener( 'mouseenter', this.onBuildSelectMouseenter.bind( this ) );
-		this.dom.buildSelect[ i ].addEventListener( 'mouseleave', this.onBuildSelectMouseleave.bind( this ) );
-		this.dom.buildSelect[ i ].addEventListener( 'click', this.onBuildSelectClick.bind( this ) );
-	}
-
-	// set general events
-	window.addEventListener( 'click', this.onWinClick.bind( this ) );
+	// events
+		// set general events
+		g.on( window, 'click', this.onWinClick, this );
+		// set ui buttons events
+		g.on( this.dom.play, 'click', this.onPlayClick, this );
+		g.on( this.dom.x1, 'click', this.onX1Click, this );
+		g.on( this.dom.x2, 'click', this.onX2Click, this );
+		g.on( this.dom.x3, 'click', this.onX3Click, this );
+		g.on( this.dom.eAtk, 'click', this.onEAtkClick, this );
+		g.on( this.dom.wAtk, 'click', this.onWAtkClick, this );
+		g.on( this.dom.aAtk, 'click', this.onAAtkClick, this );
+		g.on( this.dom.fAtk, 'click', this.onFAtkClick, this );
+		g.on( this.dom.mute, 'click', this.onMuteClick, this );
+		g.on( this.dom.menu, 'click', this.onMenuClick, this );
+		g.on( this.dom.send, 'click', this.onSendClick, this );
+		// set build menu events
+		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );
+		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );
+		for( var i = 0, length =  this.dom.buildSelect.length; i < length; i++ ) {
+			var buildSelect = this.dom.buildSelect[ i ];
+			g.on( buildSelect, 'mouseenter', this.onBuildSelectMouseenter, this );
+			g.on( buildSelect, 'mouseleave', this.onBuildSelectMouseleave, this );
+			g.on( buildSelect, 'click', this.onBuildSelectClick, this );
+		}
 
 	// create tiles
 	this.createTiles();
 };
+
+/*==============================================================================
+
+Step
+
+==============================================================================*/
 
 StatePlay.prototype.step = function() {
 	// update global properties
@@ -82,8 +132,20 @@ StatePlay.prototype.step = function() {
 	this.fragmentsChangeFlag = 0;
 };
 
+/*==============================================================================
+
+Draw
+
+==============================================================================*/
+
 StatePlay.prototype.draw = function() {
 };
+
+/*==============================================================================
+
+Exit
+
+==============================================================================*/
 
 StatePlay.prototype.exit = function() {
 };
@@ -100,6 +162,52 @@ StatePlay.prototype.onWinClick = function() {
 	if( this.isBuildMenuOpen ) {
 		this.hideBuildMenu();
 	}
+};
+
+/*==============================================================================
+
+Button Events
+
+==============================================================================*/
+
+StatePlay.prototype.onPlayClick = function() {
+	this.isPlaying = !this.isPlaying;
+	if( this.isPlaying ) {
+		g.addClass( g.dom, 'playing' );
+	} else {
+		g.removeClass( g.dom, 'playing' );
+	}
+	console.log( this.isPlaying );
+};
+
+StatePlay.prototype.onX1Click = function() {
+};
+
+StatePlay.prototype.onX2Click = function() {
+};
+
+StatePlay.prototype.onX3Click = function() {
+};
+
+StatePlay.prototype.onEAtkClick = function() {
+};
+
+StatePlay.prototype.onWAtkClick = function() {
+};
+
+StatePlay.prototype.onAAtkClick = function() {
+};
+
+StatePlay.prototype.onFAtkClick = function() {
+};
+
+StatePlay.prototype.onMuteClick = function() {
+};
+
+StatePlay.prototype.onMenuClick = function() {
+};
+
+StatePlay.prototype.onSendClick = function() {
 };
 
 /*==============================================================================
@@ -149,7 +257,9 @@ StatePlay.prototype.isPath = function( x, y ) {
 			minY = Math.min( p1[ 1 ], p2[ 1 ] ),
 			maxX = Math.max( p1[ 0 ], p2[ 0 ] ),
 			maxY = Math.max( p1[ 1 ], p2[ 1 ] );
-		if( x >= minX && x <= maxX && y >= minY && y <= maxY ) { return 1; }
+		if( x >= minX && x <= maxX && y >= minY && y <= maxY ) {
+			return 1;
+		}
 	}
 };
 
@@ -162,8 +272,6 @@ Globals
 StatePlay.prototype.updateGlobals = function() {
 	this.globalSlabRotation -= 0.025;
 	this.globalTurretRotation += 0.025;
-	//0.1
-	//0.4
 	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
 };
 
@@ -188,12 +296,17 @@ StatePlay.prototype.updateFragments = function() {
 
 /*==============================================================================
 
+Waves
+
+==============================================================================*/
+
+/*==============================================================================
+
 Build Menu
 
 ==============================================================================*/
 
 StatePlay.prototype.showBuildMenu = function( tile ) {
-	//console.log( tile );
 	this.isBuildMenuOpen = 1;
 	this.isBuildable = 1;
 	g.addClass( g.dom, 'build-menu-open' );

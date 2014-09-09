@@ -27,8 +27,10 @@ g.init = function() {
 
 	// setup game element
 	g.dom = g.qS( '.g' );
-	g.css( g.dom, 'width', g.width + 'px' );
-	g.css( g.dom, 'height', g.height + 'px' );
+	g.css( g.dom, {
+		'width': g.width + 'px',
+		'height': g.height + 'px'
+	});
 
 	// setup local storage
 	g.storage = new g.Storage( g.config.namespace );

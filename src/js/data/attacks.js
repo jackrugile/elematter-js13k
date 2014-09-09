@@ -4,7 +4,7 @@ Attacks
 
 ==============================================================================*/
 
-g.data.attacks = {
+/*g.data.attacks = {
 	e: {
 		description: 'Earthquake'
 	},
@@ -17,4 +17,4 @@ g.data.attacks = {
 	f: {
 		description: 'Heat Wave'
 	}
-};
+};*/
