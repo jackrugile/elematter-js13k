@@ -22,6 +22,9 @@ g.Tower.prototype.step = function() {
 	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
 	this.turretRotation += ( this.state.globalTurretRotation - this.turretRotation ) * 0.2;
 	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
+	if( this.state.isPlaying ) {
+
+	}
 };
 
 g.Tower.prototype.draw = function() {

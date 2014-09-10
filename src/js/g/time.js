@@ -18,12 +18,23 @@ g.Time.prototype._init = function() {
 	this.tick = 0;
 };
 
-g.Time.prototype._step = function() {
+g.Time.prototype._step = function( speed ) {
+	speed = speed || 1;
+
 	this.now = Date.now();
+
+	// actual time
 	this.delta = this.now - this.last;
 	this.ndelta = Math.min( Math.max( this.delta / ( 1000 / 60 ), 0.0001 ), 10 );
 	this.elapsed += this.delta;
 	this.nelapsed += this.ndelta;
+
+	// g time
+	this.gdelta = this.delta * speed;
+	this.gndelta = this.ndelta * speed;
+	this.gelapsed += this.gdelta;
+	this.gnelapsed += this.gndelta;
+
 	this.last = this.now;
 	this.tick++;
 };

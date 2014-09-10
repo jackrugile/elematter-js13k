@@ -143,12 +143,14 @@ Play State - Buttons - General
 	-webkit-transition-property:
 		background,
 		box-shadow,
-		color
+		color,
+		opacity
 	;
 	transition-property:
 		background,
 		box-shadow,
-		color
+		color,
+		opacity
 	;
 }
 
@@ -287,6 +289,33 @@ Play State - Buttons - Mute/Unmute
 
 .muted .b-mute:hover {
 	background: #333;
+}
+
+/*==============================================================================
+
+Play State - Buttons - Send Next Early
+
+==============================================================================*/
+
+.b-send {
+	opacity: 0.25;
+}
+
+.b-send:hover {
+	background: #333;
+	color: hsla(0, 0%, 100%, 0.6);
+	cursor: not-allowed;
+	opacity: 0.25;
+}
+
+.playing .b-send {
+	opacity: 1;
+}
+
+.playing .b-send:hover {
+	background: #444;
+	color: #fff;
+	cursor: pointer;
 }
 
 /*==============================================================================
@@ -768,49 +797,20 @@ Towers
 		/*box-shadow: 0 0 20px hsl(0, 100%, 80%);*/
 	}
 
-/*
-@-webkit-keyframes pulse {
-	0% {
-		background: #484;
-		transform: scale(0.15);
-	}
-	100% {
-		background: #6f6;
-		transform: scale(0.4);
-	}
+/*==============================================================================
+
+Enemies
+
+==============================================================================*/
+
+.enemy {
+	left: 0;
+	position: absolute;
+	top: 0;
+	z-index: 100;
 }
 
-@keyframes pulse {
-	0% {
-		background: #484;
-		transform: scale(0.15);
-	}
-	100% {
-		background: #6f6;
-		transform: scale(0.4);
-	}
-}
-
-@-webkit-keyframes rotate {
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-@keyframes rotate {
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-@-webkit-keyframes slab {
-	100% {
-		transform: rotate(-360deg);
-	}
-}
-
-@keyframes slab {
-	100% {
-		transform: rotate(-360deg);
-	}
-}*/
+.enemy.type-e { background: hsl(120, 90%, 60%); }
+.enemy.type-w { background: hsl(200, 90%, 60%); }
+.enemy.type-a { background: hsl(60, 90%, 60%); }
+.enemy.type-f { background: hsl(0, 90%, 60%); }

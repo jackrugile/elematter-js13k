@@ -40,7 +40,7 @@ Game Element
 			<div class="l s1"><i>&there4;</i></div>
 			<div class="d d-fragments s2"> </div>
 			<div class="l s2">Wave</div>
-			<div class="d d-wave s2">1 / 20</div>
+			<div class="d d-wave s2"> </div>
 			<div class="l s2">Next</div>
 			<div class="d d-next s4">
 				&times;<span class="w w-e">10</span>
@@ -103,6 +103,7 @@ Game Element
 	<script src="js/entities/enemy.js"></script>
 	<script src="js/entities/tile.js"></script>
 	<script src="js/entities/tower.js"></script>
+	<script src="js/entities/wave.js"></script>
 	<script src="js/states/menu.js"></script>
 	<script src="js/states/play.js"></script>
 	<script src="js/states/gameover.js"></script>

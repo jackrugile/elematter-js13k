@@ -18,7 +18,7 @@ g.State.prototype._init = function() {
 };
 
 g.State.prototype._step = function() {
-	this.time._step();
+	//this.time._step();
 	this.step();
 };
 

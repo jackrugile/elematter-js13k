@@ -20,11 +20,11 @@ StatePlay.prototype.init = function() {
 
 	// state vars
 		// general
+		this.hasPlayed = 0;
 		this.speed = 1;
 		// waves
 		this.wave = 0;
 		this.waveNext = this.wave + 1;
-		this.wavePause = 100;
 		this.wavesTotal = g.data.waves.length;
 		// lives
 		this.livesTotal = 13;
@@ -33,15 +33,19 @@ StatePlay.prototype.init = function() {
 		this.fragments = 10000;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
-		this.fragmentsChangeFlag = 0;
 		// tiles
 		this.lastClickedTile = null;
 		// global draw vars
 		this.globalSlabRotation = 0;
 		this.globalTurretRotation = 0;
-		this.globalCoreScale = 1;
+		this.globalCoreScale = 0.1;
 		// towers
 		this.towers = new g.Group();
+		// waves
+		this.waves = new g.Group();
+		this.activeWaves = new g.Group();
+		// enemies
+		this.enemies = new g.Group();
 
 	// setup dom
 		this.dom = {};
@@ -109,8 +113,15 @@ StatePlay.prototype.init = function() {
 			g.on( buildSelect, 'click', this.onBuildSelectClick, this );
 		}
 
-	// create tiles
-	this.createTiles();
+	// initialization
+		// setup tiles
+		this.setupTiles();
+		// setup waves
+		this.setupWaves();
+		// one step for init
+		this.isPlaying = 1;
+		this.step();
+		this.isPlaying = 0;
 };
 
 /*==============================================================================
@@ -120,20 +131,24 @@ Step
 ==============================================================================*/
 
 StatePlay.prototype.step = function() {
-	//if( this.isPlaying ) {
-		for( var i = 0; i < this.speed; i++ ) {
-			// update global properties
-			this.updateGlobals();
+	// update fragments
+	this.updateFragments();
 
-			// towers
-			this.towers.each( 'step' );
-			this.towers.each( 'draw' );
+	for( var i = 0; i < this.speed; i++ ) {
+		this.time._step( this.speed );
 
-			// update fragments
-			this.updateFragments();
-			this.fragmentsChangeFlag = 0;
-		}
-	//}
+		// update global properties
+		this.updateGlobals();
+
+		// waves
+		this.updateWaves();
+
+		// towers
+		this.towers.each( 'step' );
+
+		// enemies
+		this.enemies.each( 'step' );
+	}
 };
 
 /*==============================================================================
@@ -143,6 +158,10 @@ Draw
 ==============================================================================*/
 
 StatePlay.prototype.draw = function() {
+	// towers
+	this.towers.each( 'draw' );
+	// enemies
+	this.enemies.each( 'draw' );
 };
 
 /*==============================================================================
@@ -175,6 +194,10 @@ Button Events
 ==============================================================================*/
 
 StatePlay.prototype.onPlayClick = function() {
+	if( !this.hasPlayed ) {
+		this.advanceWave();
+		this.hasPlayed = 1;
+	}
 	this.isPlaying = !this.isPlaying;
 	if( this.isPlaying ) {
 		g.addClass( g.dom, 'playing' );
@@ -186,19 +209,19 @@ StatePlay.prototype.onPlayClick = function() {
 StatePlay.prototype.onX1Click = function() {
 	this.speed = 1;
 	g.removeClass( g.dom, 'x1 x2 x3' );
-	g.addClass( g.dom, 'x1' )
+	g.addClass( g.dom, 'x1' );
 };
 
 StatePlay.prototype.onX2Click = function() {
 	this.speed = 2;
 	g.removeClass( g.dom, 'x1 x2 x3' );
-	g.addClass( g.dom, 'x2' )
+	g.addClass( g.dom, 'x2' );
 };
 
 StatePlay.prototype.onX3Click = function() {
 	this.speed = 3;
 	g.removeClass( g.dom, 'x1 x2 x3' );
-	g.addClass( g.dom, 'x3' )
+	g.addClass( g.dom, 'x3' );
 };
 
 StatePlay.prototype.onEAtkClick = function() {
@@ -220,6 +243,9 @@ StatePlay.prototype.onMenuClick = function() {
 };
 
 StatePlay.prototype.onSendClick = function() {
+	if( this.isPlaying ) {
+		this.advanceWave();
+	}
 };
 
 /*==============================================================================
@@ -228,7 +254,7 @@ Map/Tile Generation
 
 ==============================================================================*/
 
-StatePlay.prototype.createTiles = function() {
+StatePlay.prototype.setupTiles = function() {
 	// create a full grid of tiles, broken up into two separate arrays
 	// they can be base or be path
 	this.baseTiles = new g.Group();
@@ -250,9 +276,9 @@ StatePlay.prototype.createTiles = function() {
 				vertical: y > g.rows / 2 ? 's' : 'n'
 			});
 			if( isPath ) {
-				this.pathTiles.add( tile );
+				this.pathTiles.push( tile );
 			} else {
-				this.baseTiles.add( tile );
+				this.baseTiles.push( tile );
 			}
 		}
 	}
@@ -284,7 +310,7 @@ Globals
 StatePlay.prototype.updateGlobals = function() {
 	this.globalSlabRotation -= 0.025;
 	this.globalTurretRotation += 0.025;
-	this.globalCoreScale = 0.3 + Math.sin( ( this.time.tick * this.speed ) / 30 ) * 0.15;
+	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
 };
 
 /*==============================================================================
@@ -295,7 +321,6 @@ Fragments / Cash / Spending / Money / Currency
 
 StatePlay.prototype.setFragments = function( amt ) {
 	this.fragments += amt;
-	this.fragmentsChangeFlag = 1;
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -311,6 +336,84 @@ StatePlay.prototype.updateFragments = function() {
 Waves
 
 ==============================================================================*/
+
+StatePlay.prototype.setupWaves = function() {
+	// loop over each wave data
+	for( var i = 0, ilength = g.data.waves.length; i < ilength; i++ ) {
+		var wave = g.data.waves[ i ],
+			newWave = new g.Wave({
+				state: this
+			});
+		// loop over each set in that wave
+		for( var j = 0, jlength = wave.length; j < jlength; j++ ) {
+			var set = wave[ j ],
+				type = set[ 0 ],
+				count = set[ 1 ],
+				isBoss = set.length >= 3 ? 1 : 0;
+			// loop to create the correct amount of enemies for that set
+			for( var k = 0, klength = count; k < klength; k++ ) {
+				var enemy = new g.Enemy({
+					state: this,
+					type: type,
+					isBoss: isBoss
+				});
+				newWave.enemies.push( enemy );
+				newWave.counts[ type ]++;
+			}
+		}
+		this.waves.push( newWave );
+	}
+};
+
+StatePlay.prototype.updateWaves = function() {
+	// step each active wave
+	this.activeWaves.each( 'step' );
+
+	// move next wave to active if active waves are empty
+	if( !this.activeWaves.length && this.waves.length && !this.enemies.length ) {
+		this.advanceWave();
+	}
+
+	// check if active waves are empty
+	this.activeWaves.each( function( wave, i , collection ) {
+		if( !wave.enemies.length ) {
+			this.activeWaves.removeAt( i );
+		}
+	}, 0, this );
+	
+};
+
+StatePlay.prototype.advanceWave = function() {
+	// what a mess, dealing with waves
+	if( this.hasPlayed ) {
+		if( this.waves.length ) {
+			this.activeWaves.push( this.waves.shift() );
+			g.text( this.dom.wave, ( this.wave + 1 ) + ' / ' + this.wavesTotal );
+			this.wave++;
+			if( this.wave < this.wavesTotal ) {
+				this.waveNext++;
+				var waveNext = this.waves.getAt( 0 );
+				g.text( this.dom.eWave, waveNext.counts.e );
+				g.text( this.dom.wWave, waveNext.counts.w );
+				g.text( this.dom.aWave, waveNext.counts.a );
+				g.text( this.dom.fWave, waveNext.counts.f );
+			} else {
+				this.waveNext = null;
+				g.text( this.dom.eWave, '--' );
+				g.text( this.dom.wWave, '--' );
+				g.text( this.dom.aWave, '--' );
+				g.text( this.dom.fWave, '--' );
+			}
+		}
+	} else {
+		var next = this.waves.getAt( 0 );
+		g.text( this.dom.eWave, next.counts.e );
+		g.text( this.dom.wWave, next.counts.w );
+		g.text( this.dom.aWave, next.counts.a );
+		g.text( this.dom.fWave, next.counts.f );
+		g.text( this.dom.wave, this.wave + ' / ' + this.wavesTotal );
+	}
+};
 
 /*==============================================================================
 
@@ -427,7 +530,7 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 				row: tile.row,
 				type: type
 			});
-			this.towers.add( tower );
+			this.towers.push( tower );
 			this.isBuildable = 0;
 			this.hideBuildMenu();
 		}

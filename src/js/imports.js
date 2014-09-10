@@ -15,6 +15,7 @@
 //import('entities/enemy.js');
 //import('entities/tile.js');
 //import('entities/tower.js');
+//import('entities/wave.js');
 //import('states/menu.js');
 //import('states/play.js');
 //import('states/gameover.js');

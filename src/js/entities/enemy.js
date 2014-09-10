@@ -10,22 +10,31 @@ g.Enemy = function( opt ) {
 };
 
 g.Enemy.prototype.init = function() {
+	this.x = 10 * g.size;
+	this.y = 10 * g.size;
+	this.size = 20;
+	this.dom = g.cE( this.state.dom.state, 'enemy type-' + this.type );
+	g.css( this.dom, {
+		'width': this.size + 'px',
+		'height': this.size + 'px'
+	});
 };
 
 g.Enemy.prototype.step = function() {
+	if( this.state.isPlaying ) {
+		this.x += 1;
+	}
+
+	if( this.x > g.size * g.cols ) {
+		this.destroy();
+	}
 };
 
 g.Enemy.prototype.draw = function() {
+	g.css( this.dom, 'transform', 'translate(' + this.x + 'px , ' + this.y + 'px )');
 };
 
-g.Enemy.prototype.setupDom = function() {
-	this.dom = {};
-	this.dom.wrap   = g.cE( this.state.dom.state, 't-wrap t-type-' + this.type );
-	this.dom.tower  = g.cE( this.dom.wrap, 't-tower' );
-	this.dom.slab   = g.cE( this.dom.tower, 't-slab' );
-	this.dom.turret = g.cE( this.dom.tower, 't-turret' );
-	this.dom.base   = g.cE( this.dom.tower, 't-base' );
-	this.dom.core   = g.cE( this.dom.tower, 't-core' );
-	this.dom.range  = g.cE( this.dom.tower, 't-range' );
-	g.css( this.dom.wrap, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )', 1 );
+g.Enemy.prototype.destroy = function() {
+	this.state.enemies.remove( this );
+	this.state.dom.state.removeChild( this.dom );
 };

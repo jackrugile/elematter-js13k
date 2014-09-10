@@ -9,13 +9,40 @@ g.Group = function() {
 	this.length = 0;
 };
 
-g.Group.prototype.add = function( item ) {
-	this.collection.push( item );
+g.Group.prototype.push = function( item ) {
 	this.length++;
+	return this.collection.push( item );
 };
 
-g.Group.prototype.remove = function( index ) {
+g.Group.prototype.pop = function() {
+	this.length--;
+	return this.collection.pop();
+};
+
+g.Group.prototype.unshift = function( item ) {
+	this.length++;
+	return this.collection.unshift( item );
+};
+
+g.Group.prototype.shift = function() {
+	this.length--;
+	return this.collection.shift();
+};
+
+g.Group.prototype.getAt = function( index ) {
+	return this.collection[ index ];
+};
+
+g.Group.prototype.removeAt = function( index ) {
 	if( index < this.length ) {
+		this.collection.splice( index, 1 );
+		this.length--;
+	}
+};
+
+g.Group.prototype.remove = function( item ) {
+	var index = this.collection.indexOf( item );
+	if( index > -1 ) {
 		this.collection.splice( index, 1 );
 		this.length--;
 	}
@@ -26,17 +53,27 @@ g.Group.prototype.empty = function() {
 	this.length = 0;
 };
 
-g.Group.prototype.each = function( action, asc ) {
+g.Group.prototype.each = function( action, asc, context ) {
 	var length = this.length,
+		isString = g.isString( action ),
+		ctx = context || window,
 		i;
 	if( asc ) {
 		for( i = 0; i < length; i++ ) {
-			this.collection[ i ][ action ]( i );
+			if( isString ) {
+				this.collection[ i ][ action ]( i );
+			} else {
+				action.bind( ctx, this.collection[ i ], i, this.collection )();
+			}
 		}
 	} else {
 		i = length;
 		while( i-- ) {
-			this.collection[ i ][ action ]( i );
+			if( isString ) {
+				this.collection[ i ][ action ]( i );
+			} else {
+				action.bind( ctx, this.collection[ i ], i, this.collection )();
+			}
 		}
 	}
 };
