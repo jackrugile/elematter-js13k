@@ -342,7 +342,8 @@ StatePlay.prototype.setupWaves = function() {
 	for( var i = 0, ilength = g.data.waves.length; i < ilength; i++ ) {
 		var wave = g.data.waves[ i ],
 			newWave = new g.Wave({
-				state: this
+				state: this,
+				num: i
 			});
 		// loop over each set in that wave
 		for( var j = 0, jlength = wave.length; j < jlength; j++ ) {

@@ -44,6 +44,7 @@ Game
 	box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.5);
 	left: 50%;
 	opacity: 0;
+	overflow: hidden;
 	position: absolute;
 	-webkit-transition: opacity 500ms;
 	transition: opacity 500ms;
@@ -113,8 +114,10 @@ Play State - Buttons - General
 	height: 40px;
 	left: 0;
 	position: absolute;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
 	width: 100%;
-	z-index: 100;
+	z-index: 200;
 }
 
 .top-row {
@@ -804,13 +807,38 @@ Enemies
 ==============================================================================*/
 
 .enemy {
+	background: #000;
+	border-radius: 8px 0 8px 8px;
+	border: 3px solid #000;
 	left: 0;
 	position: absolute;
 	top: 0;
 	z-index: 100;
 }
+/*
+.enemy:before {
+	border-bottom: 15px solid hsl(120, 90%, 60%);
+	border-right: 15px solid transparent;
+	content: '';
+	height: 0;
+	position: absolute;
+	right: -50%;
+	top: -50%;
+	width: 0;
+}
 
-.enemy.type-e { background: hsl(120, 90%, 60%); }
-.enemy.type-w { background: hsl(200, 90%, 60%); }
-.enemy.type-a { background: hsl(60, 90%, 60%); }
-.enemy.type-f { background: hsl(0, 90%, 60%); }
+.enemy:after {
+	border-bottom: 8px solid #000;
+	border-right: 8px solid transparent;
+	content: '';
+	height: 0;
+	position: absolute;
+	right: -2px;
+	top: -2px;
+	width: 0;
+}*/
+
+.enemy.type-e { background: hsl(120, 80%, 60%); box-shadow: 0 0 0 2px hsl(120, 50%, 25%); }
+.enemy.type-w { background: hsl(200, 80%, 60%); box-shadow: 0 0 0 2px hsl(200, 50%, 25%); }
+.enemy.type-a { background: hsl(60, 80%, 60%); box-shadow: 0 0 0 2px hsl(60, 50%, 25%); }
+.enemy.type-f { background: hsl(0, 80%, 60%); box-shadow: 0 0 0 2px hsl(0, 50%, 25%); }

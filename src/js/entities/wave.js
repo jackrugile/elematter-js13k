@@ -11,7 +11,7 @@ g.Wave = function( opt ) {
 
 g.Wave.prototype.init = function() {
 	this.tick = 0;
-	this.tickMax = 30;
+	this.tickMax = 50 - this.num;
 	this.enemies = new g.Group();
 	this.counts = {
 		e: 0,
@@ -22,12 +22,15 @@ g.Wave.prototype.init = function() {
 };
 
 g.Wave.prototype.step = function() {
-	if( this.tick >= this.tickMax && this.enemies.length ) {
-		this.tick = 0;
-		var enemy = this.enemies.shift();
-		this.state.enemies.push( enemy );
-	} else {
-		this.tick++;
+	if( this.state.isPlaying ) {
+		if( this.tick >= this.tickMax && this.enemies.length ) {
+			this.tick = 0;
+			var enemy = this.enemies.shift();
+			enemy.activate();
+			this.state.enemies.push( enemy );
+		} else {
+			this.tick++;
+		}
 	}
 };
 
