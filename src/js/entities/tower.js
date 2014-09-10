@@ -39,7 +39,7 @@ g.Tower.prototype.setupDom = function() {
 	this.dom.base   = g.cE( this.dom.tower, 't-base' );
 	this.dom.core   = g.cE( this.dom.tower, 't-core' );
 	this.dom.range  = g.cE( this.dom.tower, 't-range' );
-	g.css( this.dom.wrap, 'transform', 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )', 1 );
+	g.css( this.dom.wrap, 'transform', 'translate3d(' + this.col * g.size + 'px , ' + this.row * g.size + 'px, 0 )');
 };
 
 g.Tower.prototype.setupEvents = function() {

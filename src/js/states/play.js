@@ -30,7 +30,7 @@ StatePlay.prototype.init = function() {
 		this.livesTotal = 13;
 		this.lives = this.livesTotal;
 		// fragments
-		this.fragments = 1000;
+		this.fragments = 10000;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
 		this.fragmentsChangeFlag = 0;
@@ -120,16 +120,20 @@ Step
 ==============================================================================*/
 
 StatePlay.prototype.step = function() {
-	// update global properties
-	this.updateGlobals();
+	//if( this.isPlaying ) {
+		for( var i = 0; i < this.speed; i++ ) {
+			// update global properties
+			this.updateGlobals();
 
-	// towers
-	this.towers.each( 'step' );
-	this.towers.each( 'draw' );
+			// towers
+			this.towers.each( 'step' );
+			this.towers.each( 'draw' );
 
-	// update fragments
-	this.updateFragments();
-	this.fragmentsChangeFlag = 0;
+			// update fragments
+			this.updateFragments();
+			this.fragmentsChangeFlag = 0;
+		}
+	//}
 };
 
 /*==============================================================================
@@ -177,16 +181,24 @@ StatePlay.prototype.onPlayClick = function() {
 	} else {
 		g.removeClass( g.dom, 'playing' );
 	}
-	console.log( this.isPlaying );
 };
 
 StatePlay.prototype.onX1Click = function() {
+	this.speed = 1;
+	g.removeClass( g.dom, 'x1 x2 x3' );
+	g.addClass( g.dom, 'x1' )
 };
 
 StatePlay.prototype.onX2Click = function() {
+	this.speed = 2;
+	g.removeClass( g.dom, 'x1 x2 x3' );
+	g.addClass( g.dom, 'x2' )
 };
 
 StatePlay.prototype.onX3Click = function() {
+	this.speed = 3;
+	g.removeClass( g.dom, 'x1 x2 x3' );
+	g.addClass( g.dom, 'x3' )
 };
 
 StatePlay.prototype.onEAtkClick = function() {
@@ -272,7 +284,7 @@ Globals
 StatePlay.prototype.updateGlobals = function() {
 	this.globalSlabRotation -= 0.025;
 	this.globalTurretRotation += 0.025;
-	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
+	this.globalCoreScale = 0.3 + Math.sin( ( this.time.tick * this.speed ) / 30 ) * 0.15;
 };
 
 /*==============================================================================

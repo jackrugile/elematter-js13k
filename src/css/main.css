@@ -753,19 +753,19 @@ Towers
 
 	.t-type-e .t-core {
 		background: hsl(120, 100%, 70%);
-		box-shadow: 0 0 20px hsl(120, 100%, 80%);
+		/*box-shadow: 0 0 20px hsl(120, 100%, 80%);*/
 	}
 	.t-type-w .t-core {
 		background: hsl(200, 100%, 70%);
-		box-shadow: 0 0 20px hsl(200, 100%, 80%);
+		/*box-shadow: 0 0 20px hsl(200, 100%, 80%);*/
 	}
 	.t-type-a .t-core {
 		background: hsl(60, 100%, 70%);
-		box-shadow: 0 0 20px hsl(60, 100%, 80%);
+		/*box-shadow: 0 0 20px hsl(60, 100%, 80%);*/
 	}
 	.t-type-f .t-core {
 		background: hsl(0, 100%, 70%);
-		box-shadow: 0 0 20px hsl(0, 100%, 80%);
+		/*box-shadow: 0 0 20px hsl(0, 100%, 80%);*/
 	}
 
 /*
