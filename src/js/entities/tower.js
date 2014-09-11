@@ -34,6 +34,10 @@ g.Tower.prototype.step = function() {
 	if( this.state.isPlaying ) {
 		this.getTarget();
 		this.fire();
+
+		if( this.bulletTick < this.rte ) {
+			this.bulletTick++;
+		}
 	}
 };
 
@@ -50,6 +54,8 @@ g.Tower.prototype.setStats = function() {
 	this.rng = stats.rng;
 	this.rte = stats.rte;
 
+	this.bulletTick = this.rte;
+
 	g.css( this.dom.range, {
 		'width': this.rng * 2 + 'px',
 		'height': this.rng * 2 + 'px',
@@ -64,16 +70,11 @@ g.Tower.prototype.upgrade = function() {
 };
 
 g.Tower.prototype.getTarget = function() {
-	/*
-		loop over all enemies
-		collect enemies that are in range
-		determine which is closest to the exit ( most distance traveled )
-		set as target
-		treat target as circle, for simple circle to circle collisions
-	*/
-	var enemies = this.state.enemies,
+	/*var enemies = this.state.enemies,
 		enemiesInRange = [];
+	// if enemies are on the map
 	if( enemies.length ) {
+		// loop over enemies to get which ones are in range
 		enemies.each( function( enemy, i, collection ) {
 			var dist = g.distance( this.cx, this.cy, enemy.cx, enemy.cy );
 			if( this.rng + enemy.radius > dist ) {
@@ -89,14 +90,48 @@ g.Tower.prototype.getTarget = function() {
 		} else {
 			this.target = null;
 		}
+	}*/
+	var enemies = this.state.enemies,
+		enemiesInRange = [];
+	// if enemies are on the map
+	if( enemies.length ) {
+		// loop over enemies to get which ones are in range
+		enemies.each( function( enemy, i, collection ) {
+			var dist = g.distance( this.cx, this.cy, enemy.cx, enemy.cy );
+			if( this.rng + enemy.radius > dist ) {
+				enemiesInRange.push( enemy );
+			}
+		}, 1, this );
+		// if enemies are in range
+		if( enemiesInRange.length ) {
+			// sort them by distance traveled
+			enemiesInRange.sort(function( a, b ) {
+				return a.distanceTraveled - b.distanceTraveled;
+			});
+			// set target
+			this.target = enemiesInRange.pop();
+		} else {
+			this.target = null;
+		}
 	}
 };
 
 g.Tower.prototype.fire = function() {
+	// if this tower has a target enemy
 	if( this.target ) {
-		var target = this.state.enemies.getByPropVal( 'guid', this.target );
-		if( target ) {
-			// fire bullet!
+		// if we can fire a bullet at current rate
+		if( this.bulletTick >= this.rte ) {
+			this.bulletTick = 0;
+			var bullet = new g.Bullet({
+				state: this.state,
+				type: this.type,
+				dmg: this.dmg,
+				target: this.target.guid,
+				x: this.cx,
+				y: this.cy
+			});
+			this.state.bullets.push( bullet );
+			//console.log( 'fire' );
 		}
 	}
 };

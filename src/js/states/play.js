@@ -46,6 +46,8 @@ StatePlay.prototype.init = function() {
 		this.activeWaves = new g.Group();
 		// enemies
 		this.enemies = new g.Group();
+		// bullets
+		this.bullets = new g.Group();
 
 	// setup dom
 		this.dom = {};
@@ -136,19 +138,18 @@ StatePlay.prototype.step = function() {
 	this.updateFragments();
 
 	for( var i = 0; i < this.speed; i++ ) {
+		// update time based on current speed
 		this.time._step( this.speed );
-
 		// update global properties
 		this.updateGlobals();
-
 		// waves
 		this.updateWaves();
-
 		// towers
 		this.towers.each( 'step' );
-
 		// enemies
 		this.enemies.each( 'step' );
+		// bullets
+		this.bullets.each( 'step' );
 	}
 };
 
@@ -163,6 +164,8 @@ StatePlay.prototype.draw = function() {
 	this.towers.each( 'draw' );
 	// enemies
 	this.enemies.each( 'draw' );
+	// bullets
+	this.bullets.each( 'draw' );
 };
 
 /*==============================================================================

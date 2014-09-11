@@ -82,7 +82,7 @@ g.data.towers = {
 				cost: 100, // game currency
 				dmg: 10, // per shot
 				rng: 125, // pixel radius
-				rte: 30 // tick interval
+				rte: 10 // tick interval
 			},
 			{ // level 2
 				cost: 125, // game currency

@@ -828,3 +828,38 @@ Enemies
 	border-top-color: hsl(0, 70%, 15%);
 	border-right-color: hsl(0, 70%, 15%);
 }
+
+/*==============================================================================
+
+Bullets
+
+==============================================================================*/
+
+.bullet {
+	/*border-radius: 50%;*/
+	border-radius: 10px 10px 10px 0;
+	left: 0;
+	position: absolute;
+	top: 0;
+	z-index: 150;
+}
+
+.bullet.type-e {
+	background: hsl(120, 100%, 80%);
+	box-shadow: 0 0 10px hsl(120, 100%, 80%);
+}
+
+.bullet.type-w {
+	background: hsl(200, 100%, 80%);
+	box-shadow: 0 0 10px hsl(200, 100%, 80%);
+}
+
+.bullet.type-a {
+	background: hsl(60, 100%, 80%);
+	box-shadow: 0 0 10px hsl(60, 100%, 80%);
+}
+
+.bullet.type-f {
+	background: hsl(0, 100%, 80%);
+	box-shadow: 0 0 10px hsl(0, 100%, 80%);
+}
