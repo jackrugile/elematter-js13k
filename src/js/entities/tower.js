@@ -29,7 +29,9 @@ g.Tower.prototype.init = function() {
 
 g.Tower.prototype.step = function() {
 	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
-	this.turretRotation += ( this.state.globalTurretRotation - this.turretRotation ) * 0.2;
+	if( !this.target ) {
+		this.turretRotation += ( this.state.globalTurretRotation - this.turretRotation ) * 0.2;
+	}
 	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
 	if( this.state.isPlaying ) {
 		this.getTarget();
@@ -37,6 +39,14 @@ g.Tower.prototype.step = function() {
 
 		if( this.bulletTick < this.rte ) {
 			this.bulletTick++;
+		}
+
+		if( this.target ) {
+			var dx = this.target.cx - this.cx,
+				dy = this.target.cy - this.cy,
+				dist = Math.sqrt( dx * dx + dy * dy ),
+				angle = Math.atan2( dy, dx ) + Math.PI * 0.75;
+			this.turretRotation += ( angle - this.turretRotation ) * 0.2;
 		}
 	}
 };
@@ -121,6 +131,7 @@ g.Tower.prototype.fire = function() {
 	if( this.target ) {
 		// if we can fire a bullet at current rate
 		if( this.bulletTick >= this.rte ) {
+			g.audio.play( 'laser' );
 			this.bulletTick = 0;
 			var bullet = new g.Bullet({
 				state: this.state,

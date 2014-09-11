@@ -1,5 +1,6 @@
 //import('vendor/jsfxr.js');
 //import('g/g.js');
+//import('g/audio.js');
 //import('g/group.js');
 //import('g/pool.js');
 //import('g/util.js');
@@ -8,6 +9,7 @@
 //import('g/time.js');
 //import('g/storage.js');
 //import('data/attacks.js');
+//import('data/audio.js');
 //import('data/map.js');
 //import('data/towers.js');
 //import('data/waves.js');

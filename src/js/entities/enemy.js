@@ -59,7 +59,7 @@ g.Enemy.prototype.step = function() {
 		dirx += (dx - dirx) * 0.125;
 		diry += (dy - diry) * 0.125;
 		this.rotation = Math.atan2( diry, dirx );
-		var targetRotation = Math.atan2( dy, dx );
+		//var targetRotation = Math.atan2( dy, dx );
 
 		if( Math.abs( this.dist ) > this.speed ) {
 			this.x += this.vx;

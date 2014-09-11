@@ -88,6 +88,7 @@ Game Element
 <?php } else { ?>
 	<script src="js/vendor/jsfxr.js"></script>
 	<script src="js/g/g.js"></script>
+	<script src="js/g/audio.js"></script>
 	<script src="js/g/group.js"></script>
 	<script src="js/g/pool.js"></script>
 	<script src="js/g/util.js"></script>
@@ -96,6 +97,7 @@ Game Element
 	<script src="js/g/time.js"></script>
 	<script src="js/g/storage.js"></script>
 	<script src="js/data/attacks.js"></script>
+	<script src="js/data/audio.js"></script>
 	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
 	<script src="js/data/waves.js"></script>
