@@ -4,8 +4,6 @@ Waves
 
 ==============================================================================*/
 
-
-
 g.data.waves = [
 	[ // Wave 1
 		[ 'e', 1, ],
@@ -111,32 +109,4 @@ g.data.waves = [
 		[ 'w', 6 ],
 		[ 'a', 6 ]
 	]
-
 ];
-
-/*
-
-Earth
-	HP - Med
-	Speed - Med
-
-Water
-	HP - Med
-	Speed - Med
-
-Air
-	HP - Low
-	Speed - High
-
-Fire
-	HP - High
-	Speed - Low
-
-amount and configuration is drawn out by hand
-the increase of HP and speed is based on the wave
-amount, HP, and speed modified by difficulty setting
-
-boss every 5 waves
-
-
-*/

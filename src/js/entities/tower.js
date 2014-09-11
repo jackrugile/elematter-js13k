@@ -141,7 +141,6 @@ g.Tower.prototype.fire = function() {
 				y: this.cy
 			});
 			this.state.bullets.push( bullet );
-			//console.log( 'fire' );
 		}
 	}
 };
@@ -163,5 +162,5 @@ g.Tower.prototype.setupEvents = function() {
 };
 
 g.Tower.prototype.onClick = function() {
-	console.log( 'click' );
+	//console.log( 'click' );
 };

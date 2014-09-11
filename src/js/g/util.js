@@ -110,13 +110,15 @@ g.hasClass = function ( elem, className ) {
 };
 
 g.addClass = function ( elem, className ) {
-	if( className.indexOf( ' ' ) != -1 ) {
-		classes = className.split( ' ' );
-		classes.forEach( function( className ) {
-			g.addClass( elem, className );
-		});
-	} else {
-		elem.classList.add( className );
+	if( className.length ) {
+		if( className.indexOf( ' ' ) != -1 ) {
+			classes = className.split( ' ' );
+			classes.forEach( function( className ) {
+				g.addClass( elem, className );
+			});
+		} else {
+			elem.classList.add( className );
+		}
 	}
 };
 

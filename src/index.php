@@ -98,6 +98,7 @@ Game Element
 	<script src="js/g/storage.js"></script>
 	<script src="js/data/attacks.js"></script>
 	<script src="js/data/audio.js"></script>
+	<script src="js/data/enemies.js"></script>
 	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
 	<script src="js/data/waves.js"></script>

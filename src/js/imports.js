@@ -10,6 +10,7 @@
 //import('g/storage.js');
 //import('data/attacks.js');
 //import('data/audio.js');
+//import('data/enemies.js');
 //import('data/map.js');
 //import('data/towers.js');
 //import('data/waves.js');

@@ -30,7 +30,7 @@ StatePlay.prototype.init = function() {
 		this.livesTotal = 13;
 		this.lives = this.livesTotal;
 		// fragments
-		this.fragments = 10000;
+		this.fragments = 300;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
 		// tiles
@@ -348,6 +348,8 @@ Fragments / Cash / Spending / Money / Currency
 
 StatePlay.prototype.setFragments = function( amt ) {
 	this.fragments += amt;
+	// update build availability
+	this.updateBuildMenuAvailability();
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -482,7 +484,7 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	// get the tower data based on type
 	var data = g.data.towers[ type ];
 	// set all text nodes
-	g.text( this.dom.buildCost, data.stats[ 0 ].cost );
+	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
 	g.text( this.dom.buildType, data.title );
 	g.text( this.dom.buildDesc, data.desc );
 	g.text( this.dom.buildDamage, data.dmg + ' ' + data.bonus );
@@ -521,6 +523,25 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	g.addClass( g.dom, 'rte' + meterRte );
 };
 
+StatePlay.prototype.updateBuildMenuAvailability = function() {
+	g.removeClass( g.dom, 'no-b-e no-b-w no-b-a no-b-f' );
+	var classes = '';
+	if( this.fragments < g.data.towers.e.stats[ 0 ].cst ) {
+		classes += 'no-b-e ';
+	}
+	if( this.fragments < g.data.towers.w.stats[ 0 ].cst ) {
+		classes += 'no-b-w ';
+	}
+	if( this.fragments < g.data.towers.a.stats[ 0 ].cst ) {
+		classes += 'no-b-a ';
+	}
+	if( this.fragments < g.data.towers.f.stats[ 0 ].cst ) {
+		classes += 'no-b-f ';
+	}
+
+	g.addClass( g.dom, classes );
+};
+
 StatePlay.prototype.onBuildMenuWrapClick = function( e ) {
 	// if the outer wrap is clicked, close the build menu
 	this.hideBuildMenu();
@@ -548,7 +569,7 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 	// set the build menu text based on the element that is hovered
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
-		var cost = g.data.towers[ type ].stats[ 0 ].cost;
+		var cost = g.data.towers[ type ].stats[ 0 ].cst;
 		if( cost <= this.fragments && this.isBuildable ) {
 			this.setFragments( -cost );
 			var tile = this.lastClickedTile;
