@@ -33,6 +33,17 @@ g.Group.prototype.getAt = function( index ) {
 	return this.collection[ index ];
 };
 
+g.Group.prototype.getByPropVal = function( prop, val ) {
+	var foundItem = null;
+	this.each( function( item, i, collection ) {
+		if( item[ prop ] == val ) {
+			foundItem = item;
+			return;
+		}
+	}, 0, this );
+	return foundItem;
+};
+
 g.Group.prototype.removeAt = function( index ) {
 	if( index < this.length ) {
 		this.collection.splice( index, 1 );

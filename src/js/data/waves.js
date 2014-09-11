@@ -8,7 +8,7 @@ Waves
 
 g.data.waves = [
 	[ // Wave 1
-		[ 'e', 10 ]
+		[ 'e', 1 ]
 	],
 	[ // Wave 2
 		[ 'e', 8 ],

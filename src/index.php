@@ -36,7 +36,7 @@ Game Element
 		===============================================================================-->
 		<div class="row bot-row">
 			<div class="l s1"><i>&hearts;</i></div>
-			<div class="d d-lives s2">13 / 13</div>
+			<div class="d d-lives s2"> </div>
 			<div class="l s1"><i>&there4;</i></div>
 			<div class="d d-fragments s2"> </div>
 			<div class="l s2">Wave</div>

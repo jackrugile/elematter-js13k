@@ -114,6 +114,7 @@ StatePlay.prototype.init = function() {
 		}
 
 	// initialization
+		this.updateLife();
 		// setup tiles
 		this.setupTiles();
 		// setup waves
@@ -315,6 +316,24 @@ StatePlay.prototype.updateGlobals = function() {
 
 /*==============================================================================
 
+Lives
+
+==============================================================================*/
+
+StatePlay.prototype.removeLife = function() {
+	this.lives--;
+	this.updateLife();
+	if( !this.lives ) {
+		alert( 'dead' );
+	}
+};
+
+StatePlay.prototype.updateLife = function() {
+	g.text( this.dom.lives, this.lives + ' / ' + this.livesTotal );
+};
+
+/*==============================================================================
+
 Fragments / Cash / Spending / Money / Currency
 
 ==============================================================================*/
@@ -458,9 +477,9 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	g.text( this.dom.buildCost, data.stats[ 0 ].cost );
 	g.text( this.dom.buildType, data.title );
 	g.text( this.dom.buildDesc, data.desc );
-	g.text( this.dom.buildDamage, data.damage + ' ' + data.bonus );
-	g.text( this.dom.buildRange, data.range );
-	g.text( this.dom.buildRate, data.rate );
+	g.text( this.dom.buildDamage, data.dmg + ' ' + data.bonus );
+	g.text( this.dom.buildRange, data.rng );
+	g.text( this.dom.buildRate, data.rte );
 	// reset classes and add proper type classes based on tower data
 	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
 	g.addClass( g.dom, 'hover-build-select hover-' + type );
@@ -472,19 +491,19 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 		meterRte = 1;
 
 	// get meter values based on keyword descriptions
-	if( data.damage == 'Medium' ) {
+	if( data.dmg == 'Medium' ) {
 		meterDmg = 2;
-	} else if( data.damage == 'High' ) {
+	} else if( data.dmg == 'High' ) {
 		meterDmg = 3;
 	}
-	if( data.range == 'Medium' ) {
+	if( data.rng == 'Medium' ) {
 		meterRng = 2;
-	} else if( data.range == 'High' ) {
+	} else if( data.rng == 'High' ) {
 		meterRng = 3;
 	}
-	if( data.rate == 'Medium' ) {
+	if( data.rte == 'Medium' ) {
 		meterRte = 2;
-	} else if( data.rate == 'High' ) {
+	} else if( data.rte == 'High' ) {
 		meterRte = 3;
 	}
 

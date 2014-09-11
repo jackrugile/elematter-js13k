@@ -10,29 +10,29 @@ g.data.towers = {
 		counters: 'a',
 		title: 'Earth',
 		desc: 'Well Rounded',
-		damage: 'Medium',
+		dmg: 'Medium',
 		bonus: '+50% vs Air',
-		range: 'Medium',
-		rate: 'Medium',
+		rng: 'Medium',
+		rte: 'Medium',
 		hue: 120,
 		stats: [
 			{ // level 1
 				cost: 100, // game currency
-				damage: 10, // per shot
-				range: 50, // pixel radius
-				rate: 30 // tick interval
+				dmg: 10, // per shot
+				rng: 100, // pixel radius
+				rte: 30 // tick interval
 			},
 			{ // level 2
 				cost: 125, // game currency
-				damage: 12, // per shot
-				range: 60, // pixel radius
-				rate: 28 // tick interval
+				dmg: 12, // per shot
+				rng: 60, // pixel radius
+				rte: 28 // tick interval
 			},
 			{ // level 3
 				cost: 175, // game currency
-				damage: 14, // per shot
-				range: 70, // pixel radius
-				rate: 26 // tick interval
+				dmg: 14, // per shot
+				rng: 70, // pixel radius
+				rte: 26 // tick interval
 			}
 		]
 	},
@@ -41,29 +41,29 @@ g.data.towers = {
 		counters: 'f',
 		title: 'Water',
 		desc: 'Slows Enemies',
-		damage: 'Medium',
+		dmg: 'Medium',
 		bonus: '+50% vs Fire',
-		range: 'Low',
-		rate: 'High',
+		rng: 'Low',
+		rte: 'High',
 		hue: 200,
 		stats: [
 			{ // level 1
 				cost: 100, // game currency
-				damage: 10, // per shot
-				range: 50, // pixel radius
-				rate: 30 // tick interval
+				dmg: 10, // per shot
+				rng: 75, // pixel radius
+				rte: 30 // tick interval
 			},
 			{ // level 2
 				cost: 125, // game currency
-				damage: 12, // per shot
-				range: 60, // pixel radius
-				rate: 28 // tick interval
+				dmg: 12, // per shot
+				rng: 60, // pixel radius
+				rte: 28 // tick interval
 			},
 			{ // level 3
 				cost: 175, // game currency
-				damage: 14, // per shot
-				range: 70, // pixel radius
-				rate: 26 // tick interval
+				dmg: 14, // per shot
+				rng: 70, // pixel radius
+				rte: 26 // tick interval
 			}
 		]
 	},
@@ -71,30 +71,30 @@ g.data.towers = {
 		type: 'a',
 		counters: 'w',
 		title: 'Air',
-		desc: 'Pierced Enemies',
-		damage: 'Low',
+		desc: 'Pierce Enemies',
+		dmg: 'Low',
 		bonus: '+50% vs Water',
-		range: 'High',
-		rate: 'Medium',
+		rng: 'High',
+		rte: 'Medium',
 		hue: 60,
 		stats: [
 			{ // level 1
 				cost: 100, // game currency
-				damage: 10, // per shot
-				range: 50, // pixel radius
-				rate: 30 // tick interval
+				dmg: 10, // per shot
+				rng: 125, // pixel radius
+				rte: 30 // tick interval
 			},
 			{ // level 2
 				cost: 125, // game currency
-				damage: 12, // per shot
-				range: 60, // pixel radius
-				rate: 28 // tick interval
+				dmg: 12, // per shot
+				rng: 60, // pixel radius
+				rte: 28 // tick interval
 			},
 			{ // level 3
 				cost: 175, // game currency
-				damage: 14, // per shot
-				range: 70, // pixel radius
-				rate: 26 // tick interval
+				dmg: 14, // per shot
+				rng: 70, // pixel radius
+				rte: 26 // tick interval
 			}
 		]
 	},
@@ -102,30 +102,30 @@ g.data.towers = {
 		type: 'f',
 		counters: 'e',
 		title: 'Fire',
-		desc: 'Splash Damage',
-		damage: 'High',
+		desc: 'Splash dmg',
+		dmg: 'High',
 		bonus: '+50% vs Earth',
-		range: 'Low',
-		rate: 'Medium',
+		rng: 'Low',
+		rte: 'Medium',
 		hue: 0,
 		stats: [
 			{ // level 1
 				cost: 100, // game currency
-				damage: 10, // per shot
-				range: 50, // pixel radius
-				rate: 30 // tick interval
+				dmg: 10, // per shot
+				rng: 75, // pixel radius
+				rte: 30 // tick interval
 			},
 			{ // level 2
 				cost: 125, // game currency
-				damage: 12, // per shot
-				range: 60, // pixel radius
-				rate: 28 // tick interval
+				dmg: 12, // per shot
+				rng: 60, // pixel radius
+				rte: 28 // tick interval
 			},
 			{ // level 3
 				cost: 175, // game currency
-				damage: 14, // per shot
-				range: 70, // pixel radius
-				rate: 26 // tick interval
+				dmg: 14, // per shot
+				rng: 70, // pixel radius
+				rte: 26 // tick interval
 			}
 		]
 	}

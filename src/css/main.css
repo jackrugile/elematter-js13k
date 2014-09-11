@@ -674,18 +674,12 @@ Towers
 .t-range {
 	border: 2px solid transparent;
 	border-radius: 100%;
-	content: '';
-	height: 200px;
 	left: 50%;
-	margin: -100px 0 0 -100px;
 	opacity: 0;
 	pointer-events: none;
 	top: 50%;
-	-webkit-transform: scale(0.75);
-	transform: scale(0.75);
 	-webkit-transition: all 300ms ease-in-out;
 	transition: all 300ms ease-in-out;
-	width: 200px;
 	z-index: 1;
 }
 
@@ -710,13 +704,9 @@ Towers
 	opacity: 1;
 	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
-	-webkit-transform: scale(1);
-	transform: scale(1);
 }
 
 .t-slab {
-/*	-webkit-animation: slab 6000ms linear infinite;
-	animation: slab 6000ms linear infinite;*/
 	background: #121;
 	border: 1px solid transparent;
 }
@@ -807,38 +797,34 @@ Enemies
 ==============================================================================*/
 
 .enemy {
-	background: #000;
-	border-radius: 8px 0 8px 8px;
-	border: 3px solid #000;
+	border-style: solid;
+	border-width: 4px;
 	left: 0;
 	position: absolute;
 	top: 0;
 	z-index: 100;
 }
-/*
-.enemy:before {
-	border-bottom: 15px solid hsl(120, 90%, 60%);
-	border-right: 15px solid transparent;
-	content: '';
-	height: 0;
-	position: absolute;
-	right: -50%;
-	top: -50%;
-	width: 0;
+
+.enemy.type-e {
+	border-color: hsl(120, 80%, 60%);
+	border-top-color: hsl(120, 70%, 15%);
+	border-right-color: hsl(120, 70%, 15%);
 }
 
-.enemy:after {
-	border-bottom: 8px solid #000;
-	border-right: 8px solid transparent;
-	content: '';
-	height: 0;
-	position: absolute;
-	right: -2px;
-	top: -2px;
-	width: 0;
-}*/
+.enemy.type-w {
+	border-color: hsl(200, 80%, 60%);
+	border-top-color: hsl(200, 70%, 15%);
+	border-right-color: hsl(200, 70%, 15%);
+}
 
-.enemy.type-e { background: hsl(120, 80%, 60%); box-shadow: 0 0 0 2px hsl(120, 50%, 25%); }
-.enemy.type-w { background: hsl(200, 80%, 60%); box-shadow: 0 0 0 2px hsl(200, 50%, 25%); }
-.enemy.type-a { background: hsl(60, 80%, 60%); box-shadow: 0 0 0 2px hsl(60, 50%, 25%); }
-.enemy.type-f { background: hsl(0, 80%, 60%); box-shadow: 0 0 0 2px hsl(0, 50%, 25%); }
+.enemy.type-a {
+	border-color: hsl(60, 80%, 60%);
+	border-top-color: hsl(60, 70%, 15%);
+	border-right-color: hsl(60, 70%, 15%);
+}
+
+.enemy.type-f {
+	border-color: hsl(0, 80%, 60%);
+	border-top-color: hsl(0, 70%, 15%);
+	border-right-color: hsl(0, 70%, 15%);
+}

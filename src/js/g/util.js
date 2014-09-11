@@ -153,6 +153,12 @@ g.rectIntersect = function( r0, r1 ) {
 	return g.util.rangeIntersect( r0.x, r0.x + r0.width, r1.x, r1.x + r1.width ) && g.util.rangeIntersect( r0.y, r0.y + r0.height, r1.y, r1.y + r1.height );
 };
 
+g.distance = function( p1x, p1y, p2x, p2y ) {
+	var dx = p1x - p2x,
+		dy = p1y - p2y;
+	return Math.sqrt( dx * dx + dy * dy );
+};
+
 /*==============================================================================
 
 Formatting

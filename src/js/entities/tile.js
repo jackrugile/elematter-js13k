@@ -10,6 +10,7 @@ g.Tile = function( opt ) {
 };
 
 g.Tile.prototype.init = function() {
+	this.guid = g.guid++;
 	this.dom = g.cE( this.state.dom.state, this.classes );
 	g.css( this.dom, {
 		'transform': 'translate(' + this.col * g.size + 'px , ' + this.row * g.size + 'px )',

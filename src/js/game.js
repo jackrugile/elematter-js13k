@@ -16,6 +16,9 @@ g.init = function() {
 	// setup overall game time
 	g.time = new g.Time();
 
+	// for unique ids
+	g.guid = 0;
+
 	// game dimensions
 	g.size = g.config.size;
 	g.width = g.config.width;

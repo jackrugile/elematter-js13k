@@ -10,6 +10,7 @@ g.Wave = function( opt ) {
 };
 
 g.Wave.prototype.init = function() {
+	this.guid = g.guid++;
 	this.tick = 0;
 	this.tickMax = 50 - this.num;
 	this.enemies = new g.Group();
