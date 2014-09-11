@@ -314,6 +314,11 @@ Globals
 StatePlay.prototype.updateGlobals = function() {
 	this.globalSlabRotation -= 0.025;
 	this.globalTurretRotation += 0.025;
+	/*if( this.globalTurretRotation >= Math.PI ) {
+		this.globalTurrentRotation = -Math.PI;
+	} else {
+		this.globalTurretRotation += Math.PI;
+	}*/
 	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
 };
 
@@ -327,7 +332,7 @@ StatePlay.prototype.removeLife = function() {
 	this.lives--;
 	this.updateLife();
 	if( !this.lives ) {
-		alert( 'dead' );
+		console.log( 'dead' );
 	}
 };
 

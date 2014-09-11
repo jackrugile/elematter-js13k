@@ -530,6 +530,7 @@ Play State - Tower Select/Build
 	line-height: 1.7;
 	opacity: 0;
 	padding: 0 20px;
+	pointer-events: none;
 	position: absolute;
 	-webkit-transition: opacity 300ms 300ms;
 	transition: opacity 300ms 300ms;
@@ -805,6 +806,10 @@ Enemies
 	z-index: 100;
 }
 
+.enemy.boss {
+	border-width: 6px;
+}
+
 .enemy.type-e {
 	border-color: hsl(120, 80%, 60%);
 	border-top-color: hsl(120, 70%, 15%);
@@ -829,6 +834,66 @@ Enemies
 	border-right-color: hsl(0, 70%, 15%);
 }
 
+.enemy.boss:before {
+	border: 2px solid transparent;
+	border-right: none;
+	border-top: none;
+	border-radius: 100%;
+	bottom: -20px;
+	content: '';
+	left: -20px;
+	right: -20px;
+	position: absolute;
+	top: -20px;
+}
+
+.enemy.boss.type-e:before { border-color: hsl(120, 80%, 60%); }
+.enemy.boss.type-w:before { border-color: hsl(200, 80%, 60%); }
+.enemy.boss.type-a:before { border-color: hsl(60, 80%, 60%); }
+.enemy.boss.type-f:before { border-color: hsl(0, 80%, 60%); }
+
+.enemy:after {
+	background: hsla(0, 0%, 100%, 0.5);
+	bottom: -4px;
+	content: '';
+	left: -4px;
+	right: -4px;
+	opacity: 0;
+	position: absolute;
+	top: -4px;
+	-webkit-transition: all 300ms ease-out;
+	transition: all 300ms ease-out;
+}
+
+.enemy.boss:after {
+	bottom: -6px;
+	left: -6px;
+	right: -6px;
+	top: -6px;
+}
+
+.enemy.hit:after {
+	opacity: 1;
+	-webkit-transition-duration: 0ms;
+	transition-duration: 0ms;
+}
+
+.enemy.type-e:after {
+	box-shadow: 0 0 0 4px hsl(120, 100%, 70%);
+}
+
+.enemy.type-w:after {
+	box-shadow: 0 0 0 4px hsl(200, 100%, 70%);
+}
+
+.enemy.type-a:after {
+	box-shadow: 0 0 0 4px hsl(60, 100%, 70%);
+}
+
+.enemy.type-f:after {
+	box-shadow: 0 0 0 4px hsl(0, 100%, 70%);
+}
+
 /*==============================================================================
 
 Bullets
@@ -836,7 +901,6 @@ Bullets
 ==============================================================================*/
 
 .bullet {
-	/*border-radius: 50%;*/
 	border-radius: 10px 10px 10px 0;
 	left: 0;
 	position: absolute;

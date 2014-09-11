@@ -11,9 +11,14 @@ g.Enemy = function( opt ) {
 
 g.Enemy.prototype.init = function() {
 	this.guid = g.guid++;
-	this.hp = 1; // hit points
-	this.wp = 1; // current waypoint index
 	this.size = 14;
+	this.dom = g.cE( null, 'enemy type-' + this.type );
+	if( this.isBoss ) {
+		g.addClass( this.dom, 'boss' );
+		this.size = 20;
+	}
+	this.hp = 100; // hit points
+	this.wp = 1; // current waypoint index
 	this.radius = this.size / 2;
 	this.x = g.data.map[ 0 ][ 0 ] * g.size; // actual x
 	this.y = g.data.map[ 0 ][ 1 ] * g.size; // actual y
@@ -28,10 +33,10 @@ g.Enemy.prototype.init = function() {
 	this.dist = 0; // dist to waypoint
 	this.angle = 0; // angle to waypoint
 	this.rotation = 0;
+	this.scale = 1;
 	this.speed = 1;
 	this.distanceTraveled = 0;
 	this.tick = 0;
-	this.dom = g.cE( null, 'enemy type-' + this.type );
 	this.updateCoords();
 	g.css( this.dom, {
 		'width': this.size + 'px',
@@ -59,12 +64,11 @@ g.Enemy.prototype.step = function() {
 		dirx += (dx - dirx) * 0.125;
 		diry += (dy - diry) * 0.125;
 		this.rotation = Math.atan2( diry, dirx );
-		//var targetRotation = Math.atan2( dy, dx );
 
 		if( Math.abs( this.dist ) > this.speed ) {
 			this.x += this.vx;
 			this.y += this.vy;
-			this.distanceTraveled += this.vx + this.vy;
+			this.distanceTraveled += ( Math.abs( this.vx ) + Math.abs( this.vy ) );
 		} else {
 			this.x = wp[ 0 ] * g.size;
 			this.y = wp[ 1 ] * g.size;
@@ -76,14 +80,30 @@ g.Enemy.prototype.step = function() {
 			}
 		}
 
+		if( this.hitTick > 0 ) {
+			this.hitTick--;
+		} else {
+			g.removeClass( this.dom, 'hit' );
+		}
 		this.tick++;
 	}
 
 	this.updateCoords();
+	
 };
 
 g.Enemy.prototype.draw = function() {
-	g.css( this.dom, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.rotation + Math.PI / 4 - Math.PI ) + 'rad)' );
+	g.css( this.dom, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.rotation + Math.PI / 4 - Math.PI ) + 'rad) scale(' + this.scale + ')' );
+};
+
+g.Enemy.prototype.receiveDamage = function( dmg ) {
+	g.audio.play( 'damage' );
+	this.hp -= dmg;
+	this.hitTick = 5;
+	g.addClass( this.dom, 'hit' );
+	if( this.hp <= 0 ) {
+		this.destroy();
+	}
 };
 
 g.Enemy.prototype.activate = function() {

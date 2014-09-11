@@ -53,6 +53,11 @@ g.Bullet.prototype.step = function() {
 				this.x += this.vx;
 				this.y += this.vy;
 			} else {
+				var dmg = this.dmg;
+				if( target.type == this.counters ) {
+					dmg *= 1.5;
+				}
+				target.receiveDamage( dmg );
 				this.destroy();
 			}
 		} else {

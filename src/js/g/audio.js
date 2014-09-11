@@ -26,5 +26,9 @@ g.audio.play = function( key ) {
 	var sound = g.audio.sounds[ key ];
 	var soundData = sound.length > 1 ? sound[ Math.floor( Math.random() * sound.length ) ] : sound[ 0 ];
 	soundData.pool[ soundData.tick ].play();
-	soundData.tick < soundData.count - 1 ? soundData.tick++ : soundData.tick = 0;
+	if( soundData.tick < soundData.count - 1 ) {
+		soundData.tick++;
+	} else {
+		soundData.tick = 0;
+	}
 };

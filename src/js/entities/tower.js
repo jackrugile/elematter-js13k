@@ -29,24 +29,22 @@ g.Tower.prototype.init = function() {
 
 g.Tower.prototype.step = function() {
 	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
-	if( !this.target ) {
-		this.turretRotation += ( this.state.globalTurretRotation - this.turretRotation ) * 0.2;
-	}
 	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
+	var angle = this.state.globalTurretRotation;
+	if( this.target ) {
+		var dx = this.target.cx - this.cx,
+			dy = this.target.cy - this.cy,
+			dist = Math.sqrt( dx * dx + dy * dy );
+		angle = Math.atan2( dy, dx ) + Math.PI * 0.75;
+	}
+	this.turretRotation = angle;
+
 	if( this.state.isPlaying ) {
 		this.getTarget();
 		this.fire();
 
 		if( this.bulletTick < this.rte ) {
 			this.bulletTick++;
-		}
-
-		if( this.target ) {
-			var dx = this.target.cx - this.cx,
-				dy = this.target.cy - this.cy,
-				dist = Math.sqrt( dx * dx + dy * dy ),
-				angle = Math.atan2( dy, dx ) + Math.PI * 0.75;
-			this.turretRotation += ( angle - this.turretRotation ) * 0.2;
 		}
 	}
 };
@@ -136,6 +134,7 @@ g.Tower.prototype.fire = function() {
 			var bullet = new g.Bullet({
 				state: this.state,
 				type: this.type,
+				counters: this.counters,
 				dmg: this.dmg,
 				target: this.target.guid,
 				x: this.cx,

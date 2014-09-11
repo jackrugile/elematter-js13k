@@ -48,19 +48,19 @@ g.data.towers = {
 		hue: 200,
 		stats: [
 			{ // level 1
-				cost: 100, // game currency
+				cost: 125, // game currency
 				dmg: 10, // per shot
 				rng: 75, // pixel radius
 				rte: 30 // tick interval
 			},
 			{ // level 2
-				cost: 125, // game currency
+				cost: 150, // game currency
 				dmg: 12, // per shot
 				rng: 60, // pixel radius
 				rte: 28 // tick interval
 			},
 			{ // level 3
-				cost: 175, // game currency
+				cost: 200, // game currency
 				dmg: 14, // per shot
 				rng: 70, // pixel radius
 				rte: 26 // tick interval
@@ -79,19 +79,19 @@ g.data.towers = {
 		hue: 60,
 		stats: [
 			{ // level 1
-				cost: 100, // game currency
+				cost: 125, // game currency
 				dmg: 10, // per shot
 				rng: 125, // pixel radius
 				rte: 10 // tick interval
 			},
 			{ // level 2
-				cost: 125, // game currency
+				cost: 150, // game currency
 				dmg: 12, // per shot
 				rng: 60, // pixel radius
 				rte: 28 // tick interval
 			},
 			{ // level 3
-				cost: 175, // game currency
+				cost: 200, // game currency
 				dmg: 14, // per shot
 				rng: 70, // pixel radius
 				rte: 26 // tick interval
@@ -110,19 +110,19 @@ g.data.towers = {
 		hue: 0,
 		stats: [
 			{ // level 1
-				cost: 100, // game currency
+				cost: 150, // game currency
 				dmg: 10, // per shot
 				rng: 75, // pixel radius
 				rte: 30 // tick interval
 			},
 			{ // level 2
-				cost: 125, // game currency
+				cost: 175, // game currency
 				dmg: 12, // per shot
 				rng: 60, // pixel radius
 				rte: 28 // tick interval
 			},
 			{ // level 3
-				cost: 175, // game currency
+				cost: 225, // game currency
 				dmg: 14, // per shot
 				rng: 70, // pixel radius
 				rte: 26 // tick interval
