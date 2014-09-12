@@ -55,7 +55,7 @@ g.Pool.prototype.empty = function() {
 };
 
 g.Pool.prototype.each = function( action, asc ) {
-	var i;
+	/*var i;
 	if( asc ) {
 		for( i = 0; i < this.length; i++ ) {
 			this.alive[ i ][ action ]( i );
@@ -65,5 +65,9 @@ g.Pool.prototype.each = function( action, asc ) {
 		while( i-- ) {
 			this.alive[ i ][ action ]( i );
 		}
+	}*/
+	var i = this.length;
+	while( i-- ) {
+		this.alive[ i ][ action ]( i );
 	}
 };

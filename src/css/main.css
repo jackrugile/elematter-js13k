@@ -42,6 +42,7 @@ Game
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
+	transform: translate(-50%, -50%);
 	transition: opacity 500ms;
 	top: 50%;
 }
@@ -332,10 +333,12 @@ Play State - Labels and Displays
 /*==============================================================================
 
 Play State - Tower Select/Build Menu
+some tower menu thrown in for efficiency
 
 ==============================================================================*/
 
-.build-menu-wrap {
+.build-menu-wrap,
+.tower-menu-wrap {
 	background: hsla(0, 0%, 20%, 0.4);
 	bottom: 0;
 	left: 0;
@@ -351,13 +354,15 @@ Play State - Tower Select/Build Menu
 	z-index: 200;
 }
 
-.build-menu-open .build-menu-wrap {
+.build-menu-open .build-menu-wrap,
+.tower-menu-open .tower-menu-wrap {
 	opacity: 1;
 	transition-delay: 0ms;
 	visibility: visible;
 }
 
-.build-menu {
+.build-menu,
+.tower-menu {
 	cursor: default;
 	left: 0;
 	position: absolute;
@@ -365,14 +370,14 @@ Play State - Tower Select/Build Menu
 	width: 280px;
 }
 
-.build-selects {
+.build-buttons {
 	background: hsla(0, 0%, 0%, 0.75);
 	height: 80px;
 	position: relative;
 	width: 100%;
 }
 
-.build-selects:before {
+.build-buttons:before {
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	content: '';
 	height: 50%;
@@ -384,7 +389,7 @@ Play State - Tower Select/Build Menu
 	z-index: 2;
 }
 
-.build-select {
+.build-button {
 	background: #fff;
 	box-shadow: inset 0 0 0 20px hsla(0, 0%, 100%, 0);
 	cursor: pointer;
@@ -448,36 +453,43 @@ Play State - Tower Select/Build Menu
 .pos-e .build-a { left: 120px; }
 .pos-e .build-f { left: 170px; }
 
-.build-info {
+.build-info,
+.tower-info {
 	background: hsla(0, 0%, 0%, 0.75);
 	font-size: 13px;
-	height: 145px;
+	height: 140px;
 	left: 0;
 	line-height: 1.7;
 	opacity: 0;
-	padding: 0 20px;
+	padding: 15px 20px;
 	pointer-events: none;
 	position: absolute;
-	transition: opacity 150ms 150ms;
+	transform: scale(0.75);
+	transition: 
+		opacity 150ms 150ms,
+		transform 150ms 150ms;
 	width: 100%;
 }
 
-.hover-build-select .build-info {
+.hover-build-button .build-info,
+.hover-tower-button .tower-info {
 	opacity: 1;
+	transform: scale(1);
 	transition-delay: 0ms;
 }
 
-.pos-n .build-info {
-	padding-bottom: 15px;
-	top: 80px;
+.pos-n .build-info,
+.pos-n .tower-info {
+	top: 81px;
 }
 
-.pos-s .build-info {
-	bottom: 80px;
-	padding-top: 15px;
+.pos-s .build-info,
+.pos-s .tower-info {
+	bottom: 81px;
 }
 
-.build-title {
+.build-title,
+.tower-title {
 	border-bottom: 1px solid #333;
 	font-size: 16px;
 	font-weight: bold;
@@ -485,7 +497,8 @@ Play State - Tower Select/Build Menu
 	padding-bottom: 7px;
 }
 
-.build-title i {
+.build-title i,
+.tower-title i {
 	color: #fff;
 	font-style: normal;
 	margin-right: 14px;
@@ -496,15 +509,18 @@ Play State - Tower Select/Build Menu
 .hover-a .build-type { color: hsl(60, 90%, 60%); }
 .hover-f .build-type { color: hsl(0, 90%, 60%); }
 
-.build-cost {
+.build-cost,
+.tower-cost {
 	color: #fff;
 }
 
-.build-stat {
+.build-stat,
+.tower-stat {
 	color: #aaa;
 }
 
-.build-stat strong {
+.build-stat strong,
+.tower-stat strong {
 	display: inline-block;
 	margin-right: 3px;
 	text-align: right;
@@ -548,36 +564,6 @@ Play State - Tower Select/Build Menu
 Play State - Tower Upgrade/Reclaim Menu
 
 ==============================================================================*/
-
-.tower-menu-wrap {
-	background: hsla(0, 0%, 20%, 0.4);
-	bottom: 0;
-	left: 0;
-	opacity: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-	transition:
-		visibility 150ms 150ms,
-		opacity 150ms
-	;
-	visibility: hidden;
-	z-index: 200;
-}
-
-.tower-menu-open .tower-menu-wrap {
-	opacity: 1;
-	transition-delay: 0ms;
-	visibility: visible;
-}
-
-.tower-menu {
-	cursor: default;
-	left: 0;
-	position: absolute;
-	top: 0;
-	width: 280px;
-}
 
 .tower-buttons {
 	background: hsla(0, 0%, 0%, 0.75);
@@ -645,6 +631,7 @@ Play State - Tower Upgrade/Reclaim Menu
 	height: 22px;
 	left: 0;
 	margin: auto;
+	pointer-events: none;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -744,72 +731,9 @@ Play State - Tower Upgrade/Reclaim Menu
 .pos-e .tower-button.upgrade   { left: 120px; }
 .pos-e .tower-button.reclaim   { left: 170px; }
 
-.tower-info {
-	background: hsla(0, 0%, 0%, 0.75);
-	font-size: 13px;
-	height: 145px;
-	left: 0;
-	line-height: 1.7;
-	opacity: 0;
-	padding: 0 20px;
-	pointer-events: none;
-	position: absolute;
-	transition: opacity 150ms 150ms;
-	width: 100%;
-}
-
-.hover-tower-button .tower-info {
-	opacity: 1;
-	transition-delay: 0ms;
-}
-
-.pos-n .tower-info {
-	padding-bottom: 15px;
-	top: 80px;
-}
-
-.pos-s .tower-info {
-	bottom: 80px;
-	padding-top: 15px;
-}
-
-.tower-title {
-	border-bottom: 1px solid #333;
-	font-size: 16px;
-	font-weight: bold;
-	margin-bottom: 7px;
-	padding-bottom: 7px;
-}
-
-.tower-title i {
-	color: #fff;
-	font-style: normal;
-	margin-right: 14px;
-}
-/*
-.hover-e .build-type { color: hsl(120, 90%, 60%); }
-.hover-w .build-type { color: hsl(200, 90%, 60%); }
-.hover-a .build-type { color: hsl(60, 90%, 60%); }
-.hover-f .build-type { color: hsl(0, 90%, 60%); }*/
-
-.tower-cost {
-	color: #fff;
-}
-
-.tower-stat {
-	color: #aaa;
-}
-
 .tower-stat i {
 	color: #fff;
 	font-style: normal;
-}
-
-.tower-stat strong {
-	display: inline-block;
-	margin-right: 3px;
-	text-align: right;
-	width: 58px;
 }
 
 /*==============================================================================
@@ -826,8 +750,7 @@ Towers
 .t-tower,
 .t-slab,
 .t-base,
-.t-core
-{
+.t-core {
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -865,6 +788,7 @@ Towers
 	opacity: 0;
 	pointer-events: none;
 	top: 50%;
+	transform: translate(-50%, -50%);
 	transition: all 150ms ease-in-out;
 	z-index: 1;
 }
@@ -980,16 +904,27 @@ Enemies
 	left: 0;
 	position: absolute;
 	top: 0;
+	transition:
+		box-shadow 100ms,
+		opacity 100ms
+	;
 	z-index: 100;
 }
 
+.enemy.slow {
+	box-shadow: 0 0 0 8px hsla(200, 100%, 50%, 0.5);
+	/*opacity: 0.5;*/
+}
+
 .hp {
-	/*background: #fff;
-	height: 1px;
-	left: 0;
+	/*background: hsla(0, 0%, 200%, 0.5);
+	height: 2px;
+	left: 50%;
+	margin-left: -7px;
 	position: absolute;
-	top: -1px;
-	width: 100%;*/
+	top: -10px;
+	transform: rotate( -45deg );
+	width: 14px;*/
 }
 
 .hl {
@@ -1063,7 +998,7 @@ Enemies
 	opacity: 0;
 	position: absolute;
 	top: -4px;
-	transition: opacity 150ms ease-out;
+	transition: opacity 400ms ease-out;
 }
 
 .enemy.boss:after {

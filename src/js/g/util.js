@@ -106,7 +106,7 @@ g.css = function( elem, prop, val ) {
 
 // credit: Todd Motto - https://github.com/toddmotto/apollo
 g.hasClass = function ( elem, className ) {
-	return elem.classList.contains( className) ;
+	return elem.classList.contains( className ) ;
 };
 
 g.addClass = function ( elem, className ) {

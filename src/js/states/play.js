@@ -77,7 +77,7 @@ StatePlay.prototype.init = function() {
 		// get build menu dom
 		this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );
 		this.dom.buildMenu     = g.qS( '.build-menu' );
-		this.dom.buildSelect   = g.qS( '.build-select' );
+		this.dom.buildButton   = g.qS( '.build-button' );
 		this.dom.buildDefault  = g.qS( '.build-d' );
 		this.dom.buildEarth    = g.qS( '.build-e' );
 		this.dom.buildWater    = g.qS( '.build-w' );
@@ -118,11 +118,11 @@ StatePlay.prototype.init = function() {
 		// set build menu events
 		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );
 		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );
-		for( var i = 0, length = this.dom.buildSelect.length; i < length; i++ ) {
-			var buildSelect = this.dom.buildSelect[ i ];
-			g.on( buildSelect, 'mouseenter', this.onBuildSelectMouseenter, this );
-			g.on( buildSelect, 'mouseleave', this.onBuildSelectMouseleave, this );
-			g.on( buildSelect, 'click', this.onBuildSelectClick, this );
+		for( var i = 0, length = this.dom.buildButton.length; i < length; i++ ) {
+			var buildButton = this.dom.buildButton[ i ];
+			g.on( buildButton, 'mouseenter', this.onBuildButtonMouseenter, this );
+			g.on( buildButton, 'mouseleave', this.onBuildButtonMouseleave, this );
+			g.on( buildButton, 'click', this.onBuildButtonClick, this );
 		}
 		// set tower menu events
 		g.on( this.dom.towerMenuWrap, 'click', this.onTowerMenuWrapClick, this );
@@ -403,7 +403,7 @@ StatePlay.prototype.setupWaves = function() {
 			});
 		// loop over each set in that wave
 		for( var j = 0, jlength = wave.length; j < jlength; j++ ) {
-			var set = wave[ j ],
+			var set = wave[ j ].split( ' ' ),
 				type = set[ 0 ],
 				count = set[ 1 ],
 				isBoss = set.length >= 3 ? 1 : 0;
@@ -518,7 +518,7 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	g.text( this.dom.buildRte, data.rte );
 	// reset classes and add proper type classes based on tower data
 	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
-	g.addClass( g.dom, 'hover-build-select hover-' + type );
+	g.addClass( g.dom, 'hover-build-button hover-' + type );
 	g.removeClass( g.dom, 'dmg1 dmg2 dmg3 rng1 rng2 rng3 rte1 rte2 rte3' );
 
 	// default to 1, or "low"
@@ -578,7 +578,7 @@ StatePlay.prototype.onBuildMenuClick = function( e ) {
 	e.stopPropagation();
 };
 
-StatePlay.prototype.onBuildSelectMouseenter = function( e ) {
+StatePlay.prototype.onBuildButtonMouseenter = function( e ) {
 	// set the build menu text based on the element that is hovered
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
@@ -586,12 +586,12 @@ StatePlay.prototype.onBuildSelectMouseenter = function( e ) {
 	}
 };
 
-StatePlay.prototype.onBuildSelectMouseleave = function( e ) {
+StatePlay.prototype.onBuildButtonMouseleave = function( e ) {
 	// remove hover class, which fades out the description
-	g.removeClass( g.dom, 'hover-build-select' );
+	g.removeClass( g.dom, 'hover-build-button' );
 };
 
-StatePlay.prototype.onBuildSelectClick = function( e ) {
+StatePlay.prototype.onBuildButtonClick = function( e ) {
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
 		var cost = g.data.towers[ type ].stats[ 0 ].cst;
@@ -672,7 +672,7 @@ StatePlay.prototype.updateTowerMenuText = function( button ) {
 	g.text( this.dom.buildRte, data.rte );
 	// reset classes and add proper type classes based on tower data
 	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
-	g.addClass( g.dom, 'hover-build-select hover-' + type );*/
+	g.addClass( g.dom, 'hover-build-button hover-' + type );*/
 };
 
 StatePlay.prototype.updateTowerMenuAvailability = function() {
@@ -740,4 +740,4 @@ Add State
 
 ==============================================================================*/
 
-g.addState( 'play', new StatePlay() );
+//g.addState( 'play', new StatePlay() );

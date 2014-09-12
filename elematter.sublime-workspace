@@ -1,0 +1,1213 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"render",
+				"renderPlayhead"
+			],
+			[
+				"wallVel",
+				"wallVelocityIncrease"
+			],
+			[
+				"colo",
+				"color-dark"
+			],
+			[
+				"col",
+				"color-mid"
+			],
+			[
+				"color-",
+				"color-light"
+			],
+			[
+				"tr",
+				"transition-duration"
+			],
+			[
+				"color",
+				"color-light"
+			],
+			[
+				"fadeEle",
+				"fadeElemsLength"
+			],
+			[
+				"sy",
+				"sy"
+			],
+			[
+				"radiu",
+				"radiusEyeball"
+			],
+			[
+				"Enity",
+				"EntityBlastLine"
+			],
+			[
+				"Enti",
+				"EntitySnakeBlock"
+			],
+			[
+				"En",
+				"EntitySnakeBlock"
+			],
+			[
+				"resi",
+				"resizeGame"
+			],
+			[
+				"Entity",
+				"EntityDeathExplosion"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/css/main.css",
+			"settings":
+			{
+				"buffer_size": 22569,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/data/towers.js",
+			"settings":
+			{
+				"buffer_size": 1182,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "/*==============================================================================\n\nPlay State\n\n==============================================================================*/\n\nvar StatePlay = function(){};\n\n/*==============================================================================\n\nInitialize\n\n==============================================================================*/\n\nStatePlay.prototype.init = function() {\n	// general booleans\n	this.isPlaying = 0;\n	this.isBuildMenuOpen = 0;\n	this.isTowerMenuOpen = 0;\n	this.isBuildable = 0;\n\n	// state vars\n		// general\n		this.tick = 0;\n		this.hasPlayed = 0;\n		this.speed = 1;\n		// waves\n		this.wave = 0;\n		this.waveNext = this.wave + 1;\n		this.wavesTotal = g.data.waves.length;\n		// lives\n		this.livesTotal = 13;\n		this.lives = this.livesTotal;\n		// fragments\n		this.fragments = 1000;\n		this.fragmentsDisplay = this.fragments;\n		this.fragmentsDisplayLast = 0;\n		// tiles\n		this.lastClickedTile = null;\n		// global draw vars\n		this.globalSlabRotation = 0;\n		this.globalTurretRotation = 0;\n		this.globalCoreScale = 0.1;\n		// towers\n		this.lastClickedTower = null;\n		this.towers = new g.Group();\n		// waves\n		this.waves = new g.Group();\n		this.activeWaves = new g.Group();\n		// enemies\n		this.enemies = new g.Group();\n		// bullets\n		//this.bullets = new g.Group();\n		this.bullets = new g.Pool( g.B, 10 );\n\n	// setup dom\n		this.dom = {};\n		// get state dom\n		this.dom.state = g.qS( '.s-play' );\n		// get ui button dom\n		this.dom.play = g.qS( '.b-play' );\n		this.dom.x1   = g.qS( '.b-x1' );\n		this.dom.x2   = g.qS( '.b-x2' );\n		this.dom.x3   = g.qS( '.b-x3' );\n		this.dom.mute = g.qS( '.b-mute' );\n		this.dom.menu = g.qS( '.b-menu' );\n		this.dom.send = g.qS( '.b-send' );\n		// get ui display dom\n		this.dom.lives     = g.qS( '.d-lives' );\n		this.dom.fragments = g.qS( '.d-fragments' );\n		this.dom.wave      = g.qS( '.d-wave' );\n		this.dom.next      = g.qS( '.d-next' );\n		this.dom.eWave     = g.qS( '.w-e' );\n		this.dom.wWave     = g.qS( '.w-w' );\n		this.dom.aWave     = g.qS( '.w-a' );\n		this.dom.fWave     = g.qS( '.w-f' );\n		// get build menu dom\n		this.dom.buildMenuWrap = g.qS( '.build-menu-wrap' );\n		this.dom.buildMenu     = g.qS( '.build-menu' );\n		this.dom.buildButton   = g.qS( '.build-button' );\n		this.dom.buildDefault  = g.qS( '.build-d' );\n		this.dom.buildEarth    = g.qS( '.build-e' );\n		this.dom.buildWater    = g.qS( '.build-w' );\n		this.dom.buildAir      = g.qS( '.build-a' );\n		this.dom.buildFire     = g.qS( '.build-f' );\n		this.dom.buildCost     = g.qS( '.build-cost' );\n		this.dom.buildType     = g.qS( '.build-type' );\n		this.dom.buildDmg      = g.qS( '.build-dmg' );\n		this.dom.buildRng      = g.qS( '.build-rng' );\n		this.dom.buildRte      = g.qS( '.build-rte' );\n		// get tower menu dom\n		this.dom.towerMenuWrap  = g.qS( '.tower-menu-wrap' );\n		this.dom.towerMenu      = g.qS( '.tower-menu' );\n		this.dom.towerButton    = g.qS( '.tower-button' );\n		this.dom.towerHighlight = g.qS( '.tower-button.highlight' );\n		this.dom.towerUpgrade   = g.qS( '.tower-button.upgrade' );\n		this.dom.towerReclaim   = g.qS( '.tower-button.reclaim' );\n		this.dom.towerCost      = g.qS( '.tower-cost' );\n		this.dom.towerLabel     = g.qS( '.tower-label' );\n		this.dom.towerDmg       = g.qS( '.tower-dmg' );\n		this.dom.towerRng       = g.qS( '.tower-rng' );\n		this.dom.towerRte       = g.qS( '.tower-rte' );\n		this.dom.towerDmgNext   = g.qS( '.tower-dmg-next' );\n		this.dom.towerRngNext   = g.qS( '.tower-rng-next' );\n		this.dom.towerRteNext   = g.qS( '.tower-rte-next' );\n\n	// events\n		// set general events\n		g.on( window, 'click', this.onWinClick, this );\n		// set ui buttons events\n		g.on( this.dom.play, 'click', this.onPlayClick, this );\n		g.on( this.dom.x1, 'click', this.onX1Click, this );\n		g.on( this.dom.x2, 'click', this.onX2Click, this );\n		g.on( this.dom.x3, 'click', this.onX3Click, this );\n		g.on( this.dom.mute, 'click', this.onMuteClick, this );\n		g.on( this.dom.menu, 'click', this.onMenuClick, this );\n		g.on( this.dom.send, 'click', this.onSendClick, this );\n		// set build menu events\n		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );\n		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );\n		for( var i = 0, length = this.dom.buildButton.length; i < length; i++ ) {\n			var buildButton = this.dom.buildButton[ i ];\n			g.on( buildButton, 'mouseenter', this.onBuildButtonMouseenter, this );\n			g.on( buildButton, 'mouseleave', this.onBuildButtonMouseleave, this );\n			g.on( buildButton, 'click', this.onBuildButtonClick, this );\n		}\n		// set tower menu events\n		g.on( this.dom.towerMenuWrap, 'click', this.onTowerMenuWrapClick, this );\n		g.on( this.dom.towerMenu, 'click', this.onTowerMenuClick, this );\n		for( var j = 0, lengthj = this.dom.towerButton.length; j < lengthj; j++ ) {\n			var towerButton = this.dom.towerButton[ j ];\n			g.on( towerButton, 'mouseenter', this.onTowerButtonMouseenter, this );\n			g.on( towerButton, 'mouseleave', this.onTowerButtonMouseleave, this );\n			g.on( towerButton, 'click', this.onTowerButtonClick, this );\n		}\n\n	// initialization\n		this.updateLife();\n		// setup tiles\n		this.setupTiles();\n		// setup waves\n		this.setupWaves();\n		// one step for init\n		this.isPlaying = 1;\n		this.step();\n		this.isPlaying = 0;\n};\n\n/*==============================================================================\n\nStep\n\n==============================================================================*/\n\nStatePlay.prototype.step = function() {\n	// update fragments\n	this.updateFragments();\n\n	for( var i = 0; i < this.speed; i++ ) {\n		// update time based on current speed\n		//this.time._step( this.speed );\n		// update global properties\n		this.updateGlobals();\n		// waves\n		this.updateWaves();\n		// towers\n		this.towers.each( 'step' );\n		// enemies\n		this.enemies.each( 'step' );\n		// bullets\n		this.bullets.each( 'step' );\n	}\n\n	this.tick++;\n};\n\n/*==============================================================================\n\nDraw\n\n==============================================================================*/\n\nStatePlay.prototype.draw = function() {\n	// towers\n	this.towers.each( 'draw' );\n	// enemies\n	this.enemies.each( 'draw' );\n	// bullets\n	this.bullets.each( 'draw' );\n};\n\n/*==============================================================================\n\nExit\n\n==============================================================================*/\n\nStatePlay.prototype.exit = function() {\n};\n\n/*==============================================================================\n\nGeneral Events\n\n==============================================================================*/\n\nStatePlay.prototype.onWinClick = function() {\n	// if the area outside of the game is clicked\n	// and the build menu is open, hide it\n	if( this.isBuildMenuOpen ) {\n		this.hideBuildMenu();\n	}\n	// and the tower menu is open, hide it\n	if( this.isTowerMenuOpen ) {\n		this.hideTowerMenu();\n	}\n};\n\n/*==============================================================================\n\nButton Events\n\n==============================================================================*/\n\nStatePlay.prototype.onPlayClick = function() {\n	if( !this.hasPlayed ) {\n		this.advanceWave();\n		this.hasPlayed = 1;\n	}\n	this.isPlaying = !this.isPlaying;\n	if( this.isPlaying ) {\n		g.addClass( g.dom, 'playing' );\n	} else {\n		g.removeClass( g.dom, 'playing' );\n	}\n};\n\nStatePlay.prototype.onX1Click = function() {\n	this.speed = 1;\n	g.removeClass( g.dom, 'x1 x2 x3' );\n	g.addClass( g.dom, 'x1' );\n};\n\nStatePlay.prototype.onX2Click = function() {\n	this.speed = 2;\n	g.removeClass( g.dom, 'x1 x2 x3' );\n	g.addClass( g.dom, 'x2' );\n};\n\nStatePlay.prototype.onX3Click = function() {\n	this.speed = 3;\n	g.removeClass( g.dom, 'x1 x2 x3' );\n	g.addClass( g.dom, 'x3' );\n};\n\nStatePlay.prototype.onEAtkClick = function() {\n};\n\nStatePlay.prototype.onWAtkClick = function() {\n};\n\nStatePlay.prototype.onAAtkClick = function() {\n};\n\nStatePlay.prototype.onFAtkClick = function() {\n};\n\nStatePlay.prototype.onMuteClick = function() {\n};\n\nStatePlay.prototype.onMenuClick = function() {\n};\n\nStatePlay.prototype.onSendClick = function() {\n	if( this.isPlaying ) {\n		this.advanceWave();\n	}\n};\n\n/*==============================================================================\n\nMap/Tile Generation\n\n==============================================================================*/\n\nStatePlay.prototype.setupTiles = function() {\n	// create a full grid of tiles, broken up into two separate arrays\n	// they can be base or be path\n	this.baseTiles = new g.Group();\n	this.pathTiles = new g.Group();\n	for( var x = 0; x < g.cols; x++ ) {\n		for( var y = 0; y < g.rows; y++ ) {\n			var isPath = this.isPath( x, y ),\n				classes = [ 'tile' ];\n			if( isPath ) {\n				classes += ' path';\n			}\n			var tile = new g.Ti({\n				state: this,\n				col: x,\n				row: y,\n				isPath: isPath || 0,\n				classes: classes,\n				horizontal: x > g.cols / 2 ? 'e' : 'w',\n				vertical: y > g.rows / 2 ? 's' : 'n'\n			});\n			if( isPath ) {\n				this.pathTiles.push( tile );\n			} else {\n				this.baseTiles.push( tile );\n			}\n		}\n	}\n};\n\nStatePlay.prototype.isPath = function( x, y ) {\n	// based on the map waypoint data\n	// determine whether a tile is a base tile or a path tile\n	var mapLength = g.data.map.length;\n	for( var i = 0; i < mapLength - 1; i++ ) {\n		var p1 = g.data.map[ i ],\n			p2 = g.data.map[ i + 1 ],\n			minX = Math.min( p1[ 0 ], p2[ 0 ] ),\n			minY = Math.min( p1[ 1 ], p2[ 1 ] ),\n			maxX = Math.max( p1[ 0 ], p2[ 0 ] ),\n			maxY = Math.max( p1[ 1 ], p2[ 1 ] );\n		if( x >= minX && x <= maxX && y >= minY && y <= maxY ) {\n			return 1;\n		}\n	}\n};\n\n/*==============================================================================\n\nGlobals\n\n==============================================================================*/\n\nStatePlay.prototype.updateGlobals = function() {\n	this.globalSlabRotation -= 0.025;\n	this.globalTurretRotation += 0.025;\n	/*if( this.globalTurretRotation >= Math.PI ) {\n		this.globalTurrentRotation = -Math.PI;\n	} else {\n		this.globalTurretRotation += Math.PI;\n	}*/\n	this.globalCoreScale = 0.3 + Math.sin( this.tick / 30 ) * 0.15;\n};\n\n/*==============================================================================\n\nLives\n\n==============================================================================*/\n\nStatePlay.prototype.removeLife = function() {\n	this.lives--;\n	this.updateLife();\n	if( !this.lives ) {\n		console.log( 'dead' );\n	}\n};\n\nStatePlay.prototype.updateLife = function() {\n	g.text( this.dom.lives, this.lives + ' / ' + this.livesTotal );\n};\n\n/*==============================================================================\n\nFragments / Cash / Spending / Money / Currency\n\n==============================================================================*/\n\nStatePlay.prototype.setFragments = function( amt ) {\n	this.fragments += amt;\n	// update build menu availability\n	this.updateBuildMenuAvailability();\n	// update tower menu availability\n	this.updateTowerMenuAvailability();\n};\n\nStatePlay.prototype.updateFragments = function() {\n	this.fragmentsDisplay += ( this.fragments - this.fragmentsDisplay ) * 0.2;\n	if( Math.round( this.fragmentsDisplay ) != Math.round( this.fragmentsDisplayLast ) ) {\n		g.text( this.dom.fragments, g.formatCommas( this.fragmentsDisplay ) );\n	}\n	this.fragmentsDisplayLast = this.fragmentsDisplay;\n};\n\n/*==============================================================================\n\nWaves\n\n==============================================================================*/\n\nStatePlay.prototype.setupWaves = function() {\n	// loop over each wave data\n	for( var i = 0, ilength = g.data.waves.length; i < ilength; i++ ) {\n		var wave = g.data.waves[ i ],\n			newWave = new g.W({\n				state: this,\n				num: i\n			});\n		// loop over each set in that wave\n		for( var j = 0, jlength = wave.length; j < jlength; j++ ) {\n			var set = wave[ j ].split( ' ' ),\n				type = set[ 0 ],\n				count = set[ 1 ],\n				isBoss = set.length >= 3 ? 1 : 0;\n			// loop to create the correct amount of enemies for that set\n			for( var k = 0, klength = count; k < klength; k++ ) {\n				var enemy = new g.E({\n					state: this,\n					type: type,\n					isBoss: isBoss\n				});\n				newWave.enemies.push( enemy );\n				newWave.counts[ type ]++;\n			}\n		}\n		this.waves.push( newWave );\n	}\n};\n\nStatePlay.prototype.updateWaves = function() {\n	// step each active wave\n	this.activeWaves.each( 'step' );\n\n	// move next wave to active if active waves are empty\n	if( !this.activeWaves.length && this.waves.length && !this.enemies.length ) {\n		this.advanceWave();\n	}\n\n	// check if active waves are empty\n	this.activeWaves.each( function( wave, i , collection ) {\n		if( !wave.enemies.length ) {\n			this.activeWaves.removeAt( i );\n		}\n	}, 0, this );\n	\n};\n\nStatePlay.prototype.advanceWave = function() {\n	// what a mess, dealing with waves\n	if( this.hasPlayed ) {\n		if( this.waves.length ) {\n			this.activeWaves.push( this.waves.shift() );\n			g.text( this.dom.wave, ( this.wave + 1 ) + ' / ' + this.wavesTotal );\n			this.wave++;\n			if( this.wave < this.wavesTotal ) {\n				this.waveNext++;\n				var waveNext = this.waves.getAt( 0 );\n				g.text( this.dom.eWave, waveNext.counts.e );\n				g.text( this.dom.wWave, waveNext.counts.w );\n				g.text( this.dom.aWave, waveNext.counts.a );\n				g.text( this.dom.fWave, waveNext.counts.f );\n			} else {\n				this.waveNext = null;\n				g.text( this.dom.eWave, '--' );\n				g.text( this.dom.wWave, '--' );\n				g.text( this.dom.aWave, '--' );\n				g.text( this.dom.fWave, '--' );\n			}\n		}\n	} else {\n		var next = this.waves.getAt( 0 );\n		g.text( this.dom.eWave, next.counts.e );\n		g.text( this.dom.wWave, next.counts.w );\n		g.text( this.dom.aWave, next.counts.a );\n		g.text( this.dom.fWave, next.counts.f );\n		g.text( this.dom.wave, this.wave + ' / ' + this.wavesTotal );\n	}\n};\n\n/*==============================================================================\n\nBuild Menu\n\n==============================================================================*/\n\nStatePlay.prototype.showBuildMenu = function( tile ) {\n	this.isBuildMenuOpen = 1;\n	this.isBuildable = 1;\n	g.addClass( g.dom, 'build-menu-open' );\n\n	// set the proper positioning to prevent overflow of main game wrap\n	g.removeClass( g.dom, 'pos-n pos-e pos-s pos-w' );\n	g.addClass( g.dom, 'pos-' + tile.horizontal + ' ' + 'pos-' + tile.vertical );\n\n	// determine proper coordinates\n	var x = tile.col * g.size - 20,\n		y = tile.row * g.size - 20;\n\n	if( tile.horizontal == 'e' ) {\n		x -= 200;\n	}\n\n	// set position based on tile\n	g.css( this.dom.buildMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)' );\n\n	// reset anim on pulsing default box\n	g.resetAnim( this.dom.buildDefault );\n};\n\nStatePlay.prototype.hideBuildMenu = function() {\n	this.isBuildMenuOpen = 0;\n	g.removeClass( g.dom, 'build-menu-open' );\n};\n\nStatePlay.prototype.updateBuildMenuText = function( type ) {\n	// get the tower data based on type\n	var data = g.data.towers[ type ];\n	// set all text nodes\n	g.text( this.dom.buildCost, data.stats[ 0 ].cst );\n	g.text( this.dom.buildType, data.title );\n	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );\n	g.text( this.dom.buildRng, data.rng );\n	g.text( this.dom.buildRte, data.rte );\n	// reset classes and add proper type classes based on tower data\n	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );\n	g.addClass( g.dom, 'hover-build-button hover-' + type );\n	g.removeClass( g.dom, 'dmg1 dmg2 dmg3 rng1 rng2 rng3 rte1 rte2 rte3' );\n\n	// default to 1, or \"low\"\n	var meterDmg = 1,\n		meterRng = 1,\n		meterRte = 1;\n\n	// get meter values based on keyword descriptions\n	if( data.dmg == 'Medium' ) {\n		meterDmg = 2;\n	} else if( data.dmg == 'High' ) {\n		meterDmg = 3;\n	}\n	if( data.rng == 'Medium' ) {\n		meterRng = 2;\n	} else if( data.rng == 'High' ) {\n		meterRng = 3;\n	}\n	if( data.rte == 'Medium' ) {\n		meterRte = 2;\n	} else if( data.rte == 'High' ) {\n		meterRte = 3;\n	}\n\n	// set classes based on meter values\n	g.addClass( g.dom, 'dmg' + meterDmg );\n	g.addClass( g.dom, 'rng' + meterRng );\n	g.addClass( g.dom, 'rte' + meterRte );\n};\n\nStatePlay.prototype.updateBuildMenuAvailability = function() {\n	g.removeClass( g.dom, 'no-b-e no-b-w no-b-a no-b-f' );\n	var classes = '';\n	if( this.fragments < g.data.towers.e.stats[ 0 ].cst ) {\n		classes += 'no-b-e ';\n	}\n	if( this.fragments < g.data.towers.w.stats[ 0 ].cst ) {\n		classes += 'no-b-w ';\n	}\n	if( this.fragments < g.data.towers.a.stats[ 0 ].cst ) {\n		classes += 'no-b-a ';\n	}\n	if( this.fragments < g.data.towers.f.stats[ 0 ].cst ) {\n		classes += 'no-b-f ';\n	}\n\n	g.addClass( g.dom, classes );\n};\n\nStatePlay.prototype.onBuildMenuWrapClick = function( e ) {\n	// if the outer wrap is clicked, close the build menu\n	this.hideBuildMenu();\n};\n\nStatePlay.prototype.onBuildMenuClick = function( e ) {\n	// prevent any clicks from bubbling up to any other tiles or buttons\n	e.stopPropagation();\n};\n\nStatePlay.prototype.onBuildButtonMouseenter = function( e ) {\n	// set the build menu text based on the element that is hovered\n	var type = g.attr( e.target, 'data-type' );\n	if( type ) {\n		this.updateBuildMenuText( type );\n	}\n};\n\nStatePlay.prototype.onBuildButtonMouseleave = function( e ) {\n	// remove hover class, which fades out the description\n	g.removeClass( g.dom, 'hover-build-button' );\n};\n\nStatePlay.prototype.onBuildButtonClick = function( e ) {\n	var type = g.attr( e.target, 'data-type' );\n	if( type ) {\n		var cost = g.data.towers[ type ].stats[ 0 ].cst;\n		if( cost <= this.fragments && this.isBuildable ) {\n			this.setFragments( -cost );\n			var tile = this.lastClickedTile;\n			var tower = new g.To({\n				state: this,\n				col: tile.col,\n				row: tile.row,\n				horizontal: tile.horizontal,\n				vertical: tile.vertical,\n				type: type\n			});\n			this.towers.push( tower );\n			this.isBuildable = 0;\n			this.hideBuildMenu();\n		}\n	}\n};\n\n/*==============================================================================\n\nTower Menu\n\n==============================================================================*/\n\nStatePlay.prototype.showTowerMenu = function( tower ) {\n	this.isTowerMenuOpen = 1;\n	g.addClass( g.dom, 'tower-menu-open' );\n\n	// set the proper type class\n	g.removeClass( g.dom, 't-menu-e t-menu-w t-menu-a t-menu-f' );\n	g.addClass( g.dom, 't-menu-' + tower.type );\n\n	// set the proper positioning to prevent overflow of main game wrap\n	g.removeClass( g.dom, 'pos-n pos-e pos-s pos-w' );\n	g.addClass( g.dom, 'pos-' + tower.horizontal + ' ' + 'pos-' + tower.vertical );\n\n	// determine proper coordinates\n	var x = tower.col * g.size - 20,\n		y = tower.row * g.size - 20;\n\n	if( tower.horizontal == 'e' ) {\n		x -= 200;\n	}\n\n	// set position based on tile\n	g.css( this.dom.towerMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)' );\n\n	// reset anim on pulsing default box\n	g.resetAnim( this.dom.towerHighlight );\n};\n\nStatePlay.prototype.hideTowerMenu = function() {\n	this.isTowerMenuOpen = 0;\n	g.removeClass( g.dom, 'tower-menu-open' );\n	this.towers.each( function( tower ) {\n		g.removeClass( tower.dom.wrap, 'selected' );\n	}, 1, this );\n};\n\nStatePlay.prototype.updateTowerMenuText = function( button ) {\n	if( button == 'upgrade' ) {\n		// upgrade button is hovered, get proper data\n		g.addClass( g.dom, 'hover-tower-button' );\n	} else if( button == 'reclaim' ) {\n		// sell button is hovered, get proper data\n		g.addClass( g.dom, 'hover-tower-button' );\n	}\n	// get the tower data based on type\n	/*var data = g.data.towers[ type ];\n	// set all text nodes\n	g.text( this.dom.buildCost, data.stats[ 0 ].cst );\n	g.text( this.dom.buildType, data.title );\n	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );\n	g.text( this.dom.buildRng, data.rng );\n	g.text( this.dom.buildRte, data.rte );\n	// reset classes and add proper type classes based on tower data\n	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );\n	g.addClass( g.dom, 'hover-build-button hover-' + type );*/\n};\n\nStatePlay.prototype.updateTowerMenuAvailability = function() {\n	if( this.lastClickedTower ) {\n		g.removeClass( g.dom, 'no-upgrade maxed-upgrade' );\n		var lvl = this.lastClickedTower.lvl;\n		if( lvl == 2 ) {\n			g.addClass( g.dom, 'maxed-upgrade' );\n		} else {\n			if( this.fragments < g.data.towers.e.stats[ lvl ].cst ) {\n				g.addClass( g.dom, 'no-upgrade' );\n			}\n		}\n	}\n};\n\nStatePlay.prototype.onTowerMenuWrapClick = function( e ) {\n	// if the outer wrap is clicked, close the tower menu\n	this.hideTowerMenu();\n};\n\nStatePlay.prototype.onTowerMenuClick = function( e ) {\n	// prevent any clicks from bubbling up to any other tiles or buttons\n	e.stopPropagation();\n};\n\nStatePlay.prototype.onTowerButtonMouseenter = function( e ) {\n	// set the tower menu text based on the button that is hovered\n	this.updateTowerMenuText( g.attr( e.target, 'data-action' ) );\n};\n\nStatePlay.prototype.onTowerButtonMouseleave = function( e ) {\n	// remove hover class, which fades out the description\n	g.removeClass( g.dom, 'hover-tower-button' );\n};\n\nStatePlay.prototype.onTowerButtonClick = function( e ) {\n	var action = g.attr( e.target, 'data-action' );\n	if( action == 'upgrade') {\n		console.log( 'upgrade' );\n	} else if( action == 'reclaim' ) {\n		console.log( 'reclaim' );\n	}\n	/*if( type ) {\n		var cost = g.data.towers[ type ].stats[ 0 ].cst;\n		if( cost <= this.fragments && this.isBuildable ) {\n			this.setFragments( -cost );\n			var tile = this.lastClickedTile;\n			var tower = new g.Tower({\n				state: this,\n				col: tile.col,\n				row: tile.row,\n				type: type\n			});\n			this.towers.push( tower );\n			this.isBuildable = 0;\n			this.hideBuildMenu();\n		}\n	}*/\n};\n\n/*==============================================================================\n\nAdd State\n\n==============================================================================*/\n\n//g.addState( 'play', new StatePlay() );",
+			"file": "src/js/states/play.js",
+			"file_size": 22362,
+			"file_write_time": 130550234467968750,
+			"settings":
+			{
+				"buffer_size": 21620,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 40,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/g/pool.js",
+			"settings":
+			{
+				"buffer_size": 1527,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/g/audio.js",
+			"settings":
+			{
+				"buffer_size": 865,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/entities/tower.js",
+			"settings":
+			{
+				"buffer_size": 3824,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/entities/bullet.js",
+			"settings":
+			{
+				"buffer_size": 2385,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/entities/tile.js",
+			"settings":
+			{
+				"buffer_size": 783,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/entities/enemy.js",
+			"settings":
+			{
+				"buffer_size": 3491,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "build/index.html",
+			"settings":
+			{
+				"buffer_size": 44576,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/data/waves.js",
+			"settings":
+			{
+				"buffer_size": 1127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/entities/wave.js",
+			"settings":
+			{
+				"buffer_size": 698,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/g/util.js",
+			"settings":
+			{
+				"buffer_size": 5392,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"mark",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"markdo",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"brows",
+				"Preferences: Browse Packages"
+			],
+			[
+				"list pa",
+				"Package Control: List Packages"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"upg",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"list ",
+				"Package Control: List Packages"
+			],
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"upgr",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"upd",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"bro",
+				"Preferences: Browse Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 386.0
+	},
+	"console":
+	{
+		"height": 146.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib2,os; pf='Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read()); print('Please restart Sublime Text to finish installation')"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/wamp/www/games/elematter-js13k/game",
+		"/C/wamp/www/games/elematter-js13k/game/build",
+		"/C/wamp/www/games/elematter-js13k/game/src",
+		"/C/wamp/www/games/elematter-js13k/game/src/js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/states",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/vendor"
+	],
+	"file_history":
+	[
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/wamp/www/games/elematter-js13k/game/.sublime-project",
+		"/C/wamp/www/games/elematter-js13k/game/src/index.php",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/game.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/storage.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/imports.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/time.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/states/gameover.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/states/menu.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/states.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/state.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/wave.js",
+		"/C/wamp/www/games/elematter-js13k/game/gulpfile.js",
+		"/C/wamp/www/games/elematter-js13k/game/build/index.html",
+		"/C/wamp/www/games/elematter-js13k/game/.gitignore",
+		"/C/wamp/www/games/elematter-js13k/game/src/temp/_.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/pool.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/enemy.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/tile.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/towers.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/map.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/enemies.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/tower.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/waves.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/bullet.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/util.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/audio.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/audio.js",
+		"/C/wamp/www/clients/the-firm-graphics/voodoo/deploy-2014/js/main.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/g.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/g/group.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/data/attacks.js",
+		"/C/wamp/www/games/elematter-js13k/game/README.md",
+		"/C/wamp/www/games/elematter-js13k/game/package.json",
+		"/C/Documents and Settings/Jack/Desktop/join-dog-sitting",
+		"/C/Documents and Settings/Jack/Desktop/nerdbox/demo.html",
+		"/C/Documents and Settings/Jack/Desktop/level-test.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/states/splash.js",
+		"/C/wamp/www/games/elematter-js13k/game/src/js/entities/button.js",
+		"/C/wamp/www/games/elematter-js13k/README.md",
+		"/C/wamp/www/games/elematter-js13k/package.json",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/Markdown Preview/MarkdownPreview.sublime-settings",
+		"/C/Documents and Settings/Jack/Desktop/test.md",
+		"/C/Documents and Settings/Jack/Local Settings/Temp/17.html",
+		"/C/Documents and Settings/Jack/Local Settings/Temp/tmp77ey4e.html",
+		"/C/Documents and Settings/Jack/Local Settings/Temp/tmpsxs52d.html",
+		"/C/Documents and Settings/Jack/Desktop/tones-master/tones-master/tones.js",
+		"/C/Documents and Settings/Jack/Desktop/tones-master/tones-master/demo.js",
+		"/C/Documents and Settings/Jack/Desktop/test.sfs",
+		"/C/Documents and Settings/Jack/Desktop/tones-master/tones-master/demo_require.html",
+		"/C/Documents and Settings/Jack/Desktop/tones-master/tones-master/demo.html",
+		"/C/wamp/www/games/radius-raid-js13k/full-upgrades/js/definitions.js",
+		"/C/wamp/www/games/radius-raid-js13k/full-upgrades/js/game.js",
+		"/C/wamp/www/games/space-blaster/src/js/g/time.js",
+		"/C/wamp/www/games/space-blaster/src/js/g/util.js",
+		"/C/wamp/www/games/space-blaster/gulpfile.js",
+		"/C/wamp/www/games/js13k-boilerplate/gulpfile.js",
+		"/C/wamp/www/games/space-blaster/build/game.zip",
+		"/C/wamp/www/games/space-blaster/src/js/g/g.js",
+		"/C/wamp/www/games/space-blaster/build/index.html",
+		"/C/wamp/www/games/space-blaster/src/index.php",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/SFTP/Default (Windows).sublime-keymap",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/wamp/www/games/js13k-boilerplate/node_modules/gulp-rimraf/node_modules/gulp-util/node_modules/minimist/test/whitespace.js",
+		"/C/wamp/www/games/js13k-boilerplate/node_modules/gulp/node_modules/chalk/node_modules/escape-string-regexp/package.json",
+		"/C/wamp/www/games/js13k-boilerplate/node_modules/gulp-rename/test/rename.spec.js",
+		"/C/wamp/www/games/js13k-boilerplate/node_modules/gulp-minify-css/node_modules/clean-css/lib/text/name-quotes.js",
+		"/C/wamp/www/games/js13k-boilerplate/node_modules/gulp-notify/lib/notify.js",
+		"/C/wamp/www/games/js13k-boilerplate/package.json",
+		"/C/wamp/www/games/js13k-boilerplate/build/index.html",
+		"/C/wamp/www/games/js13k-boilerplate/build/game.zip",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/imports.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/group.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/pool.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/util.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/states/splash.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/game.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/states/play.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/states/menu.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/time.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/storage.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/states.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/js/g/state.js",
+		"/C/wamp/www/games/js13k-boilerplate/src/index.php",
+		"/C/wamp/www/games/js13k-boilerplate/src/css/main.css",
+		"/C/Documents and Settings/Jack/Desktop/codepen-logo.svg",
+		"/C/wamp/www/games/js13k-boilerplate/game/node_modules/gulp/node_modules/liftoff/artwork/liftoff-icon.svg",
+		"/C/wamp/www/games/js13k-boilerplate/game/node_modules/gulp/node_modules/liftoff/artwork/liftoff.svg",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/index.php",
+		"/C/wamp/www/games/js13k-boilerplate/game/gulpfile.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/package.json",
+		"/C/wamp/www/games/phaser-boilerplate/gulpfile.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/js/lib/jsfxr.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/js/states/splash.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/js/engine/entity.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/js/engine/entities.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/js/states/gameover.js",
+		"/C/wamp/www/games/js13k-boilerplate/game/src/css/main.css",
+		"/C/wamp/www/games/js13k-boilerplate/game/index.html",
+		"/C/wamp/www/games/phaser-boilerplate/.gitignore",
+		"/C/Documents and Settings/Jack/Desktop/gulp-testing/src/index.html",
+		"/C/Documents and Settings/Jack/Desktop/gulp-testing/src/index.php",
+		"/C/Documents and Settings/Jack/Desktop/gulp-testing/src/min-js.js",
+		"/C/wamp/www/games/block-css/game/s.css",
+		"/C/wamp/www/games/block-css/game/css/style.css",
+		"/C/Documents and Settings/Jack/Desktop/test.txt",
+		"/C/Documents and Settings/Jack/Desktop/contact.html",
+		"/C/Documents and Settings/Jack/Desktop/contactengine.php",
+		"/C/Documents and Settings/Jack/Desktop/contactthanks.php",
+		"/C/wamp/www/plugins/intense-images/demo/css/styles.css",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/User/SFTP.sublime-settings",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/BracketHighlighter/bh_core.sublime-settings",
+		"/C/Documents and Settings/Jack/Application Data/Sublime Text 3/Packages/User/Monokai Soda Alt.tmTheme",
+		"/C/wamp/www/games/phaser-launch/src/scss/main.scss",
+		"/C/wamp/www/projects/itchaskitch/site/css/style.min.css",
+		"/C/wamp/www/games/phaser-launch/src/js/states/Menu.js",
+		"/C/wamp/www/games/phaser-launch/gulpfile.js",
+		"/C/wamp/www/games/phaser-launch/build/js/main.min.js",
+		"/C/wamp/www/games/phaser-launch/src/js/imports.js",
+		"/C/wamp/www/games/phaser-launch/src/js/game.js",
+		"/C/wamp/www/games/phaser-boilerplate/package.json",
+		"/C/wamp/www/games/phaser-boilerplate/src/index.html",
+		"/C/wamp/www/games/phaser-boilerplate/src/js/states/Menu.js",
+		"/C/wamp/www/games/phaser-boilerplate/src/js/states/Play.js",
+		"/C/wamp/www/games/phaser-boilerplate/src/js/entities/Entity.js",
+		"/C/wamp/www/games/phaser-boilerplate/src/js/states/Boot.js",
+		"/C/wamp/www/games/phaser-boilerplate/src/js/states/Gameover.js"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"",
+			"-node_modules/**/*",
+			"-node_modules",
+			"!node_modules",
+			"",
+			"imports.js",
+			"",
+			"Preload.js",
+			"Boot.js",
+			"style.css",
+			"",
+			"C:\\wamp\\www\\games\\snakely-css",
+			"",
+			"dnbradio-waveform.js",
+			"",
+			"boot.js",
+			"keymap.js",
+			"font.js",
+			"",
+			"play.js",
+			"",
+			"C:\\wamp\\www\\kirby"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"select",
+			"selectbutt",
+			"select",
+			"remove(",
+			"removeAt(",
+			"removeAt",
+			"hsl(120, 50%, 10%)",
+			"50%",
+			"margin",
+			"_",
+			"data",
+			"bullet",
+			"tick",
+			"time",
+			"tick",
+			"time",
+			"isObje",
+			"toggle",
+			"guid",
+			"config",
+			"this.wp",
+			"advan",
+			"tile",
+			"desc",
+			"-moz",
+			"webkit",
+			"s1",
+			"scale",
+			"target",
+			"byval",
+			"bullet",
+			"300ms",
+			"200ms",
+			"range",
+			"updateTowerMenuAvailability",
+			"lastClickedTower",
+			"lastTower",
+			"lastClickedTower",
+			"onTowerButtonMouseleave",
+			"x1",
+			"updateBuildMenuT",
+			"highligh",
+			"horizontal",
+			"isBuildable",
+			"lastClicked",
+			"build",
+			"anim",
+			"damag",
+			"rate",
+			"range",
+			"damag",
+			"tower",
+			"remove",
+			"this.dom",
+			"updateF",
+			"cost",
+			"updateBuildMenuAvailability",
+			"updatefrag",
+			"updateFrag",
+			"build-s",
+			"cost",
+			"consol",
+			"distanc",
+			"alert",
+			"</div>",
+			"<div",
+			"targetR",
+			"turret",
+			"consol",
+			"guid",
+			"rate",
+			"damage",
+			"range",
+			"livesTotal",
+			"frag",
+			"lives",
+			"1",
+			"each",
+			"new g.Tow",
+			"e-",
+			"updateWa",
+			"playing",
+			"next",
+			"send",
+			"nextClick",
+			"onPlayClick",
+			"dom.play",
+			"displayLast",
+			"changeFlag",
+			"advanceWav",
+			"updateWa",
+			"updateWaves",
+			"waveTotal",
+			"updateW",
+			"updateWav",
+			"waves",
+			"create",
+			"box-shadow: inset",
+			"waves",
+			"box-shadow: inset",
+			"selec",
+			"selected",
+			"globals",
+			"transform",
+			"qs",
+			"canbu",
+			"load",
+			"frag",
+			"fraf",
+			"resour",
+			"135",
+			"cost",
+			"buildTitl",
+			".75",
+			"cost",
+			", 1",
+			"duration: 0;",
+			"desc",
+			"showBuild",
+			"scri",
+			"temp",
+			"<Sc",
+			"verti",
+			");\n",
+			"query",
+			"document.querySelector",
+			"this.dom",
+			"tower"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"150ms",
+			"</i>",
+			"<i",
+			"rte",
+			"dmg",
+			"rng",
+			"4",
+			"g.qs",
+			"build",
+			"Play",
+			"Menu",
+			"Gameover",
+			"a",
+			"",
+			"// import('",
+			"');",
+			"#000000",
+			"LOADING...",
+			"Loading...",
+			"333",
+			"../fonts/opensans/OpenSans-",
+			"../fonts/OpenSans-",
+			"================================================*/",
+			"/*================================================",
+			"/*==========================================================",
+			"==========================================================*/",
+			"scanlines",
+			"\"",
+			"self",
+			".ogg",
+			".mp3",
+			"( 0 )",
+			",",
+			":",
+			"",
+			"g.KeyMap",
+			"'",
+			" 0",
+			"0 ",
+			"g.currentState()",
+			"$.ctx.",
+			"ctx",
+			"PE",
+			"........................................",
+			"source",
+			"fit",
+			"ypos",
+			"xpos",
+			"$"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/css/main.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22569,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5902,
+								5908
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4568.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/js/data/towers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1182,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								297,
+								297
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/js/states/play.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21620,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								19903,
+								19903
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 9704.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": ".gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								40,
+								40
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/js/g/pool.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1527,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1455,
+								1455
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/js/g/audio.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 865,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								431,
+								431
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/js/entities/tower.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3824,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1721,
+								1721
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 360.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/js/entities/bullet.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2385,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								175,
+								175
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "src/js/entities/tile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 783,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								602,
+								602
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/js/entities/enemy.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3491,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1819,
+								1819
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 990.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "build/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44576,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25918,
+								26348
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1673.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/js/data/waves.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								170,
+								170
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 405.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/js/entities/wave.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 698,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								278,
+								279
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/js/g/util.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5392,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5158,
+								5164
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 508.0
+	},
+	"output.sftp":
+	{
+		"height": 108.0
+	},
+	"project": "elematter.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\wamp\\www\\alien-js13k\\game\\alien-js13k.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"",
+				"pause"
+			]
+		],
+		"width": 402.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 231.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

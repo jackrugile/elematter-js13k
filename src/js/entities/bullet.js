@@ -57,7 +57,7 @@ g.B.prototype.step = function() {
 				if( target.type == this.counters ) {
 					dmg *= 1.5;
 				}
-				target.receiveDamage( dmg );
+				target.receiveDamage( dmg, this.slow );
 				this.destroy();
 			}
 		} else {

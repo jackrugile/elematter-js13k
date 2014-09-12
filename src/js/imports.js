@@ -4,9 +4,6 @@
 //import('g/group.js');
 //import('g/pool.js');
 //import('g/util.js');
-//import('g/states.js');
-//import('g/state.js');
-//import('g/time.js');
 //import('g/storage.js');
 //import('data/audio.js');
 //import('data/enemies.js');
@@ -18,7 +15,5 @@
 //import('entities/tile.js');
 //import('entities/tower.js');
 //import('entities/wave.js');
-//import('states/menu.js');
 //import('states/play.js');
-//import('states/gameover.js');
 //import('game.js');

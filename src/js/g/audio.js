@@ -14,7 +14,7 @@ g.audio.add = function( key, count, settings ) {
 			count: count,
 			pool: []
 		} );
-		for( var i = 0; i < count; i++ ) {
+		while( count-- ) {
 			var audio = new Audio();
 			audio.src = jsfxr( elem );
 			g.audio.sounds[ key ][ index ].pool.push( audio );

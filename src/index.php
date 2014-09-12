@@ -48,12 +48,12 @@ Game Element
 		===============================================================================-->
 		<div class="build-menu-wrap">
 			<div class="build-menu">
-				<div class="build-selects">
-					<a class="build-select build-d"></a>
-					<a class="build-select build-e" data-type="e"></a>
-					<a class="build-select build-w" data-type="w"></a>
-					<a class="build-select build-a" data-type="a"></a>
-					<a class="build-select build-f" data-type="f"></a>
+				<div class="build-buttons">
+					<a class="build-button build-d"></a>
+					<a class="build-button build-e" data-type="e"></a>
+					<a class="build-button build-w" data-type="w"></a>
+					<a class="build-button build-a" data-type="a"></a>
+					<a class="build-button build-f" data-type="f"></a>
 				</div>
 				<div class="build-info">
 					<div class="build-title">
@@ -128,9 +128,6 @@ Game Element
 	<script src="js/g/group.js"></script>
 	<script src="js/g/pool.js"></script>
 	<script src="js/g/util.js"></script>
-	<script src="js/g/states.js"></script>
-	<script src="js/g/state.js"></script>
-	<script src="js/g/time.js"></script>
 	<script src="js/g/storage.js"></script>
 	<script src="js/data/audio.js"></script>
 	<script src="js/data/enemies.js"></script>
@@ -142,8 +139,6 @@ Game Element
 	<script src="js/entities/tile.js"></script>
 	<script src="js/entities/tower.js"></script>
 	<script src="js/entities/wave.js"></script>
-	<script src="js/states/menu.js"></script>
 	<script src="js/states/play.js"></script>
-	<script src="js/states/gameover.js"></script>
 	<script src="js/game.js"></script>
 <?php } ?>

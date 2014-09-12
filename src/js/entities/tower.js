@@ -18,9 +18,9 @@ g.To.prototype.init = function() {
 	this.cx = this.col * g.size + g.size / 2; // center x
 	this.cy = this.row * g.size + g.size / 2; // center y
 	
-	this.slabRotation = this.state.globalSlabRotation;
-	this.turretRotation = this.state.globalTurretRotation;
-	this.coreScale = this.state.globalCoreScale;
+	//this.slabRotation = this.state.globalSlabRotation;
+	this.turretRotation = 0;
+	//this.coreScale = this.state.globalCoreScale;
 
 	this.setupDom();
 	this.setupEvents();
@@ -28,8 +28,6 @@ g.To.prototype.init = function() {
 };
 
 g.To.prototype.step = function() {
-	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
-	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
 	var angle = this.state.globalTurretRotation;
 	if( this.target ) {
 		var dx = this.target.cx - this.cx,
@@ -40,7 +38,6 @@ g.To.prototype.step = function() {
 	this.turretRotation = angle;
 
 	if( this.state.isPlaying ) {
-		this.getTarget();
 		this.fire();
 
 		if( this.bulletTick < this.rte ) {
@@ -50,9 +47,9 @@ g.To.prototype.step = function() {
 };
 
 g.To.prototype.draw = function() {
-	g.css( this.dom.slab, 'transform', 'rotate(' + this.slabRotation + 'rad)' );
+	g.css( this.dom.slab, 'transform', 'rotate(' + this.state.globalSlabRotation+ 'rad)' );
 	g.css( this.dom.turret, 'transform', 'rotate(' + this.turretRotation + 'rad)' );
-	g.css( this.dom.core, 'transform', 'scale(' + this.coreScale + ')' );
+	g.css( this.dom.core, 'transform', 'scale(' + this.state.globalCoreScale+ ')' );
 };
 
 g.To.prototype.setStats = function() {
@@ -66,9 +63,7 @@ g.To.prototype.setStats = function() {
 
 	g.css( this.dom.range, {
 		'width': this.rng * 2 + 'px',
-		'height': this.rng * 2 + 'px',
-		'marginLeft': -this.rng + 'px',
-		'marginTop': -this.rng + 'px',
+		'height': this.rng * 2 + 'px'
 	});
 };
 
@@ -91,12 +86,15 @@ g.To.prototype.getTarget = function() {
 		}, 1, this );
 		// if enemies are in range
 		if( enemiesInRange.length ) {
-			// sort them by distance traveled
-			enemiesInRange.sort(function( a, b ) {
-				return a.distanceTraveled - b.distanceTraveled;
-			});
-			// set target
-			this.target = enemiesInRange.pop();
+			if( this.type =='w' ) {
+				// water tower, which slows, so pick a random target for best use
+				this.target = enemiesInRange[ Math.floor( g.rand( 0, enemiesInRange.length ) ) ];
+			} else {
+				enemiesInRange.sort(function( a, b ) {
+					return a.distanceTraveled - b.distanceTraveled;
+				});
+				this.target = enemiesInRange.pop();
+			}
 		} else {
 			this.target = null;
 		}
@@ -104,12 +102,17 @@ g.To.prototype.getTarget = function() {
 };
 
 g.To.prototype.fire = function() {
-	// if this tower has a target enemy
-	if( this.target ) {
-		// if we can fire a bullet at current rate
-		if( this.bulletTick >= this.rte ) {
+	// if we can fire a bullet at current rate
+	if( this.bulletTick >= this.rte ) {
+		this.getTarget();
+		// if this tower has a target enemy
+		if( this.target ) {
 			g.audio.play( 'laser' );
 			this.bulletTick = 0;
+			var slow = 0;
+			if( this.type == 'w' ) {
+				slow = 20 + this.lvl * 20;
+			}
 			this.state.bullets.create({
 				state: this.state,
 				type: this.type,
@@ -117,7 +120,8 @@ g.To.prototype.fire = function() {
 				dmg: this.dmg,
 				target: this.target.guid,
 				x: this.cx,
-				y: this.cy
+				y: this.cy,
+				slow: slow
 			});
 		}
 	}

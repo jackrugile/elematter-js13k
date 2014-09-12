@@ -3,7 +3,7 @@
 Storage
 
 ==============================================================================*/
-
+/*
 Storage.prototype.setObject = function( key, value ) {
 	this.setItem( key, JSON.stringify( value ) );
 };
@@ -38,4 +38,4 @@ g.Storage.prototype.sync = function() {
 g.Storage.reset = function() {
 	this.obj = {};
 	this.sync();
-};
+};*/
