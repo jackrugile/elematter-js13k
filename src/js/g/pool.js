@@ -31,7 +31,9 @@ g.Pool.prototype.create = function( opt ) {
 		this.deadLength--;
 		this.length++;
 	} else {
-		this.alive.push( new this.base( opt ) );
+		var newItem =  new this.base();
+		newItem.init( opt );
+		this.alive.push( newItem );
 		this.length++;
 	}
 };

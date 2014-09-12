@@ -110,7 +110,7 @@ g.Tower.prototype.fire = function() {
 		if( this.bulletTick >= this.rte ) {
 			g.audio.play( 'laser' );
 			this.bulletTick = 0;
-			var bullet = new g.Bullet({
+			/*var bullet = new g.Bullet({
 				state: this.state,
 				type: this.type,
 				counters: this.counters,
@@ -119,7 +119,16 @@ g.Tower.prototype.fire = function() {
 				x: this.cx,
 				y: this.cy
 			});
-			this.state.bullets.push( bullet );
+			this.state.bullets.push( bullet );*/
+			this.state.bullets.create({
+				state: this.state,
+				type: this.type,
+				counters: this.counters,
+				dmg: this.dmg,
+				target: this.target.guid,
+				x: this.cx,
+				y: this.cy
+			});
 		}
 	}
 };

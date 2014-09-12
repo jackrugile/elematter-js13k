@@ -4,6 +4,40 @@ Bullet
 
 ==============================================================================*/
 
+g.Bullet = function() {
+	this.dom = g.cE( g.qS( '.s-play' ), 'bullet' );
+};
+
+g.Bullet.prototype.init = function( opt ) {
+	g.merge( this, opt );
+	this.guid = g.guid++;
+	this.size = 6;
+	this.radius = this.size / 2;
+	this.x -= this.radius; // actual x
+	this.y -= this.radius; // actual y
+	this.cx = 0; // center x
+	this.cy = 0; // center y
+	this.rx = 0; // render x
+	this.ry = 0; // render y
+	this.vx = 0; // velocity x
+	this.vy = 0; // velocity y
+	this.dx = 0; // dist x to target
+	this.dy = 0; // dist y to target
+	this.dist = 0; // dist to target
+	this.angle = 0; // angle to target
+	this.accel = 0.1;
+	this.speed = 0;
+	this.updateCoords();
+	g.removeClass( this.dom, 'type-e type-w type-a type-f' );
+	g.addClass( this.dom, 'type-' + this.type );
+	g.css( this.dom, {
+		'width': this.size + 'px',
+		'height': this.size + 'px',
+		'transform': 'translate3d(-100px , -100px, 0)'
+	});
+};
+
+/*
 g.Bullet = function( opt ) {
 	g.merge( this, opt );
 	this.init();
@@ -35,7 +69,7 @@ g.Bullet.prototype.init = function() {
 		'height': this.size + 'px',
 		'transform': 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0)'
 	});
-};
+};*/
 
 g.Bullet.prototype.step = function() {
 	if( this.state.isPlaying ) {
@@ -77,8 +111,12 @@ g.Bullet.prototype.activate = function() {
 };
 
 g.Bullet.prototype.destroy = function() {
-	this.state.bullets.remove( this );
-	this.state.dom.state.removeChild( this.dom );
+	//this.state.bullets.remove( this );
+	//this.state.dom.state.removeChild( this.dom );
+
+	//this.state.dom.state.removeChild( this.dom );
+	g.css( this.dom, 'transform', 'translate3d(-100px , -100px, 0)');
+	this.state.bullets.release( this );
 };
 
 g.Bullet.prototype.updateCoords = function() {

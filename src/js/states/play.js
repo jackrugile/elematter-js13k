@@ -31,7 +31,7 @@ StatePlay.prototype.init = function() {
 		this.livesTotal = 13;
 		this.lives = this.livesTotal;
 		// fragments
-		this.fragments = 300;
+		this.fragments = 1000;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
 		// tiles
@@ -49,7 +49,8 @@ StatePlay.prototype.init = function() {
 		// enemies
 		this.enemies = new g.Group();
 		// bullets
-		this.bullets = new g.Group();
+		//this.bullets = new g.Group();
+		this.bullets = new g.Pool( g.Bullet, 10 );
 
 	// setup dom
 		this.dom = {};

@@ -414,12 +414,12 @@ Play State - Tower Select/Build Menu
 	right: 0;
 	top: 0;
 	-webkit-transition:
-		visibility 300ms 300ms,
-		opacity 300ms
+		visibility 150ms 150ms,
+		opacity 150ms
 	;
 	transition:
-		visibility 300ms 300ms,
-		opacity 300ms
+		visibility 150ms 150ms,
+		opacity 150ms
 	;
 	visibility: hidden;
 	z-index: 200;
@@ -427,8 +427,6 @@ Play State - Tower Select/Build Menu
 
 .build-menu-open .build-menu-wrap {
 	opacity: 1;
-	-webkit-transition-duration: 0ms;
-	transition-duration: 0ms;
 	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 	visibility: visible;
@@ -469,8 +467,8 @@ Play State - Tower Select/Build Menu
 	height: 40px;
 	position: absolute;
 	top: 20px;
-	-webkit-transition: background 300ms, box-shadow 300ms;
-	transition: background 300ms, box-shadow 300ms;
+	-webkit-transition: background 150ms, box-shadow 150ms;
+	transition: background 150ms, box-shadow 150ms;
 	width: 40px;
 }
 
@@ -544,8 +542,8 @@ Play State - Tower Select/Build Menu
 	padding: 0 20px;
 	pointer-events: none;
 	position: absolute;
-	-webkit-transition: opacity 300ms 300ms;
-	transition: opacity 300ms 300ms;
+	-webkit-transition: opacity 150ms 150ms;
+	transition: opacity 150ms 150ms;
 	width: 100%;
 }
 
@@ -651,12 +649,12 @@ Play State - Tower Upgrade/Reclaim Menu
 	right: 0;
 	top: 0;
 	-webkit-transition:
-		visibility 300ms 300ms,
-		opacity 300ms
+		visibility 150ms 150ms,
+		opacity 150ms
 	;
 	transition:
-		visibility 300ms 300ms,
-		opacity 300ms
+		visibility 150ms 150ms,
+		opacity 150ms
 	;
 	visibility: hidden;
 	z-index: 200;
@@ -664,8 +662,6 @@ Play State - Tower Upgrade/Reclaim Menu
 
 .tower-menu-open .tower-menu-wrap {
 	opacity: 1;
-	-webkit-transition-duration: 0ms;
-	transition-duration: 0ms;
 	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 	visibility: visible;
@@ -706,11 +702,10 @@ Play State - Tower Upgrade/Reclaim Menu
 	height: 40px;
 	position: absolute;
 	top: 20px;
-	-webkit-transition: background 300ms, box-shadow 300ms;
-	transition: background 300ms, box-shadow 300ms;
+	-webkit-transition: background 150ms, box-shadow 150ms;
+	transition: background 150ms, box-shadow 150ms;
 	width: 40px;
 }
-
 
 .tower-button.highlight.anim {
 	background: hsla(0, 0%, 100%, 0.15);
@@ -732,15 +727,91 @@ Play State - Tower Upgrade/Reclaim Menu
 	}
 }
 
-
 .t-menu-e .tower-button.highlight { border-color: hsl(120, 90%, 60%); }
+.t-menu-w .tower-button.highlight { border-color: hsl(200, 90%, 60%); }
+.t-menu-a .tower-button.highlight { border-color: hsl(60, 90%, 60%); }
+.t-menu-f .tower-button.highlight { border-color: hsl(0, 90%, 60%); }
 
 .tower-button.upgrade {
 	background: pink;
 }
 
+.t-menu-e .tower-button.upgrade { background: hsl(120, 90%, 60%); }
+.t-menu-w .tower-button.upgrade { background: hsl(200, 90%, 60%); }
+.t-menu-a .tower-button.upgrade { background: hsl(60, 90%, 60%); }
+.t-menu-f .tower-button.upgrade { background: hsl(0, 90%, 60%); }
+
 .tower-button.reclaim {
-	background: teal;
+	background: #444;
+}
+
+.tower-button .icon {
+	bottom: 0;
+	height: 22px;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 20px;
+}
+
+.tower-button.reclaim .icon {
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+.tower-button .icon div {
+	border-color: transparent;
+	border-style: solid;
+	left: 50%;
+	position: absolute;
+}
+
+.tower-button .icon div:nth-child(1),
+.tower-button .icon div:nth-child(3),
+.tower-button .icon div:nth-child(5) {
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+.tower-button .icon div:nth-child(2),
+.tower-button .icon div:nth-child(4),
+.tower-button .icon div:nth-child(6) {
+	border-bottom-color: #444;
+	border-width: 5px;
+	margin-left: -5px;
+}
+
+.tower-button .icon div:nth-child(1) { border-bottom-color: hsla(0, 0%, 0%, 0.8); top: -10px; }
+.tower-button .icon div:nth-child(2) { top: 0; }
+.tower-button .icon div:nth-child(3) { border-bottom-color: hsla(0, 0%, 0%, 0.55); top: -4px; }
+.tower-button .icon div:nth-child(4) { top: 6px; }
+.tower-button .icon div:nth-child(5) { border-bottom-color: hsla(0, 0%, 0%, 0.3); top: 2px; }
+.tower-button .icon div:nth-child(6) { top: 12px; }
+
+.t-menu-e .tower-button.upgrade .icon div:nth-child(2),
+.t-menu-e .tower-button.upgrade .icon div:nth-child(4),
+.t-menu-e .tower-button.upgrade .icon div:nth-child(6) {
+	border-bottom-color: hsl(120, 90%, 60%);
+}
+
+.t-menu-w .tower-button.upgrade .icon div:nth-child(2),
+.t-menu-w .tower-button.upgrade .icon div:nth-child(4),
+.t-menu-w .tower-button.upgrade .icon div:nth-child(6) {
+	border-bottom-color: hsl(200, 90%, 60%);
+}
+
+.t-menu-a .tower-button.upgrade .icon div:nth-child(2),
+.t-menu-a .tower-button.upgrade .icon div:nth-child(4),
+.t-menu-a .tower-button.upgrade .icon div:nth-child(6) {
+	border-bottom-color: hsl(60, 90%, 60%);
+}
+
+.t-menu-f .tower-button.upgrade .icon div:nth-child(2),
+.t-menu-f .tower-button.upgrade .icon div:nth-child(4),
+.t-menu-f .tower-button.upgrade .icon div:nth-child(6) {
+	border-bottom-color: hsl(0, 90%, 60%);
 }
 
 /*.build-e { background: hsl(120, 90%, 60%); }
@@ -789,8 +860,8 @@ Play State - Tower Upgrade/Reclaim Menu
 	padding: 0 20px;
 	pointer-events: none;
 	position: absolute;
-	-webkit-transition: opacity 300ms 300ms;
-	transition: opacity 300ms 300ms;
+	-webkit-transition: opacity 150ms 150ms;
+	transition: opacity 150ms 150ms;
 	width: 100%;
 }
 
@@ -873,8 +944,8 @@ Towers
 
 .t-wrap {
 	height: 40px;
-	-webkit-transition: background 300ms;
-	transition: background 300ms;
+	-webkit-transition: background 150ms;
+	transition: background 150ms;
 	width: 40px;
 	z-index: 100;
 }
@@ -904,8 +975,8 @@ Towers
 	opacity: 0;
 	pointer-events: none;
 	top: 50%;
-	-webkit-transition: all 300ms ease-in-out;
-	transition: all 300ms ease-in-out;
+	-webkit-transition: all 150ms ease-in-out;
+	transition: all 150ms ease-in-out;
 	z-index: 1;
 }
 
@@ -1112,8 +1183,8 @@ Enemies
 	opacity: 0;
 	position: absolute;
 	top: -4px;
-	-webkit-transition: opacity 300ms ease-out;
-	transition: opacity 300ms ease-out;
+	-webkit-transition: opacity 150ms ease-out;
+	transition: opacity 150ms ease-out;
 }
 
 .enemy.boss:after {

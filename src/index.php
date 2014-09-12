@@ -88,14 +88,24 @@ Game Element
 				<div class="tower-buttons">
 					<a class="tower-button highlight anim"></a>
 					<a class="tower-button upgrade" data-action="upgrade">
-						<div></div>
-						<div></div>
-						<div></div>
+						<div class="icon">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
 					</a>
 					<a class="tower-button reclaim" data-action="reclaim">
-						<div></div>
-						<div></div>
-						<div></div>
+						<div class="icon">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
 					</a>
 				</div>
 				<div class="tower-info">
