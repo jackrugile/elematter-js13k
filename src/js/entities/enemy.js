@@ -20,10 +20,12 @@ g.E.prototype.init = function() {
 	}
 	this.dom.hl = g.cE( this.dom.enemy, 'hl' );
 	this.dom.hp = g.cE( this.dom.enemy, 'hp' );
-	this.hp = 100; // hit points
+	this.hpTotal = 100;
+	this.hp = this.hpTotal; // hit points
+	this.value = 50;
 	this.wp = 1; // current waypoint index
 	this.angleFlag = 1;
-	this.radius = this.size / 2;
+	this.radius = this.size * 0.75;
 	this.x = g.data.map[ 0 ][ 0 ] * g.size; // actual x
 	this.y = g.data.map[ 0 ][ 1 ] * g.size; // actual y
 	this.cx = 0; // center x
@@ -123,7 +125,12 @@ g.E.prototype.receiveDamage = function( dmg, slow ) {
 	this.hp -= dmg;
 	this.hitTick = 5;
 	g.addClass( this.dom.enemy, 'hit' );
+	g.css( this.dom.hp, {
+		'height': ( this.hp / this.hpTotal ) * 300 + '%',
+		'width': ( this.hp / this.hpTotal ) * 300 + '%'
+	});
 	if( this.hp <= 0 ) {
+		this.state.setFragments( this.value );
 		this.destroy();
 	}
 };

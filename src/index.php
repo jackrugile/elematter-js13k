@@ -17,12 +17,13 @@ Game Element
 		UI Top Row
 		===============================================================================-->
 		<div class="row top-row">
-			<a class="b b-play s6"><i>&rtrif;</i>Play</a>
-			<a class="b b-x1 s2">&times;1</a>
-			<a class="b b-x2 s2">&times;2</a>
-			<a class="b b-x3 s2">&times;3</a>
-			<a class="b b-mute s4"><i>&sung;</i>Mute</a>
-			<a class="b b-menu s4"><i>&equiv;</i>Menu</a>
+			<div class="game-title">Elematter <span>by Jack Rugile for js13kGames</span></div>
+			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
+			<a class="b b-x1 s1">&times;1</a>
+			<a class="b b-x2 s1">&times;2</a>
+			<a class="b b-x3 s1">&times;3</a>
+			<a class="b b-mute s2"><i>&sung;</i>Mute</a>
+			<a class="b b-menu s2"><i>&equiv;</i>Menu</a>
 		</div>
 		<!--==============================================================================
 		UI Bottom Row

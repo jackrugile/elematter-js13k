@@ -49,7 +49,13 @@ g.To.prototype.step = function() {
 g.To.prototype.draw = function() {
 	g.css( this.dom.slab, 'transform', 'rotate(' + this.state.globalSlabRotation+ 'rad)' );
 	g.css( this.dom.turret, 'transform', 'rotate(' + this.turretRotation + 'rad)' );
-	g.css( this.dom.core, 'transform', 'scale(' + this.state.globalCoreScale+ ')' );
+	if( this.target ) {
+		g.addClass( this.dom.wrap, 'targeting' );
+		g.css( this.dom.core, 'transform', 'scale(' + (0.25 + Math.sin( this.state.tick * 0.75 ) * 0.05) + ')' );
+	} else {
+		g.css( this.dom.core, 'transform', 'scale(' + this.state.globalCoreScale + ')' );
+		g.removeClass( this.dom.wrap, 'targeting' );
+	}
 };
 
 g.To.prototype.setStats = function() {
