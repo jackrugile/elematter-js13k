@@ -4,12 +4,12 @@ Enemy
 
 ==============================================================================*/
 
-g.Enemy = function( opt ) {
+g.E = function( opt ) {
 	g.merge( this, opt );
 	this.init();
 };
 
-g.Enemy.prototype.init = function() {
+g.E.prototype.init = function() {
 	this.guid = g.guid++;
 	this.size = 14;
 	this.dom = {};
@@ -22,6 +22,7 @@ g.Enemy.prototype.init = function() {
 	this.dom.hp = g.cE( this.dom.enemy, 'hp' );
 	this.hp = 100; // hit points
 	this.wp = 1; // current waypoint index
+	this.moveUpdateFlag = 1;
 	this.radius = this.size / 2;
 	this.x = g.data.map[ 0 ][ 0 ] * g.size; // actual x
 	this.y = g.data.map[ 0 ][ 1 ] * g.size; // actual y
@@ -36,7 +37,6 @@ g.Enemy.prototype.init = function() {
 	this.dist = 0; // dist to waypoint
 	this.angle = 0; // angle to waypoint
 	this.rotation = 0;
-	this.scale = 1;
 	this.speed = 1;
 	this.distanceTraveled = 0;
 	this.tick = 0;
@@ -48,15 +48,18 @@ g.Enemy.prototype.init = function() {
 	});
 };
 
-g.Enemy.prototype.step = function() {
+g.E.prototype.step = function() {
 	if( this.state.isPlaying ) {
 		var wp = g.data.map[ this.wp ];
 		this.dx = ( wp[ 0 ] * g.size ) - this.x;
 		this.dy = ( wp[ 1 ] * g.size ) - this.y;
 		this.dist = Math.sqrt( this.dx * this.dx + this.dy * this.dy );
-		this.angle = Math.atan2( this.dy, this.dx );
-		this.vx = Math.cos( this.angle ) * this.speed;
-		this.vy = Math.sin( this.angle ) * this.speed;
+		if( this.moveUpdateFlag ) {
+			this.angle = Math.atan2( this.dy, this.dx );
+			this.vx = Math.cos( this.angle ) * this.speed;
+			this.vy = Math.sin( this.angle ) * this.speed;
+			this.moveUpdateFlag = 0;
+		}
 
 		// weirdness to get proper rotation
 		var dx = this.dx,
@@ -80,6 +83,7 @@ g.Enemy.prototype.step = function() {
 				this.state.removeLife();
 			} else {
 				this.wp++;
+				this.moveUpdateFlag = 1;
 			}
 		}
 
@@ -95,11 +99,11 @@ g.Enemy.prototype.step = function() {
 	
 };
 
-g.Enemy.prototype.draw = function() {
-	g.css( this.dom.enemy, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.rotation + Math.PI / 4 - Math.PI ) + 'rad) scale(' + this.scale + ')' );
+g.E.prototype.draw = function() {
+	g.css( this.dom.enemy, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.rotation + Math.PI / 4 - Math.PI ) + 'rad)' );
 };
 
-g.Enemy.prototype.receiveDamage = function( dmg ) {
+g.E.prototype.receiveDamage = function( dmg ) {
 	g.audio.play( 'damage' );
 	this.hp -= dmg;
 	this.hitTick = 5;
@@ -109,16 +113,16 @@ g.Enemy.prototype.receiveDamage = function( dmg ) {
 	}
 };
 
-g.Enemy.prototype.activate = function() {
+g.E.prototype.activate = function() {
 	this.state.dom.state.appendChild( this.dom.enemy );
 };
 
-g.Enemy.prototype.destroy = function() {
+g.E.prototype.destroy = function() {
 	this.state.enemies.remove( this );
 	this.state.dom.state.removeChild( this.dom.enemy );
 };
 
-g.Enemy.prototype.updateCoords = function() {
+g.E.prototype.updateCoords = function() {
 	this.cx = this.x + g.size / 2;
 	this.cy = this.y + g.size / 2;
 	this.rx = this.cx - this.size / 2;

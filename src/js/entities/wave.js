@@ -4,12 +4,12 @@ Wave
 
 ==============================================================================*/
 
-g.Wave = function( opt ) {
+g.W = function( opt ) {
 	g.merge( this, opt );
 	this.init();
 };
 
-g.Wave.prototype.init = function() {
+g.W.prototype.init = function() {
 	this.guid = g.guid++;
 	this.tick = 0;
 	this.tickMax = 50 - this.num;
@@ -22,7 +22,7 @@ g.Wave.prototype.init = function() {
 	};
 };
 
-g.Wave.prototype.step = function() {
+g.W.prototype.step = function() {
 	if( this.state.isPlaying ) {
 		if( this.tick >= this.tickMax && this.enemies.length ) {
 			this.tick = 0;
@@ -34,6 +34,3 @@ g.Wave.prototype.step = function() {
 		}
 	}
 };
-
-/*g.Wave.prototype.draw = function() {
-};*/

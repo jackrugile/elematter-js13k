@@ -4,11 +4,11 @@ Bullet
 
 ==============================================================================*/
 
-g.Bullet = function() {
+g.B = function() {
 	this.dom = g.cE( g.qS( '.s-play' ), 'bullet' );
 };
 
-g.Bullet.prototype.init = function( opt ) {
+g.B.prototype.init = function( opt ) {
 	g.merge( this, opt );
 	this.guid = g.guid++;
 	this.size = 6;
@@ -33,45 +33,11 @@ g.Bullet.prototype.init = function( opt ) {
 	g.css( this.dom, {
 		'width': this.size + 'px',
 		'height': this.size + 'px',
-		'transform': 'translate3d(-100px , -100px, 0)'
+		'transform': 'translate3d(-100px, -100px, 0)'
 	});
 };
 
-/*
-g.Bullet = function( opt ) {
-	g.merge( this, opt );
-	this.init();
-};
-
-g.Bullet.prototype.init = function() {
-	this.guid = g.guid++;
-	this.size = 6;
-	this.radius = this.size / 2;
-	this.x -= this.radius; // actual x
-	this.y -= this.radius; // actual y
-	this.cx = 0; // center x
-	this.cy = 0; // center y
-	this.rx = 0; // render x
-	this.ry = 0; // render y
-	this.vx = 0; // velocity x
-	this.vy = 0; // velocity y
-	this.dx = 0; // dist x to target
-	this.dy = 0; // dist y to target
-	this.dist = 0; // dist to target
-	this.angle = 0; // angle to target
-	this.accel = 0.1;
-	this.speed = 0;
-	//this.dom = g.cE( null, 'bullet type-' + this.type );
-	this.dom = g.cE( this.state.dom.state, 'bullet type-' + this.type );
-	this.updateCoords();
-	g.css( this.dom, {
-		'width': this.size + 'px',
-		'height': this.size + 'px',
-		'transform': 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0)'
-	});
-};*/
-
-g.Bullet.prototype.step = function() {
+g.B.prototype.step = function() {
 	if( this.state.isPlaying ) {
 		var target = this.state.enemies.getByPropVal( 'guid', this.target );
 		if( target ) {
@@ -102,24 +68,20 @@ g.Bullet.prototype.step = function() {
 	this.updateCoords();
 };
 
-g.Bullet.prototype.draw = function() {
+g.B.prototype.draw = function() {
 	g.css( this.dom, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.angle + Math.PI / 4 ) + 'rad)' );
 };
 
-g.Bullet.prototype.activate = function() {
+g.B.prototype.activate = function() {
 	this.state.dom.state.appendChild( this.dom );
 };
 
-g.Bullet.prototype.destroy = function() {
-	//this.state.bullets.remove( this );
-	//this.state.dom.state.removeChild( this.dom );
-
-	//this.state.dom.state.removeChild( this.dom );
+g.B.prototype.destroy = function() {
 	g.css( this.dom, 'transform', 'translate3d(-100px , -100px, 0)');
 	this.state.bullets.release( this );
 };
 
-g.Bullet.prototype.updateCoords = function() {
+g.B.prototype.updateCoords = function() {
 	this.cx = this.x + this.size / 2;
 	this.cy = this.y + this.size / 2;
 	this.rx = this.x;

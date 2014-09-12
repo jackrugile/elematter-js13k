@@ -1,13 +1,10 @@
 <?php $is_prod = isset($_GET['prod']) && $_GET['prod'] == 1; ?>
-
 <title>Elematter</title>
-
 <?php if($is_prod){ ?>
 	<style><?php include('temp/_.css'); ?></style>
 <?php } else { ?>
 	<link href=css/main.css rel=stylesheet>
 <?php } ?>
-
 <!--==============================================================================
 Game Element
 ===============================================================================-->
@@ -20,16 +17,12 @@ Game Element
 		UI Top Row
 		===============================================================================-->
 		<div class="row top-row">
-			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
-			<a class="b b-x1 s1">&times;1</a>
-			<a class="b b-x2 s1">&times;2</a>
-			<a class="b b-x3 s1">&times;3</a>
-			<a class="b b-e s2 atk" title="Destroy all Earth enemies"><i>&otimes;</i>Earth</a>
-			<a class="b b-w s2 atk" title="Destroy all Water enemies"><i>&otimes;</i>Water</a>
-			<a class="b b-a s2 atk" title="Destroy all Air enemies"><i>&otimes;</i>Air</a>
-			<a class="b b-f s2 atk" title="Destroy all Fire enemies"><i>&otimes;</i>Fire</a>
-			<a class="b b-mute s3"><i>&sung;</i>Mute</a>
-			<a class="b b-menu s3"><i>&equiv;</i>Menu</a>
+			<a class="b b-play s6"><i>&rtrif;</i>Play</a>
+			<a class="b b-x1 s2">&times;1</a>
+			<a class="b b-x2 s2">&times;2</a>
+			<a class="b b-x3 s2">&times;3</a>
+			<a class="b b-mute s4"><i>&sung;</i>Mute</a>
+			<a class="b b-menu s4"><i>&equiv;</i>Menu</a>
 		</div>
 		<!--==============================================================================
 		UI Bottom Row
@@ -67,7 +60,6 @@ Game Element
 						<span class="build-cost"> </span> <i>&there4;</i>
 						<span class="build-type"> </span>
 					</div>
-					<div class="build-desc"> </div>
 					<div class="build-stat build-dmg-wrap">
 						<strong>Damage:</strong> <span class="build-mtr"><span></span><span></span><span></span></span> <span class="build-dmg"> </span>
 					</div>
@@ -127,7 +119,6 @@ Game Element
 		</div>
 	</div>
 </div>
-
 <?php if($is_prod){ ?>
 	<script><?php include('temp/_.js'); ?></script>
 <?php } else { ?>
@@ -141,7 +132,6 @@ Game Element
 	<script src="js/g/state.js"></script>
 	<script src="js/g/time.js"></script>
 	<script src="js/g/storage.js"></script>
-	<script src="js/data/attacks.js"></script>
 	<script src="js/data/audio.js"></script>
 	<script src="js/data/enemies.js"></script>
 	<script src="js/data/map.js"></script>

@@ -10,17 +10,17 @@ Math
 
 ==============================================================================*/
 
-g.roundToNearest = function( value, nearest ) {
+/*g.roundToNearest = function( value, nearest ) {
 	return Math.round( value / nearest ) * nearest;
-};
+};*/
 
 g.rand = function( min, max ) {
 	return Math.random() * ( max - min ) + min;
 };
 
-g.randInt = function( min, max ) {
+/*g.randInt = function( min, max ) {
 	return Math.floor( Math.random() * ( max - min + 1) ) + min;
-};
+};*/
 
 /*==============================================================================
 
@@ -38,7 +38,7 @@ g.qS = function( q ) {
 };
 
 g.cE = function( appendParent, classes ) {
-	elem = document.createElement( 'div' );
+	var elem = document.createElement( 'div' );
 	if( appendParent ) {
 		appendParent.appendChild( elem );
 	}
@@ -133,10 +133,6 @@ g.removeClass = function ( elem, className ) {
 	}
 };
 
-g.toggleClass = function ( elem, className ) {
-	elem.classList.toggle( className );
-};
-
 g.attr = function( elem, attr ) {
 	return elem.getAttribute( attr );
 };
@@ -147,13 +143,13 @@ Collision
 
 ==============================================================================*/
 
-g.rangeIntersect = function( min0, max0, min1, max1 ) {
+/*g.rangeIntersect = function( min0, max0, min1, max1 ) {
 	return Math.max( min0, max0 ) > Math.min( min1, max1 ) && Math.min( min0, max0 ) < Math.max( min1, max1 );
 };
 
 g.rectIntersect = function( r0, r1 ) {
 	return g.util.rangeIntersect( r0.x, r0.x + r0.width, r1.x, r1.x + r1.width ) && g.util.rangeIntersect( r0.y, r0.y + r0.height, r1.y, r1.y + r1.height );
-};
+};*/
 
 g.distance = function( p1x, p1y, p2x, p2y ) {
 	var dx = p1x - p2x,
@@ -167,7 +163,7 @@ Formatting
 
 ==============================================================================*/
 
-g.formatPad = function( amount, digits ){
+/*g.formatPad = function( amount, digits ){
 	amount += '';
 	if( amount.length < digits ) {
 		amount = '0' + amount;
@@ -175,13 +171,13 @@ g.formatPad = function( amount, digits ){
 	} else {
 		return amount;
 	}
-};
+};*/
 
-g.formatTime = function( seconds ) {
+/*g.formatTime = function( seconds ) {
 	var minutes = Math.floor( seconds / 60 );
 	seconds = Math.floor( seconds % 60 );
 	return g.util.format.pad( minutes, 2 ) + ':' + g.util.format.pad( seconds, 2 );
-};
+};*/
 
 g.formatCommas = function( n ) {
 	n = Math.round( n );

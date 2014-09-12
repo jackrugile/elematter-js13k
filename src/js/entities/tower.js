@@ -4,12 +4,12 @@ Tower
 
 ==============================================================================*/
 
-g.Tower = function( opt ) {
+g.To = function( opt ) {
 	g.merge( this, opt );
 	this.init();
 };
 
-g.Tower.prototype.init = function() {
+g.To.prototype.init = function() {
 	this.guid = g.guid++;
 	this.data = g.data.towers[ this.type ];
 	this.lvl = 0;
@@ -27,7 +27,7 @@ g.Tower.prototype.init = function() {
 	this.setStats();
 };
 
-g.Tower.prototype.step = function() {
+g.To.prototype.step = function() {
 	this.slabRotation += ( this.state.globalSlabRotation - this.slabRotation ) * 0.2;
 	this.coreScale += ( this.state.globalCoreScale - this.coreScale ) * 0.2;
 	var angle = this.state.globalTurretRotation;
@@ -49,13 +49,13 @@ g.Tower.prototype.step = function() {
 	}
 };
 
-g.Tower.prototype.draw = function() {
+g.To.prototype.draw = function() {
 	g.css( this.dom.slab, 'transform', 'rotate(' + this.slabRotation + 'rad)' );
 	g.css( this.dom.turret, 'transform', 'rotate(' + this.turretRotation + 'rad)' );
 	g.css( this.dom.core, 'transform', 'scale(' + this.coreScale + ')' );
 };
 
-g.Tower.prototype.setStats = function() {
+g.To.prototype.setStats = function() {
 	var stats = this.data.stats[ this.lvl ];
 	this.costToUpgrade = stats.cost;
 	this.dmg = stats.dmg;
@@ -72,12 +72,12 @@ g.Tower.prototype.setStats = function() {
 	});
 };
 
-g.Tower.prototype.upgrade = function() {
+g.To.prototype.upgrade = function() {
 	this.lvl++;
 	this.setStats();
 };
 
-g.Tower.prototype.getTarget = function() {
+g.To.prototype.getTarget = function() {
 	var enemies = this.state.enemies,
 		enemiesInRange = [];
 	// if enemies are on the map
@@ -103,23 +103,13 @@ g.Tower.prototype.getTarget = function() {
 	}
 };
 
-g.Tower.prototype.fire = function() {
+g.To.prototype.fire = function() {
 	// if this tower has a target enemy
 	if( this.target ) {
 		// if we can fire a bullet at current rate
 		if( this.bulletTick >= this.rte ) {
 			g.audio.play( 'laser' );
 			this.bulletTick = 0;
-			/*var bullet = new g.Bullet({
-				state: this.state,
-				type: this.type,
-				counters: this.counters,
-				dmg: this.dmg,
-				target: this.target.guid,
-				x: this.cx,
-				y: this.cy
-			});
-			this.state.bullets.push( bullet );*/
 			this.state.bullets.create({
 				state: this.state,
 				type: this.type,
@@ -133,7 +123,7 @@ g.Tower.prototype.fire = function() {
 	}
 };
 
-g.Tower.prototype.setupDom = function() {
+g.To.prototype.setupDom = function() {
 	this.dom = {};
 	this.dom.wrap   = g.cE( this.state.dom.state, 't-wrap t-type-' + this.type );
 	this.dom.tower  = g.cE( this.dom.wrap, 't-tower' );
@@ -145,11 +135,11 @@ g.Tower.prototype.setupDom = function() {
 	g.css( this.dom.wrap, 'transform', 'translate3d(' + this.col * g.size + 'px , ' + this.row * g.size + 'px, 0 )');
 };
 
-g.Tower.prototype.setupEvents = function() {
+g.To.prototype.setupEvents = function() {
 	g.on( this.dom.wrap, 'click', this.onClick, this );
 };
 
-g.Tower.prototype.onClick = function() {
+g.To.prototype.onClick = function() {
 	if( !this.state.isTowerMenuOpen ) {
 		this.state.showTowerMenu( this );
 		this.state.lastClickedTower = this;

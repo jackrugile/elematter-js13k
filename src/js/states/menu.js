@@ -4,7 +4,7 @@ Menu State
 
 ==============================================================================*/
 
-var StateMenu = function(){};
+/*var StateMenu = function(){};
 
 StateMenu.prototype.init = function() {
 };
@@ -18,4 +18,4 @@ StateMenu.prototype.draw = function() {
 StateMenu.prototype.exit = function() {
 };
 
-g.addState( 'menu', new StateMenu() );
+g.addState( 'menu', new StateMenu() );*/

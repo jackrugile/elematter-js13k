@@ -4,7 +4,7 @@ Gameover State
 
 ==============================================================================*/
 
-var StateGameover = function(){};
+/*var StateGameover = function(){};
 
 StateGameover.prototype.init = function() {
 };
@@ -18,4 +18,4 @@ StateGameover.prototype.draw = function() {
 StateGameover.prototype.exit = function() {
 };
 
-g.addState( 'gameover', new StateGameover() );
+g.addState( 'gameover', new StateGameover() );*/

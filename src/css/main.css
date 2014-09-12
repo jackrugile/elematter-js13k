@@ -9,11 +9,7 @@ General
 *:after {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-
-	-webkit-transition-duration: 500ms;
 	transition-duration: 500ms;
-
-	-webkit-transition-property: none;
 	transition-property: none;
 }
 
@@ -24,11 +20,11 @@ body {
 
 body {
 	background: #181818;
-	background: radial-gradient(ellipse at center,  #282828 0%,#060606 100%);
+	/*background: radial-gradient(ellipse at center,  #282828 0%,#060606 100%);*/
 	font-family: sans-serif;
 	overflow: hidden;
 	-webkit-touch-callout: none;
-	-webkit-user-select: none;
+	--moz-user-select: none;
 	-moz-user-select: none;
 	user-select: none;
 }
@@ -39,14 +35,13 @@ Game
 
 ==============================================================================*/
 
-/* game */
 .g {
-	box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.5);
+	/*box-shadow: 0 0 0 20px rgba(0, 0, 0, 0.5);*/
+	box-shadow: 0 0 0 20px #000;
 	left: 50%;
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
-	-webkit-transition: opacity 500ms;
 	transition: opacity 500ms;
 	top: 50%;
 }
@@ -55,7 +50,6 @@ Game
 	opacity: 1;
 }
 
-/* state */
 .s {
 	bottom: 0;
 	left: 0;
@@ -75,14 +69,12 @@ Play State - Tiles - Base
 	left: 0;
 	position: absolute;
 	top: 0;
-	-webkit-transition-property: background;
 	transition-property: background;
 }
 
 .tile:hover {
 	background: #666;
 	background: hsla(0, 0%, 100%, 0.2);
-	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
 }
 
@@ -93,7 +85,6 @@ Play State - Tiles - Path
 ==============================================================================*/
 
 .tile.path {
-	background: hsla(0, 0%, 0%, 0.3);
 	background: #111;
 	box-shadow: 0 -6px 0 #000;
 }
@@ -114,7 +105,6 @@ Play State - Buttons - General
 	height: 40px;
 	left: 0;
 	position: absolute;
-	-webkit-transform: translateZ(0);
 	transform: translateZ(0);
 	width: 100%;
 	z-index: 200;
@@ -143,12 +133,6 @@ Play State - Buttons - General
 	position: relative;
 	text-align: center;
 	text-shadow: 0 1px 1px #000;
-	-webkit-transition-property:
-		background,
-		box-shadow,
-		color,
-		opacity
-	;
 	transition-property:
 		background,
 		box-shadow,
@@ -158,7 +142,6 @@ Play State - Buttons - General
 }
 
 .b:before {
-	background: -moz-linear-gradient(top, transparent 0%, hsla(0, 0%, 100%, 0.075) 100%);
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.075) 100%);
 	content: '';
 	height: 50%;
@@ -171,16 +154,16 @@ Play State - Buttons - General
 .b:hover {
 	background: #444;
 	color: #fff;
-	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
 }
 
 .s1 { width: 39px; }
 .s2 { width: 79px; }
 .s3 { width: 119px; }
-.s3:last-child { width: 120px; margin-right: 0; }
+/*.s3:last-child { width: 120px; margin-right: 0; }*/
 .s4 { width: 159px; }
 .s4:last-child { width: 160px; margin-right: 0; }
+.s6 { width: 239px; }
 
 .b i {
 	display: inline-block;
@@ -227,52 +210,6 @@ Play State - Buttons - Speed
 	;
 	color: #fff;
 	cursor: default;
-}
-
-/*==============================================================================
-
-Play State - Buttons - Attacks
-
-==============================================================================*/
-
-.b-e {
-	background: hsl(120, 30%, 20%);
-	color: hsl(120, 70%, 60%);
-}
-
-.b-e:hover {
-	background: hsl(120, 40%, 30%);
-	color: hsl(120, 90%, 80%);
-}
-
-.b-w {
-	background: hsl(200, 30%, 20%);
-	color: hsl(200, 70%, 60%);
-}
-
-.b-w:hover {
-	background: hsl(200, 40%, 30%);
-	color: hsl(200, 90%, 80%);
-}
-
-.b-a {
-	background: hsl(60, 30%, 20%);
-	color: hsl(60, 70%, 60%);
-}
-
-.b-a:hover {
-	background: hsl(60, 40%, 30%);
-	color: hsl(60, 90%, 80%);
-}
-
-.b-f {
-	background: hsl(0, 30%, 20%);
-	color: hsl(0, 70%, 60%);
-}
-
-.b-f:hover {
-	background: hsl(0, 40%, 30%);
-	color: hsl(0, 90%, 80%);
 }
 
 /*==============================================================================
@@ -341,11 +278,6 @@ Play State - Labels and Displays
 	position: relative;
 	text-align: center;
 	text-shadow: 0 1px 1px #000;
-	-webkit-transition-property:
-		background,
-		box-shadow,
-		color
-	;
 	transition-property:
 		background,
 		box-shadow,
@@ -355,9 +287,7 @@ Play State - Labels and Displays
 
 .l:before,
 .d:before {
-	background: -moz-linear-gradient(top, transparent 0%, hsla(0, 0%, 100%, 0.075) 100%);
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.075) 100%);
-
 	content: '';
 	height: 50%;
 	left: 0;
@@ -413,10 +343,6 @@ Play State - Tower Select/Build Menu
 	position: absolute;
 	right: 0;
 	top: 0;
-	-webkit-transition:
-		visibility 150ms 150ms,
-		opacity 150ms
-	;
 	transition:
 		visibility 150ms 150ms,
 		opacity 150ms
@@ -427,7 +353,6 @@ Play State - Tower Select/Build Menu
 
 .build-menu-open .build-menu-wrap {
 	opacity: 1;
-	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 	visibility: visible;
 }
@@ -448,7 +373,6 @@ Play State - Tower Select/Build Menu
 }
 
 .build-selects:before {
-	background: -moz-linear-gradient(top, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	content: '';
 	height: 50%;
@@ -467,7 +391,6 @@ Play State - Tower Select/Build Menu
 	height: 40px;
 	position: absolute;
 	top: 20px;
-	-webkit-transition: background 150ms, box-shadow 150ms;
 	transition: background 150ms, box-shadow 150ms;
 	width: 40px;
 }
@@ -476,14 +399,7 @@ Play State - Tower Select/Build Menu
 	background: hsla(0, 0%, 100%, 0.15);
 	border: 2px dashed #fff;
 	cursor: default;
-	-webkit-animation: build-d 500ms ease-in-out infinite alternate;
 	animation: build-d 500ms ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes build-d {
-	to {
-		opacity: 0;
-	}
 }
 
 @keyframes build-d {
@@ -542,14 +458,12 @@ Play State - Tower Select/Build Menu
 	padding: 0 20px;
 	pointer-events: none;
 	position: absolute;
-	-webkit-transition: opacity 150ms 150ms;
 	transition: opacity 150ms 150ms;
 	width: 100%;
 }
 
 .hover-build-select .build-info {
 	opacity: 1;
-	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 }
 
@@ -584,11 +498,6 @@ Play State - Tower Select/Build Menu
 
 .build-cost {
 	color: #fff;
-}
-
-.build-desc {
-	color: #fff;
-	font-style: italic;
 }
 
 .build-stat {
@@ -648,10 +557,6 @@ Play State - Tower Upgrade/Reclaim Menu
 	position: absolute;
 	right: 0;
 	top: 0;
-	-webkit-transition:
-		visibility 150ms 150ms,
-		opacity 150ms
-	;
 	transition:
 		visibility 150ms 150ms,
 		opacity 150ms
@@ -662,7 +567,6 @@ Play State - Tower Upgrade/Reclaim Menu
 
 .tower-menu-open .tower-menu-wrap {
 	opacity: 1;
-	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 	visibility: visible;
 }
@@ -683,7 +587,6 @@ Play State - Tower Upgrade/Reclaim Menu
 }
 
 .tower-buttons:before {
-	background: -moz-linear-gradient(top, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	content: '';
 	height: 50%;
@@ -702,7 +605,6 @@ Play State - Tower Upgrade/Reclaim Menu
 	height: 40px;
 	position: absolute;
 	top: 20px;
-	-webkit-transition: background 150ms, box-shadow 150ms;
 	transition: background 150ms, box-shadow 150ms;
 	width: 40px;
 }
@@ -711,14 +613,7 @@ Play State - Tower Upgrade/Reclaim Menu
 	background: hsla(0, 0%, 100%, 0.15);
 	border: 2px solid #fff;
 	cursor: default;
-	-webkit-animation: tower-highlight 500ms ease-in-out infinite alternate;
 	animation: tower-highlight 500ms ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes tower-highlight {
-	to {
-		opacity: 0;
-	}
 }
 
 @keyframes tower-highlight {
@@ -757,7 +652,6 @@ Play State - Tower Upgrade/Reclaim Menu
 }
 
 .tower-button.reclaim .icon {
-	-webkit-transform: rotate(180deg);
 	transform: rotate(180deg);
 }
 
@@ -860,14 +754,12 @@ Play State - Tower Upgrade/Reclaim Menu
 	padding: 0 20px;
 	pointer-events: none;
 	position: absolute;
-	-webkit-transition: opacity 150ms 150ms;
 	transition: opacity 150ms 150ms;
 	width: 100%;
 }
 
 .hover-tower-button .tower-info {
 	opacity: 1;
-	-webkit-transition-delay: 0ms;
 	transition-delay: 0ms;
 }
 
@@ -944,14 +836,12 @@ Towers
 
 .t-wrap {
 	height: 40px;
-	-webkit-transition: background 150ms;
 	transition: background 150ms;
 	width: 40px;
 	z-index: 100;
 }
 
 .t-wrap:hover {
-	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
 	z-index: 101;
 }
@@ -975,7 +865,6 @@ Towers
 	opacity: 0;
 	pointer-events: none;
 	top: 50%;
-	-webkit-transition: all 150ms ease-in-out;
 	transition: all 150ms ease-in-out;
 	z-index: 1;
 }
@@ -1000,7 +889,6 @@ Towers
 .t-wrap.selected .t-range,
 .t-wrap:hover .t-range {
 	opacity: 1;
-	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
 }
 
@@ -1049,8 +937,6 @@ Towers
 	}
 
 .t-turret {
-	/*-webkit-animation: rotate 3000ms linear infinite;
-	animation: rotate 3000ms linear infinite;*/
 	background: #6c6;
 	height: 50%;
 	left: 0;
@@ -1065,27 +951,21 @@ Towers
 	.t-type-f .t-turret { background: hsl(0, 70%, 70%); }
 
 .t-core {
-	/*-webkit-animation: pulse 1500ms infinite alternate;
-	animation: pulse 1500ms infinite alternate;*/
 	border-radius: 50%;
 	margin: auto;
 }
 
 	.t-type-e .t-core {
 		background: hsl(120, 100%, 70%);
-		/*box-shadow: 0 0 20px hsl(120, 100%, 80%);*/
 	}
 	.t-type-w .t-core {
 		background: hsl(200, 100%, 70%);
-		/*box-shadow: 0 0 20px hsl(200, 100%, 80%);*/
 	}
 	.t-type-a .t-core {
 		background: hsl(60, 100%, 70%);
-		/*box-shadow: 0 0 20px hsl(60, 100%, 80%);*/
 	}
 	.t-type-f .t-core {
 		background: hsl(0, 100%, 70%);
-		/*box-shadow: 0 0 20px hsl(0, 100%, 80%);*/
 	}
 
 /*==============================================================================
@@ -1183,7 +1063,6 @@ Enemies
 	opacity: 0;
 	position: absolute;
 	top: -4px;
-	-webkit-transition: opacity 150ms ease-out;
 	transition: opacity 150ms ease-out;
 }
 
@@ -1196,7 +1075,6 @@ Enemies
 
 .enemy.hit:after {
 	opacity: 1;
-	-webkit-transition-duration: 0ms;
 	transition-duration: 0ms;
 }
 
@@ -1232,20 +1110,20 @@ Bullets
 
 .bullet.type-e {
 	background: hsl(120, 100%, 80%);
-	box-shadow: 0 0 10px hsl(120, 100%, 80%);
+	/*box-shadow: 0 0 10px hsl(120, 100%, 80%);*/
 }
 
 .bullet.type-w {
 	background: hsl(200, 100%, 80%);
-	box-shadow: 0 0 10px hsl(200, 100%, 80%);
+	/*box-shadow: 0 0 10px hsl(200, 100%, 80%);*/
 }
 
 .bullet.type-a {
 	background: hsl(60, 100%, 80%);
-	box-shadow: 0 0 10px hsl(60, 100%, 80%);
+	/*box-shadow: 0 0 10px hsl(60, 100%, 80%);*/
 }
 
 .bullet.type-f {
 	background: hsl(0, 100%, 80%);
-	box-shadow: 0 0 10px hsl(0, 100%, 80%);
+	/*box-shadow: 0 0 10px hsl(0, 100%, 80%);*/
 }

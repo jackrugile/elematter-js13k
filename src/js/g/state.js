@@ -13,7 +13,7 @@ g.State = function( state ) {
 };
 
 g.State.prototype._init = function() {
-	this.time = new g.Time();
+	//this.time = new g.Time();
 	this.init();
 };
 

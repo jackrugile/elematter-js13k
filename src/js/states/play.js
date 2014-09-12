@@ -21,6 +21,7 @@ StatePlay.prototype.init = function() {
 
 	// state vars
 		// general
+		this.tick = 0;
 		this.hasPlayed = 0;
 		this.speed = 1;
 		// waves
@@ -50,7 +51,7 @@ StatePlay.prototype.init = function() {
 		this.enemies = new g.Group();
 		// bullets
 		//this.bullets = new g.Group();
-		this.bullets = new g.Pool( g.Bullet, 10 );
+		this.bullets = new g.Pool( g.B, 10 );
 
 	// setup dom
 		this.dom = {};
@@ -61,10 +62,6 @@ StatePlay.prototype.init = function() {
 		this.dom.x1   = g.qS( '.b-x1' );
 		this.dom.x2   = g.qS( '.b-x2' );
 		this.dom.x3   = g.qS( '.b-x3' );
-		this.dom.eAtk = g.qS( '.b-e' );
-		this.dom.wAtk = g.qS( '.b-w' );
-		this.dom.aAtk = g.qS( '.b-a' );
-		this.dom.fAtk = g.qS( '.b-f' );
 		this.dom.mute = g.qS( '.b-mute' );
 		this.dom.menu = g.qS( '.b-menu' );
 		this.dom.send = g.qS( '.b-send' );
@@ -88,7 +85,6 @@ StatePlay.prototype.init = function() {
 		this.dom.buildFire     = g.qS( '.build-f' );
 		this.dom.buildCost     = g.qS( '.build-cost' );
 		this.dom.buildType     = g.qS( '.build-type' );
-		this.dom.buildDesc     = g.qS( '.build-desc' );
 		this.dom.buildDmg      = g.qS( '.build-dmg' );
 		this.dom.buildRng      = g.qS( '.build-rng' );
 		this.dom.buildRte      = g.qS( '.build-rte' );
@@ -116,10 +112,6 @@ StatePlay.prototype.init = function() {
 		g.on( this.dom.x1, 'click', this.onX1Click, this );
 		g.on( this.dom.x2, 'click', this.onX2Click, this );
 		g.on( this.dom.x3, 'click', this.onX3Click, this );
-		g.on( this.dom.eAtk, 'click', this.onEAtkClick, this );
-		g.on( this.dom.wAtk, 'click', this.onWAtkClick, this );
-		g.on( this.dom.aAtk, 'click', this.onAAtkClick, this );
-		g.on( this.dom.fAtk, 'click', this.onFAtkClick, this );
 		g.on( this.dom.mute, 'click', this.onMuteClick, this );
 		g.on( this.dom.menu, 'click', this.onMenuClick, this );
 		g.on( this.dom.send, 'click', this.onSendClick, this );
@@ -166,7 +158,7 @@ StatePlay.prototype.step = function() {
 
 	for( var i = 0; i < this.speed; i++ ) {
 		// update time based on current speed
-		this.time._step( this.speed );
+		//this.time._step( this.speed );
 		// update global properties
 		this.updateGlobals();
 		// waves
@@ -178,6 +170,8 @@ StatePlay.prototype.step = function() {
 		// bullets
 		this.bullets.each( 'step' );
 	}
+
+	this.tick++;
 };
 
 /*==============================================================================
@@ -301,7 +295,7 @@ StatePlay.prototype.setupTiles = function() {
 			if( isPath ) {
 				classes += ' path';
 			}
-			var tile = new g.Tile({
+			var tile = new g.Ti({
 				state: this,
 				col: x,
 				row: y,
@@ -350,7 +344,7 @@ StatePlay.prototype.updateGlobals = function() {
 	} else {
 		this.globalTurretRotation += Math.PI;
 	}*/
-	this.globalCoreScale = 0.3 + Math.sin( this.time.tick / 30 ) * 0.15;
+	this.globalCoreScale = 0.3 + Math.sin( this.tick / 30 ) * 0.15;
 };
 
 /*==============================================================================
@@ -403,7 +397,7 @@ StatePlay.prototype.setupWaves = function() {
 	// loop over each wave data
 	for( var i = 0, ilength = g.data.waves.length; i < ilength; i++ ) {
 		var wave = g.data.waves[ i ],
-			newWave = new g.Wave({
+			newWave = new g.W({
 				state: this,
 				num: i
 			});
@@ -415,7 +409,7 @@ StatePlay.prototype.setupWaves = function() {
 				isBoss = set.length >= 3 ? 1 : 0;
 			// loop to create the correct amount of enemies for that set
 			for( var k = 0, klength = count; k < klength; k++ ) {
-				var enemy = new g.Enemy({
+				var enemy = new g.E({
 					state: this,
 					type: type,
 					isBoss: isBoss
@@ -519,7 +513,6 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	// set all text nodes
 	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
 	g.text( this.dom.buildType, data.title );
-	g.text( this.dom.buildDesc, data.desc );
 	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );
 	g.text( this.dom.buildRng, data.rng );
 	g.text( this.dom.buildRte, data.rte );
@@ -605,7 +598,7 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 		if( cost <= this.fragments && this.isBuildable ) {
 			this.setFragments( -cost );
 			var tile = this.lastClickedTile;
-			var tower = new g.Tower({
+			var tower = new g.To({
 				state: this,
 				col: tile.col,
 				row: tile.row,
@@ -674,7 +667,6 @@ StatePlay.prototype.updateTowerMenuText = function( button ) {
 	// set all text nodes
 	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
 	g.text( this.dom.buildType, data.title );
-	g.text( this.dom.buildDesc, data.desc );
 	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );
 	g.text( this.dom.buildRng, data.rng );
 	g.text( this.dom.buildRte, data.rte );
