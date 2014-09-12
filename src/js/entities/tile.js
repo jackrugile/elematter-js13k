@@ -21,16 +21,6 @@ g.Tile.prototype.init = function() {
 	g.on( this.dom, 'click', this.onClick, this );
 };
 
-/*
-g.Tile.prototype.step = function() {
-
-};
-
-g.Tile.prototype.draw = function() {
-
-};
-*/
-
 g.Tile.prototype.onClick = function( e ) {
 	if( !this.state.isBuildMenuOpen ) {
 		if( !this.isPath ) {

@@ -16,6 +16,7 @@ StatePlay.prototype.init = function() {
 	// general booleans
 	this.isPlaying = 0;
 	this.isBuildMenuOpen = 0;
+	this.isTowerMenuOpen = 0;
 	this.isBuildable = 0;
 
 	// state vars
@@ -40,6 +41,7 @@ StatePlay.prototype.init = function() {
 		this.globalTurretRotation = 0;
 		this.globalCoreScale = 0.1;
 		// towers
+		this.lastClickedTower = null;
 		this.towers = new g.Group();
 		// waves
 		this.waves = new g.Group();
@@ -86,9 +88,24 @@ StatePlay.prototype.init = function() {
 		this.dom.buildCost     = g.qS( '.build-cost' );
 		this.dom.buildType     = g.qS( '.build-type' );
 		this.dom.buildDesc     = g.qS( '.build-desc' );
-		this.dom.buildDamage   = g.qS( '.build-damage' );
-		this.dom.buildRange    = g.qS( '.build-range' );
-		this.dom.buildRate     = g.qS( '.build-rate' );
+		this.dom.buildDmg      = g.qS( '.build-dmg' );
+		this.dom.buildRng      = g.qS( '.build-rng' );
+		this.dom.buildRte      = g.qS( '.build-rte' );
+		// get tower menu dom
+		this.dom.towerMenuWrap  = g.qS( '.tower-menu-wrap' );
+		this.dom.towerMenu      = g.qS( '.tower-menu' );
+		this.dom.towerButton    = g.qS( '.tower-button' );
+		this.dom.towerHighlight = g.qS( '.tower-button.highlight' );
+		this.dom.towerUpgrade   = g.qS( '.tower-button.upgrade' );
+		this.dom.towerReclaim   = g.qS( '.tower-button.reclaim' );
+		this.dom.towerCost      = g.qS( '.tower-cost' );
+		this.dom.towerLabel     = g.qS( '.tower-label' );
+		this.dom.towerDmg       = g.qS( '.tower-dmg' );
+		this.dom.towerRng       = g.qS( '.tower-rng' );
+		this.dom.towerRte       = g.qS( '.tower-rte' );
+		this.dom.towerDmgNext   = g.qS( '.tower-dmg-next' );
+		this.dom.towerRngNext   = g.qS( '.tower-rng-next' );
+		this.dom.towerRteNext   = g.qS( '.tower-rte-next' );
 
 	// events
 		// set general events
@@ -108,11 +125,20 @@ StatePlay.prototype.init = function() {
 		// set build menu events
 		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );
 		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );
-		for( var i = 0, length =  this.dom.buildSelect.length; i < length; i++ ) {
+		for( var i = 0, length = this.dom.buildSelect.length; i < length; i++ ) {
 			var buildSelect = this.dom.buildSelect[ i ];
 			g.on( buildSelect, 'mouseenter', this.onBuildSelectMouseenter, this );
 			g.on( buildSelect, 'mouseleave', this.onBuildSelectMouseleave, this );
 			g.on( buildSelect, 'click', this.onBuildSelectClick, this );
+		}
+		// set tower menu events
+		g.on( this.dom.towerMenuWrap, 'click', this.onTowerMenuWrapClick, this );
+		g.on( this.dom.towerMenu, 'click', this.onTowerMenuClick, this );
+		for( var j = 0, lengthj = this.dom.towerButton.length; j < lengthj; j++ ) {
+			var towerButton = this.dom.towerButton[ j ];
+			g.on( towerButton, 'mouseenter', this.onTowerButtonMouseenter, this );
+			g.on( towerButton, 'mouseleave', this.onTowerButtonMouseleave, this );
+			g.on( towerButton, 'click', this.onTowerButtonClick, this );
 		}
 
 	// initialization
@@ -188,6 +214,10 @@ StatePlay.prototype.onWinClick = function() {
 	// and the build menu is open, hide it
 	if( this.isBuildMenuOpen ) {
 		this.hideBuildMenu();
+	}
+	// and the tower menu is open, hide it
+	if( this.isTowerMenuOpen ) {
+		this.hideTowerMenu();
 	}
 };
 
@@ -348,8 +378,10 @@ Fragments / Cash / Spending / Money / Currency
 
 StatePlay.prototype.setFragments = function( amt ) {
 	this.fragments += amt;
-	// update build availability
+	// update build menu availability
 	this.updateBuildMenuAvailability();
+	// update tower menu availability
+	this.updateTowerMenuAvailability();
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -487,9 +519,9 @@ StatePlay.prototype.updateBuildMenuText = function( type ) {
 	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
 	g.text( this.dom.buildType, data.title );
 	g.text( this.dom.buildDesc, data.desc );
-	g.text( this.dom.buildDamage, data.dmg + ' ' + data.bonus );
-	g.text( this.dom.buildRange, data.rng );
-	g.text( this.dom.buildRate, data.rte );
+	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );
+	g.text( this.dom.buildRng, data.rng );
+	g.text( this.dom.buildRte, data.rte );
 	// reset classes and add proper type classes based on tower data
 	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
 	g.addClass( g.dom, 'hover-build-select hover-' + type );
@@ -566,9 +598,132 @@ StatePlay.prototype.onBuildSelectMouseleave = function( e ) {
 };
 
 StatePlay.prototype.onBuildSelectClick = function( e ) {
-	// set the build menu text based on the element that is hovered
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
+		var cost = g.data.towers[ type ].stats[ 0 ].cst;
+		if( cost <= this.fragments && this.isBuildable ) {
+			this.setFragments( -cost );
+			var tile = this.lastClickedTile;
+			var tower = new g.Tower({
+				state: this,
+				col: tile.col,
+				row: tile.row,
+				horizontal: tile.horizontal,
+				vertical: tile.vertical,
+				type: type
+			});
+			this.towers.push( tower );
+			this.isBuildable = 0;
+			this.hideBuildMenu();
+		}
+	}
+};
+
+/*==============================================================================
+
+Tower Menu
+
+==============================================================================*/
+
+StatePlay.prototype.showTowerMenu = function( tower ) {
+	this.isTowerMenuOpen = 1;
+	g.addClass( g.dom, 'tower-menu-open' );
+
+	// set the proper type class
+	g.removeClass( g.dom, 't-menu-e t-menu-w t-menu-a t-menu-f' );
+	g.addClass( g.dom, 't-menu-' + tower.type );
+
+	// set the proper positioning to prevent overflow of main game wrap
+	g.removeClass( g.dom, 'pos-n pos-e pos-s pos-w' );
+	g.addClass( g.dom, 'pos-' + tower.horizontal + ' ' + 'pos-' + tower.vertical );
+
+	// determine proper coordinates
+	var x = tower.col * g.size - 20,
+		y = tower.row * g.size - 20;
+
+	if( tower.horizontal == 'e' ) {
+		x -= 200;
+	}
+
+	// set position based on tile
+	g.css( this.dom.towerMenu, 'transform', 'translateX(' + x + 'px) translateY(' + y + 'px)' );
+
+	// reset anim on pulsing default box
+	g.resetAnim( this.dom.towerHighlight );
+};
+
+StatePlay.prototype.hideTowerMenu = function() {
+	this.isTowerMenuOpen = 0;
+	g.removeClass( g.dom, 'tower-menu-open' );
+	this.towers.each( function( tower ) {
+		g.removeClass( tower.dom.wrap, 'selected' );
+	}, 1, this );
+};
+
+StatePlay.prototype.updateTowerMenuText = function( button ) {
+	if( button == 'upgrade' ) {
+		// upgrade button is hovered, get proper data
+		g.addClass( g.dom, 'hover-tower-button' );
+	} else if( button == 'reclaim' ) {
+		// sell button is hovered, get proper data
+		g.addClass( g.dom, 'hover-tower-button' );
+	}
+	// get the tower data based on type
+	/*var data = g.data.towers[ type ];
+	// set all text nodes
+	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
+	g.text( this.dom.buildType, data.title );
+	g.text( this.dom.buildDesc, data.desc );
+	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );
+	g.text( this.dom.buildRng, data.rng );
+	g.text( this.dom.buildRte, data.rte );
+	// reset classes and add proper type classes based on tower data
+	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
+	g.addClass( g.dom, 'hover-build-select hover-' + type );*/
+};
+
+StatePlay.prototype.updateTowerMenuAvailability = function() {
+	if( this.lastClickedTower ) {
+		g.removeClass( g.dom, 'no-upgrade maxed-upgrade' );
+		var lvl = this.lastClickedTower.lvl;
+		if( lvl == 2 ) {
+			g.addClass( g.dom, 'maxed-upgrade' );
+		} else {
+			if( this.fragments < g.data.towers.e.stats[ lvl ].cst ) {
+				g.addClass( g.dom, 'no-upgrade' );
+			}
+		}
+	}
+};
+
+StatePlay.prototype.onTowerMenuWrapClick = function( e ) {
+	// if the outer wrap is clicked, close the tower menu
+	this.hideTowerMenu();
+};
+
+StatePlay.prototype.onTowerMenuClick = function( e ) {
+	// prevent any clicks from bubbling up to any other tiles or buttons
+	e.stopPropagation();
+};
+
+StatePlay.prototype.onTowerButtonMouseenter = function( e ) {
+	// set the tower menu text based on the button that is hovered
+	this.updateTowerMenuText( g.attr( e.target, 'data-action' ) );
+};
+
+StatePlay.prototype.onTowerButtonMouseleave = function( e ) {
+	// remove hover class, which fades out the description
+	g.removeClass( g.dom, 'hover-tower-button' );
+};
+
+StatePlay.prototype.onTowerButtonClick = function( e ) {
+	var action = g.attr( e.target, 'data-action' );
+	if( action == 'upgrade') {
+		console.log( 'upgrade' );
+	} else if( action == 'reclaim' ) {
+		console.log( 'reclaim' );
+	}
+	/*if( type ) {
 		var cost = g.data.towers[ type ].stats[ 0 ].cst;
 		if( cost <= this.fragments && this.isBuildable ) {
 			this.setFragments( -cost );
@@ -583,7 +738,7 @@ StatePlay.prototype.onBuildSelectClick = function( e ) {
 			this.isBuildable = 0;
 			this.hideBuildMenu();
 		}
-	}
+	}*/
 };
 
 /*==============================================================================

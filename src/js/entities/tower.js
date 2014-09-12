@@ -78,27 +78,6 @@ g.Tower.prototype.upgrade = function() {
 };
 
 g.Tower.prototype.getTarget = function() {
-	/*var enemies = this.state.enemies,
-		enemiesInRange = [];
-	// if enemies are on the map
-	if( enemies.length ) {
-		// loop over enemies to get which ones are in range
-		enemies.each( function( enemy, i, collection ) {
-			var dist = g.distance( this.cx, this.cy, enemy.cx, enemy.cy );
-			if( this.rng + enemy.radius > dist ) {
-				enemiesInRange.push( [ i, enemy.distanceTraveled, enemy.guid ] );
-			}
-		}, 1, this );
-		if( enemiesInRange.length ) {
-			enemiesInRange.sort(function( a, b ) {
-				return a[ 1 ] - b[ 1 ];
-			});
-			var newEnemy = enemiesInRange.pop();
-			this.target = newEnemy[ 2 ];
-		} else {
-			this.target = null;
-		}
-	}*/
 	var enemies = this.state.enemies,
 		enemiesInRange = [];
 	// if enemies are on the map
@@ -162,5 +141,9 @@ g.Tower.prototype.setupEvents = function() {
 };
 
 g.Tower.prototype.onClick = function() {
-	//console.log( 'click' );
+	if( !this.state.isTowerMenuOpen ) {
+		this.state.showTowerMenu( this );
+		this.state.lastClickedTower = this;
+		g.addClass( this.dom.wrap, 'selected' );
+	}
 };

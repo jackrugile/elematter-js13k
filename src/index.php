@@ -69,13 +69,48 @@ Game Element
 					</div>
 					<div class="build-desc"> </div>
 					<div class="build-stat build-dmg-wrap">
-						<strong>Damage:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-damage"> </span>
+						<strong>Damage:</strong> <span class="build-mtr"><span></span><span></span><span></span></span> <span class="build-dmg"> </span>
 					</div>
 					<div class="build-stat build-rng-wrap">
-						<strong>Range:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-range"> </span>
+						<strong>Range:</strong> <span class="build-mtr"><span></span><span></span><span></span></span> <span class="build-rng"> </span>
 					</div>
 					<div class="build-stat build-rte-wrap">
-						<strong>Rate:</strong> <span class="build-meter"><span></span><span></span><span></span></span> <span class="build-rate"> </span>
+						<strong>Rate:</strong> <span class="build-mtr"><span></span><span></span><span></span></span> <span class="build-rte"> </span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--==============================================================================
+		Tower Upgrade/Reclaim Menu
+		===============================================================================-->
+		<div class="tower-menu-wrap">
+			<div class="tower-menu">
+				<div class="tower-buttons">
+					<a class="tower-button highlight anim"></a>
+					<a class="tower-button upgrade" data-action="upgrade">
+						<div></div>
+						<div></div>
+						<div></div>
+					</a>
+					<a class="tower-button reclaim" data-action="reclaim">
+						<div></div>
+						<div></div>
+						<div></div>
+					</a>
+				</div>
+				<div class="tower-info">
+					<div class="tower-title">
+						<span class="tower-cost">100</span> <i>&there4;</i>
+						<span class="tower-label">Upgrade</span>
+					</div>
+					<div class="tower-stat tower-dmg-wrap">
+						<strong>Damage:</strong> <span class="tower-dmg">10</span> <i>&raquo;</i> <span class="tower-dmg-next">120</span>
+					</div>
+					<div class="tower-stat tower-rng-wrap">
+						<strong>Range:</strong> <span class="tower-rng">100</span> <i>&raquo;</i> <span class="tower-rng-next">120</span>
+					</div>
+					<div class="tower-stat tower-rte-wrap">
+						<strong>Rate:</strong> <span class="tower-rte">100</span> <i>&raquo;</i> <span class="tower-rte-next">120</span>
 					</div>
 				</div>
 			</div>
