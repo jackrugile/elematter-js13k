@@ -739,6 +739,7 @@ Towers
 
 .t-wrap.upgradable:before,
 .t-wrap.upgradable:after {
+	background: #fff;
 	opacity: 1;
 }
 
@@ -752,25 +753,6 @@ Towers
 	height: 8px;
 	right: 3px;
 	width: 2px;
-}
-.t-type-e:before,
-.t-type-e:after {
-	background: hsl(120, 80%, 60%);
-}
-
-.t-type-w:before,
-.t-type-w:after {
-	background: hsl(200, 80%, 60%);
-}
-
-.t-type-a:before,
-.t-type-a:after {
-	background: hsl(60, 80%, 60%);
-}
-
-.t-type-f:before,
-.t-type-f:after {
-	background: hsl(0, 80%, 60%);
 }
 
 .t-wrap.targeting {
