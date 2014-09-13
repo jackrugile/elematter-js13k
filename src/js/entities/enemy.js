@@ -20,9 +20,9 @@ g.E.prototype.init = function() {
 	}
 	this.dom.hl = g.cE( this.dom.enemy, 'hl' );
 	this.dom.hp = g.cE( this.dom.enemy, 'hp' );
-	this.hpTotal = 50;
+	this.hpTotal = 70;
 	
-	this.value = 40;
+	this.value = 30;
 	this.wp = 1; // current waypoint index
 	this.angleFlag = 1;
 	this.radius = this.size * 0.75;
@@ -52,18 +52,18 @@ g.E.prototype.init = function() {
 
 	// apply wave buffs
 	// hp
-	this.hpTotal += this.wave * 22;
+	this.hpTotal += this.wave * 25;
 
 	// speed
-	this.speed += this.wave * 0.04;
+	this.speed += this.wave * 0.05;
 
 	// value
-	this.value += this.wave * 2;
+	this.value += this.wave;
 
 	// apply boss buffs
 	if( this.isBoss ) {
 		this.hpTotal *= 20;
-		this.value *= 5;
+		this.value *= 3;
 		this.speed *= 0.5;
 	}
 

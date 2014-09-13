@@ -415,7 +415,7 @@ StatePlay.prototype.updateWaves = function() {
 	// update early send amt
 	if( this.isPlaying ) {
 		if( this.waves.length ) {
-			this.sendEarlyAmt -= ( 25 * this.wave ) * 0.0002;
+			this.sendEarlyAmt -= ( 50 + ( 10 * this.wave ) ) * 0.0003;
 			this.sendEarlyAmt = Math.max( 0, this.sendEarlyAmt );
 		} else {
 			this.sendEarlyAmt = 0;
@@ -443,7 +443,7 @@ StatePlay.prototype.updateWaves = function() {
 		this.won = 1;
 		var score = ( this.lives * 100 ) + ( this.fragments );
 		setTimeout( function() {
-			alert( 'You won! Based on lives left and elemental fragments unspent, your score is: ' + g.formatCommas( score ) );
+			alert( 'You won! Based on lives and elemental fragments left, your score is: ' + g.formatCommas( score ) );
 			location.reload();
 		}, 1000 );
 	}
@@ -460,7 +460,7 @@ StatePlay.prototype.advanceWave = function() {
 			if( this.wave < this.wavesTotal ) {
 				this.waveNext++;
 				var waveNext = this.waves.getAt( 0 );
-				this.sendEarlyAmt = 25 * this.wave;
+				this.sendEarlyAmt = 50 + ( 10 * this.wave );
 				g.text( this.dom.eWave, waveNext.counts.e );
 				g.text( this.dom.wWave, waveNext.counts.w );
 				g.text( this.dom.aWave, waveNext.counts.a );

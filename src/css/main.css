@@ -24,7 +24,7 @@ body {
 
 body {
 	background: #0c0c0c;
-	font-family: sans-serif;
+	font-family: helvetica, sans-serif;
 	overflow: hidden;
 	
 }
@@ -948,7 +948,7 @@ Enemies
 }
 
 .enemy.slow {
-	box-shadow: 0 0 0 8px hsla(200, 100%, 30%, 0.75);
+	box-shadow: 0 0 0 8px hsla(200, 100%, 30%, 0.5);
 	opacity: 0.5;
 }
 
@@ -969,10 +969,10 @@ Enemies
 	bottom: -10px;
 }
 
-.enemy.type-e .hp {	border-color: hsl(120, 80%, 60%); }
-.enemy.type-w .hp {	border-color: hsl(200, 80%, 60%); }
-.enemy.type-a .hp {	border-color: hsl(60, 80%, 60%); }
-.enemy.type-f .hp {	border-color: hsl(0, 80%, 60%); }
+.enemy.type-e .hp {	border-color: hsl(120, 100%, 80%); }
+.enemy.type-w .hp {	border-color: hsl(200, 100%, 80%); }
+.enemy.type-a .hp {	border-color: hsl(60, 100%, 80%); }
+.enemy.type-f .hp {	border-color: hsl(0, 100%, 80%); }
 
 .hl {
 	border: 1px solid #fff;
