@@ -113,7 +113,7 @@ g.To.prototype.fire = function() {
 		this.getTarget();
 		// if this tower has a target enemy
 		if( this.target ) {
-			g.audio.play( 'laser' );
+			g.audio.play( 'fire-' + this.type );
 			this.bulletTick = 0;
 			var slow = 0;
 			if( this.type == 'w' ) {

@@ -23,7 +23,9 @@ g.Ti.prototype.init = function() {
 };
 
 g.Ti.prototype.onMouseenter = function() {
-	g.audio.play( 'ui-tap' );
+	if( !this.isPath ) {
+		g.audio.play( 'ui-tap' );
+	}
 };
 
 g.Ti.prototype.onClick = function( e ) {

@@ -57,6 +57,7 @@ g.B.prototype.step = function() {
 				if( target.type == this.counters ) {
 					dmg *= 1.5;
 				}
+				g.audio.play( 'hit-' + this.type );
 				target.receiveDamage( dmg, this.slow );
 				this.destroy();
 			}

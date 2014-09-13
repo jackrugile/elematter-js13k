@@ -370,10 +370,11 @@ Lives
 ==============================================================================*/
 
 StatePlay.prototype.removeLife = function() {
+	g.audio.play( 'life' );
 	this.lives--;
 	this.updateLife();
 	if( !this.lives ) {
-		console.log( 'dead' );
+		g.audio.play( 'gameover' );
 	}
 };
 
@@ -465,6 +466,7 @@ StatePlay.prototype.advanceWave = function() {
 			this.activeWaves.push( this.waves.shift() );
 			g.text( this.dom.wave, ( this.wave + 1 ) + ' / ' + this.wavesTotal );
 			this.wave++;
+			g.audio.play( 'wave' );
 			if( this.wave < this.wavesTotal ) {
 				this.waveNext++;
 				var waveNext = this.waves.getAt( 0 );

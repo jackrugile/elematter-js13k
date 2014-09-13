@@ -110,7 +110,6 @@ g.E.prototype.step = function() {
 	}
 
 	this.updateCoords();
-	
 };
 
 g.E.prototype.draw = function() {
@@ -118,7 +117,6 @@ g.E.prototype.draw = function() {
 };
 
 g.E.prototype.receiveDamage = function( dmg, slow ) {
-	g.audio.play( 'damage' );
 	if( slow ) {
 		this.slowTick += slow;
 	}
