@@ -4,7 +4,7 @@ Splash
 
 ==============================================================================*/
 
-g.S = function() {
+/*g.S = function() {
 	this.dom = g.cE( g.qS( '.s-play' ), 'splash' );
 };
 
@@ -59,4 +59,4 @@ g.S.prototype.updateCoords = function() {
 	this.cy = this.y + this.size / 2;
 	this.rx = this.x;
 	this.ry = this.y;
-};
+};*/

@@ -55,17 +55,6 @@ g.Pool.prototype.empty = function() {
 };
 
 g.Pool.prototype.each = function( action, asc ) {
-	/*var i;
-	if( asc ) {
-		for( i = 0; i < this.length; i++ ) {
-			this.alive[ i ][ action ]( i );
-		}
-	} else {
-		i = this.length;
-		while( i-- ) {
-			this.alive[ i ][ action ]( i );
-		}
-	}*/
 	var i = this.length;
 	while( i-- ) {
 		this.alive[ i ][ action ]( i );

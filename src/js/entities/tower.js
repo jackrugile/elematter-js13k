@@ -19,9 +19,7 @@ g.To.prototype.init = function() {
 	this.cx = this.col * g.size + g.size / 2; // center x
 	this.cy = this.row * g.size + g.size / 2; // center y
 	
-	//this.slabRotation = this.state.globalSlabRotation;
 	this.turretRotation = 0;
-	//this.coreScale = this.state.globalCoreScale;
 
 	this.setupDom();
 	this.setupEvents();
@@ -61,7 +59,6 @@ g.To.prototype.draw = function() {
 
 g.To.prototype.setStats = function() {
 	var stats = this.data.stats[ this.lvl ];
-	//this.costToUpgrade = stats.cst;
 	this.dmg = stats.dmg;
 	this.rng = stats.rng;
 	this.rte = stats.rte;

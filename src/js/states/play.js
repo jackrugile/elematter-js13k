@@ -52,10 +52,7 @@ StatePlay.prototype.init = function() {
 		// enemies
 		this.enemies = new g.Group();
 		// bullets
-		//this.bullets = new g.Group();
 		this.bullets = new g.Pool( g.B, 20 );
-		// splashes
-		//this.splashes = new g.Pool( g.S, 10 );
 
 	// setup dom
 		this.dom = {};
@@ -165,8 +162,6 @@ StatePlay.prototype.step = function() {
 	this.updateFragments();
 
 	for( var i = 0; i < this.speed; i++ ) {
-		// update time based on current speed
-		//this.time._step( this.speed );
 		// update global properties
 		this.updateGlobals();
 		// towers
@@ -175,8 +170,6 @@ StatePlay.prototype.step = function() {
 		this.enemies.each( 'step' );
 		// bullets
 		this.bullets.each( 'step' );
-		// splashes
-		//this.splashes.each( 'step' );
 		// waves
 		this.updateWaves();
 	}
@@ -196,8 +189,6 @@ StatePlay.prototype.draw = function() {
 	this.enemies.each( 'draw' );
 	// bullets
 	this.bullets.each( 'draw' );
-	// splashes
-	//this.splashes.each( 'draw' );
 };
 
 /*==============================================================================
@@ -334,11 +325,6 @@ Globals
 StatePlay.prototype.updateGlobals = function() {
 	this.globalSlabRotation -= 0.025;
 	this.globalTurretRotation += 0.025;
-	/*if( this.globalTurretRotation >= Math.PI ) {
-		this.globalTurrentRotation = -Math.PI;
-	} else {
-		this.globalTurretRotation += Math.PI;
-	}*/
 	this.globalCoreScale = 0.3 + Math.sin( this.tick / 30 ) * 0.15;
 };
 
@@ -379,8 +365,6 @@ StatePlay.prototype.setFragments = function( amt ) {
 	this.updateTowerMenuAvailability();
 	// update tower upgrade availability
 	this.updateTowerUpgradeAvailability();
-	// update tower menu text
-	//this.updateTowerMenuText( 'upgrade' );
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -416,7 +400,8 @@ StatePlay.prototype.setupWaves = function() {
 				var enemy = new g.E({
 					state: this,
 					type: type,
-					isBoss: isBoss
+					isBoss: isBoss,
+					wave: i
 				});
 				newWave.enemies.push( enemy );
 				newWave.counts[ type ]++;

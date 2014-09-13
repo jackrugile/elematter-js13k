@@ -22,13 +22,6 @@ g.init = function() {
 		'height': g.height + 'px'
 	});
 
-	// setup local storage
-	//g.storage = new g.Storage( 'elematterjs13k' );
-	// setup storage defaults if they don't exist
-	//if( g.isObjEmpty( g.storage.obj ) ) {
-		// g.storage.set( 'option', 0 );
-	//}
-
 	g.on( window, 'load', g.onLoad );
 	g.on( g.dom, 'click', g.onClick );
 

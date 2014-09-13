@@ -18,7 +18,7 @@ Game Element
 		===============================================================================-->
 		<div class="row top-row">
 			<div class="game-title">Elematter <span>by Jack Rugile for js13kGames</span></div>
-			<a class="b b-play s4"><i>&rtrif;</i>Play</a>
+			<a class="b b-play s5"><i>&rtrif;</i>Play</a>
 			<a class="b b-x1 s2">&times;1</a>
 			<a class="b b-x2 s2">&times;2</a>
 			<a class="b b-x3 s2">&times;3</a>
@@ -127,7 +127,6 @@ Game Element
 	<script src="js/g/group.js"></script>
 	<script src="js/g/pool.js"></script>
 	<script src="js/g/util.js"></script>
-	<script src="js/g/storage.js"></script>
 	<script src="js/data/audio.js"></script>
 	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
