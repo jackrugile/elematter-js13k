@@ -18,7 +18,12 @@ g.Ti.prototype.init = function() {
 		'height': g.size + 'px',
 		'zIndex': g.rows - this.row
 	});
+	g.on( this.dom, 'mouseenter', this.onMouseenter, this );
 	g.on( this.dom, 'click', this.onClick, this );
+};
+
+g.Ti.prototype.onMouseenter = function() {
+	g.audio.play( 'ui-tap' );
 };
 
 g.Ti.prototype.onClick = function( e ) {

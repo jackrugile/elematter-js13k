@@ -22,6 +22,8 @@ gulp.task( 'jshint', function() {
 gulp.task( 'js', [ 'jshint' ], function() {
 	return gulp.src( src + 'js/imports.js' )
 		.pipe( p.imports() )
+		.pipe( p.rename( '_full.js' ) )
+		.pipe( gulp.dest( temp ) )
 		.pipe( p.uglify() )
 		.pipe( p.rename( '_.js' ) )
 		.pipe( gulp.dest( temp ) );

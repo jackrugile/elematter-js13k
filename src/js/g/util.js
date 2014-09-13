@@ -106,7 +106,9 @@ g.css = function( elem, prop, val ) {
 
 // credit: Todd Motto - https://github.com/toddmotto/apollo
 g.hasClass = function ( elem, className ) {
-	return elem.classList.contains( className ) ;
+	if( className ) {
+		return elem.classList.contains( className );
+	}
 };
 
 g.addClass = function ( elem, className ) {
@@ -114,7 +116,9 @@ g.addClass = function ( elem, className ) {
 		if( className.indexOf( ' ' ) != -1 ) {
 			classes = className.split( ' ' );
 			classes.forEach( function( className ) {
-				g.addClass( elem, className );
+				if( !g.hasClass( elem, className ) ) {
+					g.addClass( elem, className );
+				}
 			});
 		} else {
 			elem.classList.add( className );
@@ -126,7 +130,9 @@ g.removeClass = function ( elem, className ) {
 	if( className.indexOf( ' ' ) != -1 ) {
 		classes = className.split( ' ' );
 		classes.forEach( function( className ) {
-			g.removeClass( elem, className );
+			if( g.hasClass( elem, className ) ) {
+				g.removeClass( elem, className );
+			}
 		});
 	} else {
 		elem.classList.remove( className );

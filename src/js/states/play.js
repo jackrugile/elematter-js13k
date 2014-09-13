@@ -58,13 +58,14 @@ StatePlay.prototype.init = function() {
 		// get state dom
 		this.dom.state = g.qS( '.s-play' );
 		// get ui button dom
-		this.dom.play = g.qS( '.b-play' );
-		this.dom.x1   = g.qS( '.b-x1' );
-		this.dom.x2   = g.qS( '.b-x2' );
-		this.dom.x3   = g.qS( '.b-x3' );
-		this.dom.mute = g.qS( '.b-mute' );
-		this.dom.menu = g.qS( '.b-menu' );
-		this.dom.send = g.qS( '.b-send' );
+		this.dom.button = g.qS( '.b' );
+		this.dom.play   = g.qS( '.b-play' );
+		this.dom.x1     = g.qS( '.b-x1' );
+		this.dom.x2     = g.qS( '.b-x2' );
+		this.dom.x3     = g.qS( '.b-x3' );
+		this.dom.mute   = g.qS( '.b-mute' );
+		this.dom.menu   = g.qS( '.b-menu' );
+		this.dom.send   = g.qS( '.b-send' );
 		// get ui display dom
 		this.dom.lives     = g.qS( '.d-lives' );
 		this.dom.fragments = g.qS( '.d-fragments' );
@@ -115,6 +116,11 @@ StatePlay.prototype.init = function() {
 		g.on( this.dom.mute, 'click', this.onMuteClick, this );
 		g.on( this.dom.menu, 'click', this.onMenuClick, this );
 		g.on( this.dom.send, 'click', this.onSendClick, this );
+		for( var i = 0, length = this.dom.button.length; i < length; i++ ) {
+			var button = this.dom.button[ i ];
+			g.on( button, 'mouseenter', this.onButtonMouseenter, this );
+			g.on( button, 'click', this.onButtonClick, this );
+		}
 		// set build menu events
 		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );
 		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );
@@ -208,10 +214,12 @@ StatePlay.prototype.onWinClick = function() {
 	// if the area outside of the game is clicked
 	// and the build menu is open, hide it
 	if( this.isBuildMenuOpen ) {
+		g.audio.play( 'ui-l' );
 		this.hideBuildMenu();
 	}
 	// and the tower menu is open, hide it
 	if( this.isTowerMenuOpen ) {
+		g.audio.play( 'ui-l' );
 		this.hideTowerMenu();
 	}
 };
@@ -221,6 +229,14 @@ StatePlay.prototype.onWinClick = function() {
 Button Events
 
 ==============================================================================*/
+
+StatePlay.prototype.onButtonMouseenter = function() {
+	g.audio.play( 'ui-m' );
+};
+
+StatePlay.prototype.onButtonClick = function() {
+	g.audio.play( 'ui-h' );
+};
 
 StatePlay.prototype.onPlayClick = function() {
 	if( !this.hasPlayed ) {
@@ -377,6 +393,8 @@ StatePlay.prototype.setFragments = function( amt ) {
 	this.updateBuildMenuAvailability();
 	// update tower menu availability
 	this.updateTowerMenuAvailability();
+	// update tower upgrade availability
+	this.updateTowerUpgradeAvailability();
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -479,6 +497,7 @@ Build Menu
 ==============================================================================*/
 
 StatePlay.prototype.showBuildMenu = function( tile ) {
+	g.audio.play( 'ui-open' );
 	this.isBuildMenuOpen = 1;
 	this.isBuildable = 1;
 	g.addClass( g.dom, 'build-menu-open' );
@@ -570,6 +589,7 @@ StatePlay.prototype.updateBuildMenuAvailability = function() {
 
 StatePlay.prototype.onBuildMenuWrapClick = function( e ) {
 	// if the outer wrap is clicked, close the build menu
+	g.audio.play( 'ui-l' );
 	this.hideBuildMenu();
 };
 
@@ -582,6 +602,7 @@ StatePlay.prototype.onBuildButtonMouseenter = function( e ) {
 	// set the build menu text based on the element that is hovered
 	var type = g.attr( e.target, 'data-type' );
 	if( type ) {
+		g.audio.play( 'ui-m' );
 		this.updateBuildMenuText( type );
 	}
 };
@@ -596,6 +617,7 @@ StatePlay.prototype.onBuildButtonClick = function( e ) {
 	if( type ) {
 		var cost = g.data.towers[ type ].stats[ 0 ].cst;
 		if( cost <= this.fragments && this.isBuildable ) {
+			g.audio.play( 'ui-h' );
 			this.setFragments( -cost );
 			var tile = this.lastClickedTile;
 			var tower = new g.To({
@@ -609,6 +631,7 @@ StatePlay.prototype.onBuildButtonClick = function( e ) {
 			this.towers.push( tower );
 			this.isBuildable = 0;
 			this.hideBuildMenu();
+			this.updateTowerUpgradeAvailability();
 		}
 	}
 };
@@ -620,6 +643,7 @@ Tower Menu
 ==============================================================================*/
 
 StatePlay.prototype.showTowerMenu = function( tower ) {
+	g.audio.play( 'ui-open' );
 	this.isTowerMenuOpen = 1;
 	g.addClass( g.dom, 'tower-menu-open' );
 
@@ -689,8 +713,22 @@ StatePlay.prototype.updateTowerMenuAvailability = function() {
 	}
 };
 
+StatePlay.prototype.updateTowerUpgradeAvailability = function() {
+	this.towers.each( function( tower ) {
+		if( tower.lvl < 2 ) {
+			if( this.fragments > g.data.towers[ tower.type ].stats[ tower.lvl ].cst ) {
+				g.addClass( tower.dom.wrap, 'upgradable' );
+			} else {
+				g.removeClass( tower.dom.wrap, 'upgradable' );
+			}
+		}
+	}, 0, this );
+	
+};
+
 StatePlay.prototype.onTowerMenuWrapClick = function( e ) {
 	// if the outer wrap is clicked, close the tower menu
+	g.audio.play( 'ui-l' );
 	this.hideTowerMenu();
 };
 
@@ -701,6 +739,7 @@ StatePlay.prototype.onTowerMenuClick = function( e ) {
 
 StatePlay.prototype.onTowerButtonMouseenter = function( e ) {
 	// set the tower menu text based on the button that is hovered
+	g.audio.play( 'ui-m' );
 	this.updateTowerMenuText( g.attr( e.target, 'data-action' ) );
 };
 
@@ -710,6 +749,7 @@ StatePlay.prototype.onTowerButtonMouseleave = function( e ) {
 };
 
 StatePlay.prototype.onTowerButtonClick = function( e ) {
+	g.audio.play( 'ui-h' );
 	var action = g.attr( e.target, 'data-action' );
 	if( action == 'upgrade') {
 		console.log( 'upgrade' );

@@ -135,13 +135,16 @@ g.To.prototype.fire = function() {
 
 g.To.prototype.setupDom = function() {
 	this.dom = {};
-	this.dom.wrap   = g.cE( this.state.dom.state, 't-wrap t-type-' + this.type );
+	this.dom.wrap   = g.cE( this.state.dom.state, 't-wrap t-lvl-' + this.lvl + ' t-type-' + this.type );
 	this.dom.tower  = g.cE( this.dom.wrap, 't-tower' );
 	this.dom.slab   = g.cE( this.dom.tower, 't-slab' );
 	this.dom.turret = g.cE( this.dom.tower, 't-turret' );
 	this.dom.base   = g.cE( this.dom.tower, 't-base' );
 	this.dom.core   = g.cE( this.dom.tower, 't-core' );
 	this.dom.range  = g.cE( this.dom.tower, 't-range' );
+	g.cE( this.dom.wrap, 't-lvl-bar t-lvl-bar-0' );
+	g.cE( this.dom.wrap, 't-lvl-bar t-lvl-bar-1' );
+	g.cE( this.dom.wrap, 't-lvl-bar t-lvl-bar-2' );
 	g.css( this.dom.wrap, 'transform', 'translate3d(' + this.col * g.size + 'px , ' + this.row * g.size + 'px, 0 )');
 };
 
