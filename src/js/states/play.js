@@ -32,7 +32,7 @@ StatePlay.prototype.init = function() {
 		this.livesTotal = 13;
 		this.lives = this.livesTotal;
 		// fragments
-		this.fragments = 1000;
+		this.fragments = 600;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
 		// tiles
@@ -42,7 +42,7 @@ StatePlay.prototype.init = function() {
 		this.globalTurretRotation = 0;
 		this.globalCoreScale = 0.1;
 		// towers
-		this.lastClickedTower = null;
+		this.lastClickedTowerId = null;
 		this.towers = new g.Group();
 		// waves
 		this.waves = new g.Group();
@@ -64,7 +64,6 @@ StatePlay.prototype.init = function() {
 		this.dom.x2     = g.qS( '.b-x2' );
 		this.dom.x3     = g.qS( '.b-x3' );
 		this.dom.mute   = g.qS( '.b-mute' );
-		this.dom.menu   = g.qS( '.b-menu' );
 		this.dom.send   = g.qS( '.b-send' );
 		// get ui display dom
 		this.dom.lives     = g.qS( '.d-lives' );
@@ -114,7 +113,6 @@ StatePlay.prototype.init = function() {
 		g.on( this.dom.x2, 'click', this.onX2Click, this );
 		g.on( this.dom.x3, 'click', this.onX3Click, this );
 		g.on( this.dom.mute, 'click', this.onMuteClick, this );
-		g.on( this.dom.menu, 'click', this.onMenuClick, this );
 		g.on( this.dom.send, 'click', this.onSendClick, this );
 		for( var i = 0, length = this.dom.button.length; i < length; i++ ) {
 			var button = this.dom.button[ i ];
@@ -124,8 +122,8 @@ StatePlay.prototype.init = function() {
 		// set build menu events
 		g.on( this.dom.buildMenuWrap, 'click', this.onBuildMenuWrapClick, this );
 		g.on( this.dom.buildMenu, 'click', this.onBuildMenuClick, this );
-		for( var i = 0, length = this.dom.buildButton.length; i < length; i++ ) {
-			var buildButton = this.dom.buildButton[ i ];
+		for( var j = 0, lengthj = this.dom.buildButton.length; j < lengthj; j++ ) {
+			var buildButton = this.dom.buildButton[ j ];
 			g.on( buildButton, 'mouseenter', this.onBuildButtonMouseenter, this );
 			g.on( buildButton, 'mouseleave', this.onBuildButtonMouseleave, this );
 			g.on( buildButton, 'click', this.onBuildButtonClick, this );
@@ -133,8 +131,8 @@ StatePlay.prototype.init = function() {
 		// set tower menu events
 		g.on( this.dom.towerMenuWrap, 'click', this.onTowerMenuWrapClick, this );
 		g.on( this.dom.towerMenu, 'click', this.onTowerMenuClick, this );
-		for( var j = 0, lengthj = this.dom.towerButton.length; j < lengthj; j++ ) {
-			var towerButton = this.dom.towerButton[ j ];
+		for( var k = 0, lengthk = this.dom.towerButton.length; k < lengthk; k++ ) {
+			var towerButton = this.dom.towerButton[ k ];
 			g.on( towerButton, 'mouseenter', this.onTowerButtonMouseenter, this );
 			g.on( towerButton, 'mouseleave', this.onTowerButtonMouseleave, this );
 			g.on( towerButton, 'click', this.onTowerButtonClick, this );
@@ -396,6 +394,8 @@ StatePlay.prototype.setFragments = function( amt ) {
 	this.updateTowerMenuAvailability();
 	// update tower upgrade availability
 	this.updateTowerUpgradeAvailability();
+	// update tower menu text
+	this.updateTowerMenuText( 'upgrade' );
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -681,34 +681,48 @@ StatePlay.prototype.hideTowerMenu = function() {
 };
 
 StatePlay.prototype.updateTowerMenuText = function( button ) {
-	if( button == 'upgrade' ) {
-		// upgrade button is hovered, get proper data
-		g.addClass( g.dom, 'hover-tower-button' );
-	} else if( button == 'reclaim' ) {
-		// sell button is hovered, get proper data
-		g.addClass( g.dom, 'hover-tower-button' );
+	var tower = this.getLastClickedTower();
+	if( tower ) {
+		var data = g.data.towers[ tower.type ];
+		if( button == 'upgrade' ) {
+			// upgrade button is hovered, get proper data
+			g.addClass( g.dom, 'hover-tower-button hover-tower-upgrade' );
+			// if not fully upgraded
+			if( tower.lvl < 2 ) {
+				g.text( this.dom.towerCost, data.stats[ tower.lvl + 1 ].cst );
+				g.text( this.dom.towerLabel, 'Upgrade to Level ' + ( tower.lvl + 2 ) );
+				g.text( this.dom.towerDmg, data.stats[ tower.lvl ].dmg );
+				g.text( this.dom.towerRng, data.stats[ tower.lvl ].rng );
+				g.text( this.dom.towerRte, 60 - data.stats[ tower.lvl ].rte );
+				g.text( this.dom.towerDmgNext, data.stats[ tower.lvl + 1 ].dmg );
+				g.text( this.dom.towerRngNext, data.stats[ tower.lvl + 1 ].rng );
+				g.text( this.dom.towerRteNext, 60 - data.stats[ tower.lvl + 1 ].rte );
+			} else {
+				g.text( this.dom.towerCost, 'Maxed' );
+				g.text( this.dom.towerLabel, data.title + ' Level ' + tower.lvl + 1 );
+				g.text( this.dom.towerDmg, data.stats[ tower.lvl ].dmg );
+				g.text( this.dom.towerRng, data.stats[ tower.lvl ].rng );
+				g.text( this.dom.towerRte, 60 - data.stats[ tower.lvl ].rte );
+				g.text( this.dom.towerDmgNext, 'Maxed' );
+				g.text( this.dom.towerRngNext, 'Maxed' );
+				g.text( this.dom.towerRteNext, 'Maxed' );
+			}
+		} else if( button == 'reclaim' ) {
+			// sell button is hovered, get proper data
+			g.addClass( g.dom, 'hover-tower-button hover-tower-reclaim' );
+		}
 	}
-	// get the tower data based on type
-	/*var data = g.data.towers[ type ];
-	// set all text nodes
-	g.text( this.dom.buildCost, data.stats[ 0 ].cst );
-	g.text( this.dom.buildType, data.title );
-	g.text( this.dom.buildDmg, data.dmg + ' ' + data.bonus );
-	g.text( this.dom.buildRng, data.rng );
-	g.text( this.dom.buildRte, data.rte );
-	// reset classes and add proper type classes based on tower data
-	g.removeClass( g.dom, 'hover-e hover-w hover-a hover-f' );
-	g.addClass( g.dom, 'hover-build-button hover-' + type );*/
 };
 
 StatePlay.prototype.updateTowerMenuAvailability = function() {
-	if( this.lastClickedTower ) {
+	var lastClickedTower = this.getLastClickedTower();
+	if( lastClickedTower ) {
 		g.removeClass( g.dom, 'no-upgrade maxed-upgrade' );
-		var lvl = this.lastClickedTower.lvl;
+		var lvl = lastClickedTower.lvl;
 		if( lvl == 2 ) {
-			g.addClass( g.dom, 'maxed-upgrade' );
+			g.addClass( g.dom, 'no-upgrade maxed-upgrade' );
 		} else {
-			if( this.fragments < g.data.towers.e.stats[ lvl ].cst ) {
+			if( this.fragments < g.data.towers[ lastClickedTower.type ].stats[ lvl + 1 ].cst ) {
 				g.addClass( g.dom, 'no-upgrade' );
 			}
 		}
@@ -718,11 +732,16 @@ StatePlay.prototype.updateTowerMenuAvailability = function() {
 StatePlay.prototype.updateTowerUpgradeAvailability = function() {
 	this.towers.each( function( tower ) {
 		if( tower.lvl < 2 ) {
-			if( this.fragments > g.data.towers[ tower.type ].stats[ tower.lvl ].cst ) {
+			if( this.fragments >= g.data.towers[ tower.type ].stats[ tower.lvl + 1 ].cst ) {
+				tower.upgradable = 1;
 				g.addClass( tower.dom.wrap, 'upgradable' );
 			} else {
+				tower.upgradable = 0;
 				g.removeClass( tower.dom.wrap, 'upgradable' );
 			}
+		} else {
+			tower.upgradable = 0;
+			g.removeClass( tower.dom.wrap, 'upgradable' );
 		}
 	}, 0, this );
 	
@@ -747,14 +766,19 @@ StatePlay.prototype.onTowerButtonMouseenter = function( e ) {
 
 StatePlay.prototype.onTowerButtonMouseleave = function( e ) {
 	// remove hover class, which fades out the description
-	g.removeClass( g.dom, 'hover-tower-button' );
+	g.removeClass( g.dom, 'hover-tower-button hover-tower-upgrade hover-tower-reclaim' );
 };
 
 StatePlay.prototype.onTowerButtonClick = function( e ) {
 	g.audio.play( 'ui-h' );
-	var action = g.attr( e.target, 'data-action' );
+	var action = g.attr( e.target, 'data-action' ),
+		lastClickedTower = this.getLastClickedTower();
 	if( action == 'upgrade') {
-		console.log( 'upgrade' );
+		if( lastClickedTower.upgradable ) {
+			lastClickedTower.upgrade();
+			this.setFragments( -g.data.towers[ lastClickedTower.type ].stats[ lastClickedTower.lvl ].cst );
+		} else {
+		}
 	} else if( action == 'reclaim' ) {
 		console.log( 'reclaim' );
 	}
@@ -774,6 +798,12 @@ StatePlay.prototype.onTowerButtonClick = function( e ) {
 			this.hideBuildMenu();
 		}
 	}*/
+};
+
+StatePlay.prototype.getLastClickedTower = function() {
+	if( this.lastClickedTowerId ) {
+		return this.towers.getByPropVal( 'guid', this.lastClickedTowerId );
+	}
 };
 
 /*==============================================================================

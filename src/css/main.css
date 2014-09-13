@@ -127,7 +127,7 @@ Play State - Buttons - General
 .game-title {
 	background: #090909;
 	box-shadow: inset 0 0 0 1px hsla(0, 0%, 100%, 0.05);
-	color: hsla(0, 0%, 100%, 0.7);
+	color: #fff;
 	display: block;
 	float: left;
 	font-size: 15px;
@@ -135,11 +135,10 @@ Play State - Buttons - General
 	height: 39px;
 	line-height: 37px;
 	margin-right: 1px;
-	padding: 0 20px;
 	position: relative;
-	text-align: left;
+	text-align: center;
 	text-shadow: 0 1px 1px #000;
-	width: 400px;
+	width: 280px;
 }
 
 .game-title span {
@@ -199,9 +198,8 @@ Play State - Buttons - General
 
 .s1 { width: 39px; }
 .s2 { width: 79px; }
-.s2:last-child { margin-right: 0; }
 .s3 { width: 119px; }
-/*.s3:last-child { width: 120px; margin-right: 0; }*/
+.s3:last-child { margin-right: 0; }
 .s4 { width: 159px; }
 .s4:last-child { width: 160px; margin-right: 0; }
 .s6 { width: 239px; }
@@ -379,25 +377,18 @@ some tower menu thrown in for efficiency
 
 .build-menu-wrap,
 .tower-menu-wrap {
-	background: hsla(0, 0%, 20%, 0.4);
+	background: hsla(0, 0%, 10%, 0.6);
 	bottom: 0;
 	left: 0;
-	opacity: 0;
 	position: absolute;
 	right: 0;
 	top: 0;
-	transition:
-		visibility 150ms 150ms,
-		opacity 150ms
-	;
 	visibility: hidden;
 	z-index: 200;
 }
 
 .build-menu-open .build-menu-wrap,
 .tower-menu-open .tower-menu-wrap {
-	opacity: 1;
-	transition-delay: 0ms;
 	visibility: visible;
 }
 
@@ -410,14 +401,16 @@ some tower menu thrown in for efficiency
 	width: 280px;
 }
 
-.build-buttons {
+.build-buttons,
+.tower-buttons {
 	background: hsla(0, 0%, 0%, 0.75);
 	height: 80px;
 	position: relative;
 	width: 100%;
 }
 
-.build-buttons:before {
+.build-buttons:before,
+.tower-buttons:before {
 	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
 	content: '';
 	height: 50%;
@@ -429,15 +422,27 @@ some tower menu thrown in for efficiency
 	z-index: 2;
 }
 
-.build-button {
+.build-button,
+.tower-button {
 	background: #fff;
+	border: 2px solid transparent;
 	box-shadow: inset 0 0 0 20px hsla(0, 0%, 100%, 0);
 	cursor: pointer;
 	height: 40px;
 	position: absolute;
 	top: 20px;
-	transition: background 150ms, box-shadow 150ms;
+	transition:
+		background 150ms,
+		border-color 150ms,
+		opacity 150ms
+	;
 	width: 40px;
+}
+
+.build-button:hover,
+.tower-button:hover {
+	border-color: #fff;
+	opacity: 0.75;
 }
 
 .build-d.anim {
@@ -447,8 +452,6 @@ some tower menu thrown in for efficiency
 	-webkit-animation: pulse 500ms ease-in-out infinite alternate;
 	animation: pulse 500ms ease-in-out infinite alternate;
 }
-
-
 
 .build-d { background: #fff; }
 .build-e { background: hsl(120, 90%, 60%); }
@@ -463,20 +466,16 @@ some tower menu thrown in for efficiency
 .no-b-e.hover-e .build-info > *,
 .no-b-w.hover-w .build-info > *,
 .no-b-a.hover-a .build-info > *,
-.no-b-f.hover-f .build-info > * {
+.no-b-f.hover-f .build-info > *,
+.no-upgrade .tower-button.upgrade,
+.no-upgrade.hover-tower-upgrade .tower-info > * {
 	cursor: not-allowed;
 	opacity: 0.2;
 }
 
-.build-e:hover,
-.build-w:hover,
-.build-a:hover,
-.build-f:hover { box-shadow: inset 0 0 0 2px hsla(0, 0%, 100%, 0.35); }
-
-.build-e:hover { background: hsl(120, 80%, 30%); }
-.build-w:hover { background: hsl(200, 80%, 30%); }
-.build-a:hover { background: hsl(60, 80%, 30%); }
-.build-f:hover { background: hsl(0, 80%, 30%); }
+.no-upgrade.maxed-upgrade.hover-tower-upgrade .tower-info > * {
+	opacity: 1;
+}
 
 .pos-w .build-d { left: 20px; }
 .pos-w .build-e { left: 70px; }
@@ -601,36 +600,6 @@ some tower menu thrown in for efficiency
 Play State - Tower Upgrade/Reclaim Menu
 
 ==============================================================================*/
-
-.tower-buttons {
-	background: hsla(0, 0%, 0%, 0.75);
-	height: 80px;
-	position: relative;
-	width: 100%;
-}
-
-.tower-buttons:before {
-	background: linear-gradient(to bottom, transparent 0%, hsla(0, 0%, 100%, 0.1) 100%);
-	content: '';
-	height: 50%;
-	left: 0;
-	pointer-events: none;
-	position: absolute;
-	top: 0;
-	width: 100%;
-	z-index: 2;
-}
-
-.tower-button {
-	background: #fff;
-	box-shadow: inset 0 0 0 20px hsla(0, 0%, 100%, 0);
-	cursor: pointer;
-	height: 40px;
-	position: absolute;
-	top: 20px;
-	transition: background 150ms, box-shadow 150ms;
-	width: 40px;
-}
 
 .tower-button.highlight.anim {
 	background: hsla(0, 0%, 100%, 0.15);
@@ -762,10 +731,20 @@ Play State - Tower Upgrade/Reclaim Menu
 .pos-e .tower-button.upgrade   { left: 120px; }
 .pos-e .tower-button.reclaim   { left: 170px; }
 
+.t-menu-e .tower-label { color: hsl(120, 90%, 60%); }
+.t-menu-w .tower-label { color: hsl(200, 90%, 60%); }
+.t-menu-a .tower-label { color: hsl(60, 90%, 60%); }
+.t-menu-f .tower-label { color: hsl(0, 90%, 60%); }
+
 .tower-stat i {
 	color: #fff;
 	font-style: normal;
 }
+
+.t-menu-e .tower-stat span:last-child { color: hsl(120, 90%, 60%); }
+.t-menu-w .tower-stat span:last-child { color: hsl(200, 90%, 60%); }
+.t-menu-a .tower-stat span:last-child { color: hsl(60, 90%, 60%); }
+.t-menu-f .tower-stat span:last-child { color: hsl(0, 90%, 60%); }
 
 /*==============================================================================
 

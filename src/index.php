@@ -18,12 +18,11 @@ Game Element
 		===============================================================================-->
 		<div class="row top-row">
 			<div class="game-title">Elematter <span>by Jack Rugile for js13kGames</span></div>
-			<a class="b b-play s3"><i>&rtrif;</i>Play</a>
-			<a class="b b-x1 s1">&times;1</a>
-			<a class="b b-x2 s1">&times;2</a>
-			<a class="b b-x3 s1">&times;3</a>
-			<a class="b b-mute s2"><i>&sung;</i>Mute</a>
-			<a class="b b-menu s2"><i>&equiv;</i>Menu</a>
+			<a class="b b-play s4"><i>&rtrif;</i>Play</a>
+			<a class="b b-x1 s2">&times;1</a>
+			<a class="b b-x2 s2">&times;2</a>
+			<a class="b b-x3 s2">&times;3</a>
+			<a class="b b-mute s3"><i>&sung;</i>Mute</a>
 		</div>
 		<!--==============================================================================
 		UI Bottom Row

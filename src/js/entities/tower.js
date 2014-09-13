@@ -60,7 +60,7 @@ g.To.prototype.draw = function() {
 
 g.To.prototype.setStats = function() {
 	var stats = this.data.stats[ this.lvl ];
-	this.costToUpgrade = stats.cost;
+	//this.costToUpgrade = stats.cst;
 	this.dmg = stats.dmg;
 	this.rng = stats.rng;
 	this.rte = stats.rte;
@@ -155,7 +155,8 @@ g.To.prototype.setupEvents = function() {
 g.To.prototype.onClick = function() {
 	if( !this.state.isTowerMenuOpen ) {
 		this.state.showTowerMenu( this );
-		this.state.lastClickedTower = this;
+		this.state.lastClickedTowerId = this.guid;
+		this.state.updateTowerMenuAvailability();
 		g.addClass( this.dom.wrap, 'selected' );
 	}
 };
