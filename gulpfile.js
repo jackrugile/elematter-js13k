@@ -45,7 +45,7 @@ gulp.task('build', [ 'html' ], function() {
 	return gulp.src( dest + 'index.html' )
 		.pipe( p.zip( 'game.zip' ) )
 		.pipe( p.size() )
-		.pipe( p.micro( { limit: 13 * 1024 } ) )
+		//.pipe( p.micro( { limit: 13 * 1024 } ) )
 		.pipe( gulp.dest( dest ) )
 		.pipe( p.notify( 'Build Complete' ) );
 });

@@ -11,6 +11,10 @@ General
 	box-sizing: border-box;
 	transition-duration: 500ms;
 	transition-property: none;
+	-webkit-touch-callout: none;
+	-moz-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
 
 html,
@@ -19,14 +23,11 @@ body {
 }
 
 body {
-	background: #111;
+	background: #0c0c0c;
 	/*background: radial-gradient(ellipse at center,  #282828 0%,#060606 100%);*/
 	font-family: sans-serif;
 	overflow: hidden;
-	-webkit-touch-callout: none;
-	--moz-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
+	
 }
 
 /*==============================================================================
@@ -253,25 +254,6 @@ Play State - Buttons - Speed
 
 /*==============================================================================
 
-Play State - Buttons - Mute/Unmute
-
-==============================================================================*/
-
-.muted .b-mute {
-	background: #222;
-	box-shadow:
-		inset 0 0 0 1px #333,
-		inset 0 0 10px hsla(0, 0%, 0%, 0.75)
-	;
-	color: #fff;
-}
-
-.muted .b-mute:hover {
-	background: #333;
-}
-
-/*==============================================================================
-
 Play State - Buttons - Send Next Early
 
 ==============================================================================*/
@@ -280,7 +262,14 @@ Play State - Buttons - Send Next Early
 	opacity: 0.25;
 }
 
-.b-send:hover {
+.playing .b-send:hover {
+	background: #444;
+	color: #fff;
+	cursor: pointer;
+}
+
+.b-send:hover,
+.no-more-waves.playing .b-send {
 	background: #333;
 	color: hsla(0, 0%, 100%, 0.6);
 	cursor: not-allowed;
@@ -289,12 +278,6 @@ Play State - Buttons - Send Next Early
 
 .playing .b-send {
 	opacity: 1;
-}
-
-.playing .b-send:hover {
-	background: #444;
-	color: #fff;
-	cursor: pointer;
 }
 
 /*==============================================================================
@@ -695,34 +678,6 @@ Play State - Tower Upgrade/Reclaim Menu
 	border-bottom-color: hsl(0, 90%, 60%);
 }
 
-/*.build-e { background: hsl(120, 90%, 60%); }
-.build-w { background: hsl(200, 90%, 60%); }
-.build-a { background: hsl(60, 90%, 60%); }
-.build-f { background: hsl(0, 90%, 60%); }
-
-.no-b-e .build-e,
-.no-b-w .build-w,
-.no-b-a .build-a,
-.no-b-f .build-f,
-.no-b-e.hover-e .build-info > *,
-.no-b-e.hover-w .build-info > *,
-.no-b-e.hover-a .build-info > *,
-.no-b-e.hover-f .build-info > * {
-	cursor: not-allowed;
-	opacity: 0.2;
-}
-
-.build-e:hover,
-.build-w:hover,
-.build-a:hover,
-.build-f:hover { box-shadow: inset 0 0 0 2px hsla(0, 0%, 100%, 0.35); }
-
-.build-e:hover { background: hsl(120, 80%, 30%); }
-.build-w:hover { background: hsl(200, 80%, 30%); }
-.build-a:hover { background: hsl(60, 80%, 30%); }
-.build-f:hover { background: hsl(0, 80%, 30%); }
-*/
-
 .pos-w .tower-button.highlight { left: 20px; }
 .pos-w .tower-button.upgrade   { left: 70px; }
 .pos-w .tower-button.reclaim   { left: 120px; }
@@ -739,6 +694,11 @@ Play State - Tower Upgrade/Reclaim Menu
 .tower-stat i {
 	color: #fff;
 	font-style: normal;
+}
+
+.hover-tower-reclaim .tower-stat i,
+.hover-tower-reclaim .tower-stat span:last-child {
+	display: none;
 }
 
 .t-menu-e .tower-stat span:last-child { color: hsl(120, 90%, 60%); }
@@ -773,42 +733,50 @@ Towers
 	width: 40px;
 	z-index: 100;
 }
-.t-wrap.upgradable:before,
-.t-wrap.upgradable:after {
+
+.t-wrap:before,
+.t-wrap:after {
 	content: '';
+	opacity: 0;
 	right: 0;
 	position: absolute;
 	top: 0;
+	transition: opacity 400ms;
 }
 
-.t-wrap.upgradable:before {
+.t-wrap.upgradable:before,
+.t-wrap.upgradable:after {
+	opacity: 1;
+}
+
+.t-wrap:before {
 	height: 2px;
 	top: 3px;
 	width: 8px;
 }
 
-.t-wrap.upgradable:after {
+.t-wrap:after {
 	height: 8px;
 	right: 3px;
 	width: 2px;
 }
-.t-type-e.upgradable:before,
-.t-type-e.upgradable:after {
+.t-type-e:before,
+.t-type-e:after {
 	background: hsl(120, 80%, 60%);
 }
 
-.t-type-w.upgradable:before,
-.t-type-w.upgradable:after {
+.t-type-w:before,
+.t-type-w:after {
 	background: hsl(200, 80%, 60%);
 }
 
-.t-type-a.upgradable:before,
-.t-type-a.upgradable:after {
+.t-type-a:before,
+.t-type-a:after {
 	background: hsl(60, 80%, 60%);
 }
 
-.t-type-f.upgradable:before,
-.t-type-f.upgradable:after {
+.t-type-f:before,
+.t-type-f:after {
 	background: hsl(0, 80%, 60%);
 }
 
@@ -840,7 +808,7 @@ Towers
 	opacity: 0;
 	pointer-events: none;
 	top: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%) scale(0.5);
 	transition: all 150ms ease-in-out;
 	z-index: 1;
 }
@@ -865,7 +833,8 @@ Towers
 .t-wrap.selected .t-range,
 .t-wrap:hover .t-range {
 	opacity: 1;
-	transition-duration: 0ms;
+	transform: translate(-50%, -50%) scale(1);
+	/*transition-duration: 0ms;*/
 }
 
 .t-slab {
@@ -951,24 +920,36 @@ Towers
 	width: 12px;
 }
 
-.t-lvl-bar-0 { left: 1px; }
-.t-lvl-bar-1 { left: 14px; }
+.t-lvl-bar-0 { left: 0px; }
+.t-lvl-bar-1 { left: 13px; width: 13px; }
 .t-lvl-bar-2 { left: 27px;}
 
 .t-type-e.t-lvl-0 .t-lvl-bar-0,
+.t-type-e.t-lvl-1 .t-lvl-bar-0,
 .t-type-e.t-lvl-1 .t-lvl-bar-1,
+.t-type-e.t-lvl-2 .t-lvl-bar-0,
+.t-type-e.t-lvl-2 .t-lvl-bar-1,
 .t-type-e.t-lvl-2 .t-lvl-bar-2 { background: hsl(120, 80%, 60%); }
 
 .t-type-w.t-lvl-0 .t-lvl-bar-0,
+.t-type-w.t-lvl-1 .t-lvl-bar-0,
 .t-type-w.t-lvl-1 .t-lvl-bar-1,
+.t-type-w.t-lvl-2 .t-lvl-bar-0,
+.t-type-w.t-lvl-2 .t-lvl-bar-1,
 .t-type-w.t-lvl-2 .t-lvl-bar-2 { background: hsl(200, 80%, 60%); }
 
 .t-type-a.t-lvl-0 .t-lvl-bar-0,
+.t-type-a.t-lvl-1 .t-lvl-bar-0,
 .t-type-a.t-lvl-1 .t-lvl-bar-1,
+.t-type-a.t-lvl-2 .t-lvl-bar-0,
+.t-type-a.t-lvl-2 .t-lvl-bar-1,
 .t-type-a.t-lvl-2 .t-lvl-bar-2 { background: hsl(60, 80%, 60%); }
 
 .t-type-f.t-lvl-0 .t-lvl-bar-0,
+.t-type-f.t-lvl-1 .t-lvl-bar-0,
 .t-type-f.t-lvl-1 .t-lvl-bar-1,
+.t-type-f.t-lvl-2 .t-lvl-bar-0,
+.t-type-f.t-lvl-2 .t-lvl-bar-1,
 .t-type-f.t-lvl-2 .t-lvl-bar-2 { background: hsl(0, 80%, 60%); }
 
 /*==============================================================================
@@ -1153,6 +1134,22 @@ Bullets
 	background: hsl(0, 100%, 80%);
 	/*box-shadow: 0 0 10px hsl(0, 100%, 80%);*/
 }
+
+/*==============================================================================
+
+Splashes
+
+==============================================================================*/
+
+/*.splash {
+	background: hsla(0, 100%, 70%, 0.05);
+	border: 2px solid hsla(0, 100%, 70%, 0.2);
+	border-radius: 50%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	z-index: 150;
+}*/
 
 /*==============================================================================
 

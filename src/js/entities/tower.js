@@ -14,6 +14,7 @@ g.To.prototype.init = function() {
 	this.data = g.data.towers[ this.type ];
 	this.lvl = 0;
 	this.counters = this.data.counters;
+	this.spent = this.data.stats[ 0 ].cst;
 
 	this.cx = this.col * g.size + g.size / 2; // center x
 	this.cy = this.row * g.size + g.size / 2; // center y
@@ -75,7 +76,16 @@ g.To.prototype.setStats = function() {
 
 g.To.prototype.upgrade = function() {
 	this.lvl++;
+	this.spent += this.data.stats[ this.lvl ].cst;
 	this.setStats();
+	g.removeClass( this.dom.wrap, 't-lvl-0 t-lvl-1 t-lvl-2' );
+	g.addClass( this.dom.wrap, 't-lvl-' + this.lvl );
+};
+
+g.To.prototype.reclaim = function() {
+	this.state.setFragments( Math.ceil( this.spent * 0.75 ) );
+	this.state.towers.remove( this );
+	this.state.dom.state.removeChild( this.dom.wrap );
 };
 
 g.To.prototype.getTarget = function() {
@@ -104,6 +114,8 @@ g.To.prototype.getTarget = function() {
 		} else {
 			this.target = null;
 		}
+	} else {
+		this.target = null;
 	}
 };
 

@@ -21,6 +21,7 @@ StatePlay.prototype.init = function() {
 
 	// state vars
 		// general
+		this.won = 0;
 		this.tick = 0;
 		this.hasPlayed = 0;
 		this.speed = 1;
@@ -32,9 +33,10 @@ StatePlay.prototype.init = function() {
 		this.livesTotal = 13;
 		this.lives = this.livesTotal;
 		// fragments
-		this.fragments = 600;
+		this.fragments = 500;
 		this.fragmentsDisplay = this.fragments;
 		this.fragmentsDisplayLast = 0;
+		this.sendEarlyAmt = 0;
 		// tiles
 		this.lastClickedTile = null;
 		// global draw vars
@@ -51,20 +53,22 @@ StatePlay.prototype.init = function() {
 		this.enemies = new g.Group();
 		// bullets
 		//this.bullets = new g.Group();
-		this.bullets = new g.Pool( g.B, 10 );
+		this.bullets = new g.Pool( g.B, 20 );
+		// splashes
+		//this.splashes = new g.Pool( g.S, 10 );
 
 	// setup dom
 		this.dom = {};
 		// get state dom
 		this.dom.state = g.qS( '.s-play' );
 		// get ui button dom
-		this.dom.button = g.qS( '.b' );
-		this.dom.play   = g.qS( '.b-play' );
-		this.dom.x1     = g.qS( '.b-x1' );
-		this.dom.x2     = g.qS( '.b-x2' );
-		this.dom.x3     = g.qS( '.b-x3' );
-		this.dom.mute   = g.qS( '.b-mute' );
-		this.dom.send   = g.qS( '.b-send' );
+		this.dom.button   = g.qS( '.b' );
+		this.dom.play     = g.qS( '.b-play' );
+		this.dom.x1       = g.qS( '.b-x1' );
+		this.dom.x2       = g.qS( '.b-x2' );
+		this.dom.x3       = g.qS( '.b-x3' );
+		this.dom.send     = g.qS( '.b-send' );
+		this.dom.sendText = g.qS( '.send' );
 		// get ui display dom
 		this.dom.lives     = g.qS( '.d-lives' );
 		this.dom.fragments = g.qS( '.d-fragments' );
@@ -106,13 +110,13 @@ StatePlay.prototype.init = function() {
 
 	// events
 		// set general events
+		document.onselectstart = function(){ return false; };
 		g.on( window, 'click', this.onWinClick, this );
 		// set ui buttons events
 		g.on( this.dom.play, 'click', this.onPlayClick, this );
 		g.on( this.dom.x1, 'click', this.onX1Click, this );
 		g.on( this.dom.x2, 'click', this.onX2Click, this );
 		g.on( this.dom.x3, 'click', this.onX3Click, this );
-		g.on( this.dom.mute, 'click', this.onMuteClick, this );
 		g.on( this.dom.send, 'click', this.onSendClick, this );
 		for( var i = 0, length = this.dom.button.length; i < length; i++ ) {
 			var button = this.dom.button[ i ];
@@ -165,16 +169,17 @@ StatePlay.prototype.step = function() {
 		//this.time._step( this.speed );
 		// update global properties
 		this.updateGlobals();
-		// waves
-		this.updateWaves();
 		// towers
 		this.towers.each( 'step' );
 		// enemies
 		this.enemies.each( 'step' );
 		// bullets
 		this.bullets.each( 'step' );
+		// splashes
+		//this.splashes.each( 'step' );
+		// waves
+		this.updateWaves();
 	}
-
 	this.tick++;
 };
 
@@ -191,15 +196,8 @@ StatePlay.prototype.draw = function() {
 	this.enemies.each( 'draw' );
 	// bullets
 	this.bullets.each( 'draw' );
-};
-
-/*==============================================================================
-
-Exit
-
-==============================================================================*/
-
-StatePlay.prototype.exit = function() {
+	// splashes
+	//this.splashes.each( 'draw' );
 };
 
 /*==============================================================================
@@ -267,26 +265,9 @@ StatePlay.prototype.onX3Click = function() {
 	g.addClass( g.dom, 'x3' );
 };
 
-StatePlay.prototype.onEAtkClick = function() {
-};
-
-StatePlay.prototype.onWAtkClick = function() {
-};
-
-StatePlay.prototype.onAAtkClick = function() {
-};
-
-StatePlay.prototype.onFAtkClick = function() {
-};
-
-StatePlay.prototype.onMuteClick = function() {
-};
-
-StatePlay.prototype.onMenuClick = function() {
-};
-
 StatePlay.prototype.onSendClick = function() {
 	if( this.isPlaying ) {
+		this.setFragments( this.sendEarlyAmt );
 		this.advanceWave();
 	}
 };
@@ -373,11 +354,15 @@ StatePlay.prototype.removeLife = function() {
 	this.updateLife();
 	if( !this.lives ) {
 		g.audio.play( 'gameover' );
+		setTimeout( function() {
+			alert( 'You lost.' );
+			location.reload();
+		}, 1000 );
 	}
 };
 
 StatePlay.prototype.updateLife = function() {
-	g.text( this.dom.lives, this.lives + ' / ' + this.livesTotal );
+	g.text( this.dom.lives, Math.max( 0, this.lives ) + ' / ' + this.livesTotal );
 };
 
 /*==============================================================================
@@ -395,7 +380,7 @@ StatePlay.prototype.setFragments = function( amt ) {
 	// update tower upgrade availability
 	this.updateTowerUpgradeAvailability();
 	// update tower menu text
-	this.updateTowerMenuText( 'upgrade' );
+	//this.updateTowerMenuText( 'upgrade' );
 };
 
 StatePlay.prototype.updateFragments = function() {
@@ -442,6 +427,17 @@ StatePlay.prototype.setupWaves = function() {
 };
 
 StatePlay.prototype.updateWaves = function() {
+	// update early send amt
+	if( this.isPlaying ) {
+		if( this.waves.length ) {
+			this.sendEarlyAmt -= ( 50 * this.wave ) * 0.0002;
+			this.sendEarlyAmt = Math.max( 0, this.sendEarlyAmt );
+		} else {
+			this.sendEarlyAmt = 0;
+		}
+		g.text( this.dom.sendText, Math.ceil( this.sendEarlyAmt ) );
+	}
+
 	// step each active wave
 	this.activeWaves.each( 'step' );
 
@@ -456,7 +452,16 @@ StatePlay.prototype.updateWaves = function() {
 			this.activeWaves.removeAt( i );
 		}
 	}, 0, this );
-	
+
+	// check win
+	if( !this.activeWaves.length && !this.waves.length && !this.enemies.length && !this.won ) {
+		this.won = 1;
+		var score = ( this.lives * 100 ) + ( this.fragments );
+		setTimeout( function() {
+			alert( 'You won with a score of ' + g.formatCommas( score ) + '!' );
+			location.reload();
+		}, 1000 );
+	}
 };
 
 StatePlay.prototype.advanceWave = function() {
@@ -470,6 +475,7 @@ StatePlay.prototype.advanceWave = function() {
 			if( this.wave < this.wavesTotal ) {
 				this.waveNext++;
 				var waveNext = this.waves.getAt( 0 );
+				this.sendEarlyAmt = 50 * this.wave;
 				g.text( this.dom.eWave, waveNext.counts.e );
 				g.text( this.dom.wWave, waveNext.counts.w );
 				g.text( this.dom.aWave, waveNext.counts.a );
@@ -480,6 +486,7 @@ StatePlay.prototype.advanceWave = function() {
 				g.text( this.dom.wWave, '--' );
 				g.text( this.dom.aWave, '--' );
 				g.text( this.dom.fWave, '--' );
+				g.addClass( g.dom, 'no-more-waves' );
 			}
 		}
 	} else {
@@ -699,7 +706,7 @@ StatePlay.prototype.updateTowerMenuText = function( button ) {
 				g.text( this.dom.towerRteNext, 60 - data.stats[ tower.lvl + 1 ].rte );
 			} else {
 				g.text( this.dom.towerCost, 'Maxed' );
-				g.text( this.dom.towerLabel, data.title + ' Level ' + tower.lvl + 1 );
+				g.text( this.dom.towerLabel, data.title + ' Level ' + ( tower.lvl + 1 ) );
 				g.text( this.dom.towerDmg, data.stats[ tower.lvl ].dmg );
 				g.text( this.dom.towerRng, data.stats[ tower.lvl ].rng );
 				g.text( this.dom.towerRte, 60 - data.stats[ tower.lvl ].rte );
@@ -710,6 +717,11 @@ StatePlay.prototype.updateTowerMenuText = function( button ) {
 		} else if( button == 'reclaim' ) {
 			// sell button is hovered, get proper data
 			g.addClass( g.dom, 'hover-tower-button hover-tower-reclaim' );
+			g.text( this.dom.towerCost, '+' + Math.ceil( tower.spent * 0.75 ) );
+			g.text( this.dom.towerLabel, 'Reclaim 75%' );
+			g.text( this.dom.towerDmg, data.stats[ tower.lvl ].dmg );
+			g.text( this.dom.towerRng, data.stats[ tower.lvl ].rng );
+			g.text( this.dom.towerRte, 60 - data.stats[ tower.lvl ].rte );
 		}
 	}
 };
@@ -777,27 +789,12 @@ StatePlay.prototype.onTowerButtonClick = function( e ) {
 		if( lastClickedTower.upgradable ) {
 			lastClickedTower.upgrade();
 			this.setFragments( -g.data.towers[ lastClickedTower.type ].stats[ lastClickedTower.lvl ].cst );
-		} else {
+			this.updateTowerMenuText( 'upgrade' );
 		}
 	} else if( action == 'reclaim' ) {
-		console.log( 'reclaim' );
+		lastClickedTower.reclaim();
+		this.hideTowerMenu();
 	}
-	/*if( type ) {
-		var cost = g.data.towers[ type ].stats[ 0 ].cst;
-		if( cost <= this.fragments && this.isBuildable ) {
-			this.setFragments( -cost );
-			var tile = this.lastClickedTile;
-			var tower = new g.Tower({
-				state: this,
-				col: tile.col,
-				row: tile.row,
-				type: type
-			});
-			this.towers.push( tower );
-			this.isBuildable = 0;
-			this.hideBuildMenu();
-		}
-	}*/
 };
 
 StatePlay.prototype.getLastClickedTower = function() {
@@ -805,11 +802,3 @@ StatePlay.prototype.getLastClickedTower = function() {
 		return this.towers.getByPropVal( 'guid', this.lastClickedTowerId );
 	}
 };
-
-/*==============================================================================
-
-Add State
-
-==============================================================================*/
-
-//g.addState( 'play', new StatePlay() );

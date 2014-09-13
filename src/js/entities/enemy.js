@@ -20,7 +20,7 @@ g.E.prototype.init = function() {
 	}
 	this.dom.hl = g.cE( this.dom.enemy, 'hl' );
 	this.dom.hp = g.cE( this.dom.enemy, 'hp' );
-	this.hpTotal = 100;
+	this.hpTotal = 10;
 	this.hp = this.hpTotal; // hit points
 	this.value = 50;
 	this.wp = 1; // current waypoint index
@@ -49,6 +49,12 @@ g.E.prototype.init = function() {
 		'height': this.size + 'px',
 		'transform': 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0)'
 	});
+	if( this.isBoss ) {
+		this.hp *= 5;
+		this.hpTotal *= 5;
+		this.value *= 5;
+		this.speed *= 0.25;
+	}
 };
 
 g.E.prototype.step = function() {
@@ -128,6 +134,9 @@ g.E.prototype.receiveDamage = function( dmg, slow ) {
 		'width': ( this.hp / this.hpTotal ) * 300 + '%'
 	});
 	if( this.hp <= 0 ) {
+		if( this.isBoss ) {
+			g.audio.play( 'boss' );
+		}
 		this.state.setFragments( this.value );
 		this.destroy();
 	}

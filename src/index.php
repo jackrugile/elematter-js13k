@@ -22,7 +22,6 @@ Game Element
 			<a class="b b-x1 s2">&times;1</a>
 			<a class="b b-x2 s2">&times;2</a>
 			<a class="b b-x3 s2">&times;3</a>
-			<a class="b b-mute s3"><i>&sung;</i>Mute</a>
 		</div>
 		<!--==============================================================================
 		UI Bottom Row
@@ -36,12 +35,12 @@ Game Element
 			<div class="d d-wave s2"> </div>
 			<div class="l s2">Next</div>
 			<div class="d d-next s4">
-				&times;<span class="w w-e">10</span>
-				&times;<span class="w w-w">10</span>
-				&times;<span class="w w-a">10</span>
-				&times;<span class="w w-f">10</span>
+				&times;<span class="w w-e"> </span>
+				&times;<span class="w w-w"> </span>
+				&times;<span class="w w-a"> </span>
+				&times;<span class="w w-f"> </span>
 			</div>
-			<a class="b b-send s4"><i>&raquo;</i>Send Next +300 <i>&there4;</i></a>
+			<a class="b b-send s4"><i>&raquo;</i>Send Next +<span class="send"> </span> <i>&there4;</i></a>
 		</div>
 		<!--==============================================================================
 		Tower Select/Build Menu
@@ -102,17 +101,17 @@ Game Element
 				</div>
 				<div class="tower-info">
 					<div class="tower-title">
-						<span class="tower-cost">100</span> <i>&there4;</i>
-						<span class="tower-label">Upgrade</span>
+						<span class="tower-cost"> </span> <i>&there4;</i>
+						<span class="tower-label"> </span>
 					</div>
 					<div class="tower-stat tower-dmg-wrap">
-						<strong>Damage:</strong> <span class="tower-dmg">10</span> <i>&raquo;</i> <span class="tower-dmg-next">120</span>
+						<strong>Damage:</strong> <span class="tower-dmg"> </span> <i>&raquo;</i> <span class="tower-dmg-next"> </span>
 					</div>
 					<div class="tower-stat tower-rng-wrap">
-						<strong>Range:</strong> <span class="tower-rng">100</span> <i>&raquo;</i> <span class="tower-rng-next">120</span>
+						<strong>Range:</strong> <span class="tower-rng"> </span> <i>&raquo;</i> <span class="tower-rng-next"> </span>
 					</div>
 					<div class="tower-stat tower-rte-wrap">
-						<strong>Rate:</strong> <span class="tower-rte">100</span> <i>&raquo;</i> <span class="tower-rte-next">120</span>
+						<strong>Rate:</strong> <span class="tower-rte"> </span> <i>&raquo;</i> <span class="tower-rte-next"> </span>
 					</div>
 				</div>
 			</div>
@@ -130,7 +129,6 @@ Game Element
 	<script src="js/g/util.js"></script>
 	<script src="js/g/storage.js"></script>
 	<script src="js/data/audio.js"></script>
-	<script src="js/data/enemies.js"></script>
 	<script src="js/data/map.js"></script>
 	<script src="js/data/towers.js"></script>
 	<script src="js/data/waves.js"></script>

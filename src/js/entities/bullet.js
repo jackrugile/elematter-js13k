@@ -33,7 +33,7 @@ g.B.prototype.init = function( opt ) {
 	g.css( this.dom, {
 		'width': this.size + 'px',
 		'height': this.size + 'px',
-		'transform': 'translate3d(-100px, -100px, 0)'
+		'transform': 'translate3d(-999px, -999px, 0)'
 	});
 };
 
@@ -57,6 +57,14 @@ g.B.prototype.step = function() {
 				if( target.type == this.counters ) {
 					dmg *= 1.5;
 				}
+				/*if( this.type == 'f' ) {
+					this.state.splashes.create({
+						state: this.state,
+						dmg: this.dmg,
+						x: this.cx,
+						y: this.cy
+					});
+				}*/
 				g.audio.play( 'hit-' + this.type );
 				target.receiveDamage( dmg, this.slow );
 				this.destroy();
@@ -74,8 +82,8 @@ g.B.prototype.draw = function() {
 	g.css( this.dom, 'transform', 'translate3d(' + this.rx + 'px , ' + this.ry + 'px, 0) rotate(' + ( this.angle + Math.PI / 4 ) + 'rad)' );
 };
 
-g.B.prototype.getTarget = function() {
-	/*var enemies = this.state.enemies;
+/*g.B.prototype.getTarget = function() {
+	var enemies = this.state.enemies;
 	// if enemies are on the map
 	if( enemies.length ) {
 		// loop over enemies to get which ones are in range
@@ -89,15 +97,15 @@ g.B.prototype.getTarget = function() {
 		}, 1, this );
 	} else {
 		this.destroy();
-	}*/
-};
+	}
+};*/
 
-g.B.prototype.activate = function() {
+/*g.B.prototype.activate = function() {
 	this.state.dom.state.appendChild( this.dom );
-};
+};*/
 
 g.B.prototype.destroy = function() {
-	g.css( this.dom, 'transform', 'translate3d(-100px , -100px, 0)');
+	g.css( this.dom, 'transform', 'translate3d(-999px , -999px, 0)');
 	this.state.bullets.release( this );
 };
 
